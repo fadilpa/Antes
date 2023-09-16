@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:mentegoz_technologies/homepage.dart';
@@ -37,21 +38,32 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Future<void> _login(BuildContext context) async {
-    final String apiUrl = 'https://antes.meduco.in/api/applogin';
-    final String email = emailController.text;
-    final String password = passwordController.text;
-
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      body: {
-        'email': email,
-        'password': password,
+ Future<void> _login(BuildContext context) async {
+  final String apiUrl = 'https://antes.meduco.in/api/applogin';
+  final String email = emailController.text;
+  final String password = passwordController.text;
+ 
+  try {
+    final dio = Dio();
+    // final response = await dio.post(
+    //   apiUrl,
+     final options = Options(
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
       },
     );
 
+    // Define the request data (body)
+    final data = {
+      'email': email,
+      'password': password,
+    };
+
+    final response = await dio.post(apiUrl, data: data, options: options);
+    
+
     if (response.statusCode == 200) {
-      final data = json.decode(response.body);
+      final data = response.data;
 
       if (data is List) {
         for (var userData in data) {
@@ -59,11 +71,13 @@ class LoginPage extends StatelessWidget {
 
           if (status == 'pending') {
             final firebaseId = data[0]["data"][0]["firebase_id"].toString();
+            print(firebaseId);
             final firebaseIdProvider =
                 Provider.of<FirebaseIdProvider>(context, listen: false);
             firebaseIdProvider.setFirebaseId(firebaseId);
             final prefs = await SharedPreferences.getInstance();
             prefs.setBool('isLoggedIn', true);
+            prefs.setString('Firebase_Id', firebaseId);
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => HomePage()));
             emailController.clear();
@@ -76,7 +90,12 @@ class LoginPage extends StatelessWidget {
     } else {
       _showWrongPasswordAlert(context);
     }
+  } catch (e) {
+    print('Error: $e');
+    _showWrongPasswordAlert(context);
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -247,18 +266,14 @@ class LoginPage extends StatelessWidget {
                             width: 200,
                             child: ElevatedButton(
                               onPressed: () {
-                                _authService.login(
-                                  emailController.text,
-                                  passwordController.text,
-                                  context,
-                                );
+                                _login(context);
 
-                                if (_formKey.currentState!.validate()) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text('Processing Data')),
-                                  );
-                                }
+                                // if (_formKey.currentState!.validate()) {
+                                //   ScaffoldMessenger.of(context).showSnackBar(
+                                //     const SnackBar(
+                                //         content: Text('Processing Data')),
+                                //   );
+                                // }
                               },
                               style: ElevatedButton.styleFrom(
                                 elevation: 10,
