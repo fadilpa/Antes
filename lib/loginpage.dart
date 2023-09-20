@@ -1,22 +1,47 @@
-import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:mentegoz_technologies/homepage.dart';
-import 'package:mentegoz_technologies/login_function.dart';
 import 'package:mentegoz_technologies/providerclass.dart';
 import 'dart:math' as math;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: must_be_immutable
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({Key? key});
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final AuthService _authService = AuthService();
-  // String fid = "";
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  LocationPermission? permission;
+
+  @override
+  void initState() {
+    super.initState();
+    _requestLocationPermission();
+  }
+
+  Future<void> _requestLocationPermission() async {
+    LocationPermission permissionResult;
+    try {
+      permissionResult = await Geolocator.requestPermission();
+      setState(() {
+        permission = permissionResult;
+      });
+    } catch (e) {
+      // Handle any errors related to location permission
+      print("Error requesting location permission: $e");
+    }
+  }
+
+  final TextEditingController emailController = TextEditingController();
+
+  final TextEditingController passwordController = TextEditingController();
+
+  // final AuthService _authService = AuthService();
   void _showWrongPasswordAlert(BuildContext context) {
     showDialog(
       context: context,
@@ -38,68 +63,78 @@ class LoginPage extends StatelessWidget {
     );
   }
 
- Future<void> _login(BuildContext context) async {
-  final String apiUrl = 'https://antes.meduco.in/api/applogin';
-  final String email = emailController.text;
-  final String password = passwordController.text;
- 
-  try {
-    final dio = Dio();
-    // final response = await dio.post(
-    //   apiUrl,
-     final options = Options(
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-      },
-    );
+  Future<void> _login(BuildContext context) async {
+    final String apiUrl = 'https://antes.meduco.in/api/applogin';
+    final String email = emailController.text;
+    final String password = passwordController.text;
 
-    // Define the request data (body)
-    final data = {
-      'email': email,
-      'password': password,
-    };
+    try {
+      final dio = Dio();
+      // final response = await dio.post(
+      //   apiUrl,
+      final options = Options(
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        },
+      );
 
-    final response = await dio.post(apiUrl, data: data, options: options);
-    
+      // Define the request data (body)
+      final data = {
+        'email': email,
+        'password': password,
+      };
 
-    if (response.statusCode == 200) {
-      final data = response.data;
+      final response = await dio.post(apiUrl, data: data, options: options);
 
-      if (data is List) {
-        for (var userData in data) {
-          final status = userData['data'][0]['status'];
+      if (response.statusCode == 200) {
+        final data = response.data;
 
-          if (status == 'pending') {
-            final firebaseId = data[0]["data"][0]["firebase_id"].toString();
-            print(firebaseId);
-            final firebaseIdProvider =
-                Provider.of<FirebaseIdProvider>(context, listen: false);
-            firebaseIdProvider.setFirebaseId(firebaseId);
-            final prefs = await SharedPreferences.getInstance();
-            prefs.setBool('isLoggedIn', true);
-            prefs.setString('Firebase_Id', firebaseId);
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => HomePage()));
-            emailController.clear();
-            passwordController.clear();
-            return;
+        if (data is List) {
+          for (var userData in data) {
+            final status = userData['data'][0]['status'];
+
+            if (status == 'pending') {
+              final firebaseId = data[0]["data"][0]["firebase_id"].toString();
+              final userName = data[0]["data"][0]["name"].toString();
+              final mobileNumber = data[0]["data"][0]["mobile"].toString();
+              print(firebaseId);
+              final firebaseIdProvider =
+                  Provider.of<FirebaseIdProvider>(context, listen: false);
+              firebaseIdProvider.setFirebaseId(firebaseId);
+              final nameProvider =
+                  Provider.of<NameProvider>(context, listen: false);
+              nameProvider.setuserName(userName);
+              final mobileProvider =
+                  Provider.of<MobileProvider>(context, listen: false);
+              mobileProvider.setmobileNumber(mobileNumber);
+              final prefs = await SharedPreferences.getInstance();
+              prefs.setBool('isLoggedIn', true);
+              prefs.setString('Firebase_Id', firebaseId);
+              prefs.setString('Name', userName);
+              prefs.setString('Mobile', mobileNumber);
+              
+              print(userName);
+              print(mobileNumber);              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => HomePage()));
+              emailController.clear();
+              passwordController.clear();
+              return;
+            }
           }
+          _showWrongPasswordAlert(context);
         }
+      } else {
         _showWrongPasswordAlert(context);
       }
-    } else {
+    } catch (e) {
+      print('Error: $e');
       _showWrongPasswordAlert(context);
     }
-  } catch (e) {
-    print('Error: $e');
-    _showWrongPasswordAlert(context);
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    // final _formKey = GlobalKey<FormState>();
     final screenHeight = MediaQuery.of(context).size.height;
 
     final headerHeight = math.min(screenHeight * 0.5, 300.0);

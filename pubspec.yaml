@@ -43,6 +43,13 @@ dependencies:
   shared_store: ^0.0.1
   shared_preferences: ^2.2.1
   dio: ^5.3.2
+  geolocator: ^10.0.1
+  flutter_datetime_picker: ^1.5.1
+  intl: ^0.18.1
+  baseflow_plugin_template: ^2.1.2
+  location: ^5.0.3
+  geocode: ^1.0.3
+  # flutter_background_geolocation: ^4.12.3
 
 dev_dependencies:
   flutter_test:

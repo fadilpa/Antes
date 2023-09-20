@@ -1,13 +1,18 @@
+import 'package:geocode/geocode.dart';
+import 'package:location/location.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mentegoz_technologies/Api.dart';
-import 'package:mentegoz_technologies/modelclass.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mentegoz_technologies/api.dart';
+import 'package:mentegoz_technologies/custom_button.dart';
+import 'package:mentegoz_technologies/pendin_model.dart';
 import 'package:mentegoz_technologies/ticketpage.dart';
 import 'package:mentegoz_technologies/uploadedbill.dart';
 
-class ServicePage extends StatelessWidget {
-  const ServicePage(
+class PendingServicePage extends StatefulWidget {
+   PendingServicePage(
       {super.key,
       required this.index,
       required this.clientName,
@@ -18,6 +23,7 @@ class ServicePage extends StatelessWidget {
       this.servicename,
       this.endtime,
       this.starttime});
+
   final int index;
   final clientName;
   final refNo;
@@ -27,6 +33,284 @@ class ServicePage extends StatelessWidget {
   final servicename;
   final endtime;
   final starttime;
+
+  @override
+  State<PendingServicePage> createState() => _PendingServicePageState();
+}
+
+class _PendingServicePageState extends State<PendingServicePage> {
+  
+  LocationData? currentLocation;
+  String address = "";
+  bool journeyStarted = false;
+  TimeOfDay currentTime = TimeOfDay.now();
+  final geolocate = Geolocator();
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
+  }
+
+  double? latitude;
+  double? longitide;
+
+  Future<void> _getLocationAndAddress() async {
+    Location location = Location();
+    LocationData? locationData;
+    String? addressResult;
+
+    // Check if location service is enabled.
+    bool serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        // Handle if the user doesn't enable location services.
+        return;
+      }
+    }
+
+    // Check and request location permission.
+    PermissionStatus permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        // Handle if permission is not granted.
+        return;
+      }
+    }
+
+    // Get the user's location.
+    locationData = await location.getLocation();
+
+    // Get the address from the user's location.
+    if (locationData != null) {
+      GeoCode geoCode = GeoCode();
+      Address result = await geoCode.reverseGeocoding(
+        latitude: locationData.latitude!,
+        longitude: locationData.longitude!,
+      );
+      addressResult =
+          "${result.streetAddress}, ${result.city}, ${result.countryName}, ${result.postal}";
+    }
+    print(addressResult);
+    //  the state with the location and address.
+    setState(() {
+      currentLocation = locationData;
+      address = addressResult ?? "Address not available";
+    });
+  }
+
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> openCamera() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+    if (image != null) {
+      // Do something with the image
+    }
+  }
+
+  // static Future<String?> pickUserDueTime(
+  //   BuildContext context,
+  // ) async {
+  //   final TimeOfDay? picked = await showTimePicker(
+  //     context: context,
+  //     initialTime: TimeOfDay.now(),
+  //     // onEntryModeChanged:
+  //   );
+  //   if (picked != null) {
+  //     print('selected time$picked');
+  //   }
+  //   return "${picked?.format(context)}";
+  // }
+
+  Future<void> showStartDialog(BuildContext context) async {
+    if (journeyStarted) {
+      // Show a dialog indicating that an ongoing journey is not ended.
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Ongoing Journey"),
+            content: Text(
+                "Please end the ongoing journey before starting a new one."),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                 child: Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      // Show the regular start journey dialog if no journey is in progress.
+      await start_dialog(context);
+    }
+  }
+
+  Future<dynamic> start_dialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Start Service"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 16.0),
+              Text("Select your travel mode:"),
+              SizedBox(height: 8),
+              DropdownButtonFormField(
+                items: <String>[
+                  "Train",
+                  "Bus",
+                  "Bike",
+                  "Car",
+                ].map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  // Handle dropdown value change if needed
+                },
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Back"),
+            ),
+            TextButton(
+              onPressed: () async {
+                // Start a new journey here
+                _getLocationAndAddress();
+                currentTime;
+                print(currentTime);
+                setState(() {
+                  journeyStarted = true;
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text("Start"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> endDialogBox(BuildContext context) async {
+    if (journeyStarted) {
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("End Service"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: "Enter Amount",
+                  ),
+                ),
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: "Upload Bill",
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.camera_alt),
+                      onPressed: () async {
+                        openCamera();
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("Back"),
+              ),
+              TextButton(
+                onPressed: () {
+                  _getLocationAndAddress();
+                  currentTime;
+                  print(currentTime.toString());
+                  Navigator.of(context).pop();
+                  setState(() {
+                    journeyStarted =
+                        false; // Journey has ended, enable "Start" button
+                  });
+                },
+                child: Text("End"),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      // Journey hasn't started yet, show a message or take appropriate action.
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Journey not started"),
+            content: Text("Please start the journey before ending it."),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
@@ -36,6 +320,7 @@ class ServicePage extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return FutureBuilder<List<Autogenerated>>(
+      
         future: fetchAlbum(), // Provide the correct firebaseId
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -88,7 +373,7 @@ class ServicePage extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'Thomas',
+                                   '',
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 16,
@@ -133,7 +418,7 @@ class ServicePage extends StatelessWidget {
                             height: screenHeight / 15,
                           ),
                           Text(
-                            servicename.toUpperCase() ??
+                            widget.servicename.toUpperCase() ??
                                 "No Service Name".toUpperCase(),
                             style: GoogleFonts.montserrat(
                               fontSize: 20,
@@ -155,7 +440,7 @@ class ServicePage extends StatelessWidget {
                                 width: screenWidth / 50,
                               ),
                               Text(
-                                clientName.toUpperCase() ??
+                                widget.clientName.toUpperCase() ??
                                     "No Client Name".toUpperCase(),
                                 style: GoogleFonts.montserrat(
                                     fontSize: 16,
@@ -177,7 +462,7 @@ class ServicePage extends StatelessWidget {
                                 width: screenWidth / 50,
                               ),
                               Text(
-                                refNo.toUpperCase() ??
+                                widget.refNo.toUpperCase() ??
                                     "No Referred".toUpperCase(),
                                 style: GoogleFonts.montserrat(
                                     fontSize: 16,
@@ -199,7 +484,7 @@ class ServicePage extends StatelessWidget {
                                 width: screenWidth / 50,
                               ),
                               Text(
-                                category.toUpperCase() ??
+                                widget.category.toUpperCase() ??
                                     "No Categorised".toUpperCase(),
                                 style: GoogleFonts.montserrat(
                                     fontSize: 16,
@@ -221,11 +506,11 @@ class ServicePage extends StatelessWidget {
                                 width: screenWidth / 50,
                               ),
                               Text(
-                                (startdate == null
+                                (widget.startdate == null
                                         ? "Date Not Defined".toUpperCase()
-                                        : startdate) +
-                                    (starttime != null
-                                        ? " (${starttime})"
+                                        : widget.startdate) +
+                                    (widget.starttime != null
+                                        ? " (${widget.starttime})"
                                         : "Time Not Defined".toUpperCase()),
                                 style: GoogleFonts.montserrat(
                                     fontSize: 16,
@@ -247,11 +532,11 @@ class ServicePage extends StatelessWidget {
                                 width: screenWidth / 50,
                               ),
                               Text(
-                                (enddate == null
+                                (widget.enddate == null
                                         ? "Date Not Defined".toUpperCase()
-                                        : enddate) +
-                                    (endtime != null
-                                        ? " (${endtime})"
+                                        : widget.enddate) +
+                                    (widget.endtime != null
+                                        ? " (${widget.endtime})"
                                         : "Time Not Defined".toUpperCase()),
                                 style: GoogleFonts.montserrat(
                                     fontSize: 16,
@@ -269,13 +554,18 @@ class ServicePage extends StatelessWidget {
                                 Row(
                                   children: [
                                     CustmButton(
-                                        butoontext: 'Start',
-                                        buttonaction: () {}),
+                                        butoontext: 'Start Journey',
+                                        buttonaction: () {
+                                          showStartDialog(context);
+                                        }),
                                     SizedBox(
                                       width: screenWidth / 50,
                                     ),
                                     CustmButton(
-                                        butoontext: 'End', buttonaction: () {})
+                                        butoontext: 'End Journey',
+                                        buttonaction: () {
+                                          endDialogBox(context);
+                                        })
                                   ],
                                 ),
                                 SizedBox(
@@ -305,9 +595,6 @@ class ServicePage extends StatelessWidget {
                                         })
                                   ],
                                 ),
-                                //  SizedBox(
-                                //   height: 0,
-                                // )
                               ])
                         ],
                       ),
@@ -321,29 +608,5 @@ class ServicePage extends StatelessWidget {
             color: Colors.amber,
           );
         });
-  }
-}
-
-class CustmButton extends StatelessWidget {
-  const CustmButton(
-      {super.key, required this.butoontext, required this.buttonaction});
-  final String butoontext;
-
-  final Function() buttonaction;
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(32.0)),
-            minimumSize: const Size(143, 42),
-            backgroundColor: (const Color.fromARGB(255, 60, 180, 229))),
-        onPressed: buttonaction,
-        child: Text(
-          butoontext,
-          style: GoogleFonts.montserrat(
-              fontSize: 15, fontWeight: FontWeight.w400, color: Colors.white),
-        ));
   }
 }

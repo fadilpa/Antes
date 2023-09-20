@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mentegoz_technologies/pendingpage.dart';
+import 'package:mentegoz_technologies/pending_page.dart';
 import 'package:mentegoz_technologies/recordpage.dart';
-import 'completedpage.dart';
+import 'completed_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key,}) : super(key: key);
@@ -130,39 +130,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.assignment),
-              title: Text('Tickets'),
-              onTap: () {
-                _onMenuItemSelected(0);
-                // Close the drawer after handling the selection
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => TicketsPage(),
-                ));
-              },
-            ),
-            ListTile(
               leading: Icon(Icons.logout),
               title: Text('Logout'),
               onTap: () {
                 // _logout(context);
-                // Close the drawer after handling the selection
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
-              onTap: () {
-                _onMenuItemSelected(2);
-                // Close the drawer after handling the selection
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.attach_file),
-              title: Text('Bills Uploaded'),
-              onTap: () {
-                _onMenuItemSelected(3);
                 // Close the drawer after handling the selection
                 Navigator.pop(context);
               },
