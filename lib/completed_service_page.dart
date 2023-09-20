@@ -11,9 +11,9 @@ import 'package:mentegoz_technologies/custom_button.dart';
 
 import 'package:mentegoz_technologies/ticketpage.dart';
 import 'package:mentegoz_technologies/uploadedbill.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CompletedServicePage extends StatefulWidget {
-
   const CompletedServicePage(
       {super.key,
       required this.index,
@@ -30,7 +30,6 @@ class CompletedServicePage extends StatefulWidget {
       this.address,
       this.landmark,
       this.category});
-
 
   final int index;
   final clientName;
@@ -52,7 +51,8 @@ class CompletedServicePage extends StatefulWidget {
 }
 
 class _CompletedServicePageState extends State<CompletedServicePage> {
-  
+  String? name;
+  String? number;
   LocationData? currentLocation;
   String address = "";
   bool journeyStarted = false;
@@ -182,7 +182,7 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                 child: Text("OK"),
+                child: Text("OK"),
               ),
             ],
           );
@@ -324,6 +324,17 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
     }
   }
 
+  getusername_and_number() async {
+    final prefs = await SharedPreferences.getInstance();
+    name = prefs.getString('Name');
+    number = prefs.getString('Mobile');
+  }
+@override
+  void initState() {
+    super.initState();
+    getusername_and_number();
+  }
+
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
@@ -385,7 +396,7 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'Thomas',
+                                    name ?? "User Name",
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 16,
@@ -393,7 +404,7 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                                     ),
                                   ),
                                   Text(
-                                    '123456',
+                                    number ?? "No Number",
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 16,

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mentegoz_technologies/pending_page.dart';
 import 'package:mentegoz_technologies/recordpage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'completed_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key,}) : super(key: key);
+  const HomePage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -14,6 +17,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late TabController _tabController;
   // ignore: unused_field
   var _selectedIndex = 0;
+  String? name;
+  String? number;
 
   // Future<void> _logout(BuildContext context) async {
   //   final String apiUrl =
@@ -74,10 +79,21 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   //   }
   // }
 
+  getusername_and_number() async {
+    final prefs = await SharedPreferences.getInstance();
+    name = prefs.getString('Name');
+    number = prefs.getString('Mobile');
+    print(name);
+    print(number);
+  }
+
   @override
   void initState() {
+    getusername_and_number();
+
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
+
     setState(() {
       _selectedIndex = _tabController.index;
     });
@@ -119,7 +135,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                 color: Color.fromARGB(255, 60,180,229),
+                color: Color.fromARGB(255, 60, 180, 229),
               ),
               child: Text(
                 'Menu',
@@ -170,7 +186,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   ),
                   tooltip: 'Menu',
                   onPressed: () {
-                    // Open the drawer
                     Scaffold.of(context).openDrawer();
                   },
                 ),
@@ -182,7 +197,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Thomas',
+                            name ?? "User Name",
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
@@ -190,7 +205,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             ),
                           ),
                           Text(
-                            '123456',
+                            number ?? "Mobile Number",
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
@@ -216,17 +231,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       Container(
                         height: screenHeight * 0.065,
                         decoration: BoxDecoration(
-                          color: Color.fromARGB(255,233,233,233),
+                          color: Color.fromARGB(255, 233, 233, 233),
                           borderRadius: BorderRadius.circular(30),
                         ),
                         child: TabBar(
                           controller: _tabController,
                           indicator: BoxDecoration(
-                            color: Color.fromARGB(255, 60,180,229),
+                            color: Color.fromARGB(255, 60, 180, 229),
                             borderRadius: BorderRadius.circular(30),
                           ),
                           labelColor: Colors.white,
-                          unselectedLabelColor: Color.fromARGB(255, 60,180,229),
+                          unselectedLabelColor:
+                              Color.fromARGB(255, 60, 180, 229),
                           tabs: const [
                             Tab(text: "Pending"),
                             Tab(text: "Completed"),
@@ -241,7 +257,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           },
           body: TabBarView(
             controller: _tabController,
-            children:  [
+            children: [
               PendingPage(),
               CompletedPage(),
             ],

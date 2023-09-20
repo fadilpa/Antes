@@ -17,7 +17,6 @@ print(Firebase_Id);
       },
     );
 
-
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
@@ -36,7 +35,6 @@ print(Firebase_Id);
   final prefs = await SharedPreferences.getInstance();
 // ignore: unused_local_variable
 String ?Firebase_Id=prefs.getString('Firebase_Id');
-
 String ?MobileNum=prefs.getString('Name');
 String ?Clientname=prefs.getString('Mobile');
 // print(Firebase_Id);

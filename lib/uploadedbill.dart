@@ -5,6 +5,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UpLoadBill extends StatefulWidget {
   const UpLoadBill({Key? key}) : super(key: key);
@@ -15,7 +16,8 @@ class UpLoadBill extends StatefulWidget {
 
 class _UpLoadBillState extends State<UpLoadBill> {
   File? _selectedImage;
-
+   String? name;
+ String? number;
   Future<void> _pickImage(ImageSource source) async {
     final pickedImage = await ImagePicker().pickImage(source: source);
 
@@ -87,6 +89,17 @@ class _UpLoadBillState extends State<UpLoadBill> {
     }
   }
 
+  getusername_and_number() async {
+    final prefs = await SharedPreferences.getInstance();
+    name = prefs.getString('Name');
+    number = prefs.getString('Mobile');
+  }
+@override
+  void initState() {
+    super.initState();
+    getusername_and_number();
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -128,7 +141,7 @@ class _UpLoadBillState extends State<UpLoadBill> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Thomas',
+                         name??"User Name",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,
@@ -136,7 +149,7 @@ class _UpLoadBillState extends State<UpLoadBill> {
                         ),
                       ),
                       Text(
-                        '12345678910',
+                        number??"NO Number",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,

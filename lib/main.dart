@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mentegoz_technologies/homepage.dart';
 import 'package:mentegoz_technologies/loginpage.dart';

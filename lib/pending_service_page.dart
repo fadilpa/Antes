@@ -10,6 +10,7 @@ import 'package:mentegoz_technologies/custom_button.dart';
 import 'package:mentegoz_technologies/pendin_model.dart';
 import 'package:mentegoz_technologies/ticketpage.dart';
 import 'package:mentegoz_technologies/uploadedbill.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PendingServicePage extends StatefulWidget {
    PendingServicePage(
@@ -39,7 +40,8 @@ class PendingServicePage extends StatefulWidget {
 }
 
 class _PendingServicePageState extends State<PendingServicePage> {
-  
+     String? name;
+ String? number;
   LocationData? currentLocation;
   String address = "";
   bool journeyStarted = false;
@@ -311,6 +313,17 @@ class _PendingServicePageState extends State<PendingServicePage> {
     }
   }
 
+    getusername_and_number() async {
+    final prefs = await SharedPreferences.getInstance();
+    name = prefs.getString('Name');
+    number = prefs.getString('Mobile');
+  }
+@override
+  void initState() {
+    super.initState();
+    getusername_and_number();
+  }
+
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
@@ -373,7 +386,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                   '',
+                                   name??"User Name",
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 16,
@@ -381,7 +394,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                     ),
                                   ),
                                   Text(
-                                    '123456',
+                                  number??"NO Number",
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 16,

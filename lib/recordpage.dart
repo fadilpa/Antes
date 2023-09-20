@@ -1,7 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class TicketsPage extends StatelessWidget {
+class TicketsPage extends StatefulWidget {
   const TicketsPage({super.key});
+
+  @override
+  State<TicketsPage> createState() => _TicketsPageState();
+}
+
+class _TicketsPageState extends State<TicketsPage> {
+     String? name;
+ String? number;
+
+  getusername_and_number() async {
+    final prefs = await SharedPreferences.getInstance();
+    name = prefs.getString('Name');
+    number = prefs.getString('Mobile');
+  }
+@override
+  void initState() {
+    super.initState();
+    getusername_and_number();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +63,7 @@ class TicketsPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Thomas',
+                         name??"User Name",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,
@@ -51,7 +71,7 @@ class TicketsPage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '123456',
+                        number??"NO Number",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,

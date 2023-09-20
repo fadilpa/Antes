@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RaisedTicket extends StatefulWidget {
   const RaisedTicket({super.key});
@@ -9,6 +10,8 @@ class RaisedTicket extends StatefulWidget {
 }
 
 class _RaisedTicketState extends State<RaisedTicket> {
+     String? name;
+ String? number;
   bool isTicketSubmitted = false; // Add a flag to track ticket submission
   Future<void> _showImageSourceDialog(BuildContext context) async {
     return showDialog<void>(
@@ -54,6 +57,17 @@ class _RaisedTicketState extends State<RaisedTicket> {
     );
   }
 
+    getusername_and_number() async {
+    final prefs = await SharedPreferences.getInstance();
+    name = prefs.getString('Name');
+    number = prefs.getString('Mobile');
+  }
+@override
+  void initState() {
+    super.initState();
+    getusername_and_number();
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -97,7 +111,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Thomas',
+                           name??"User Name",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
@@ -105,7 +119,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                           ),
                         ),
                         Text(
-                          '123456',
+                          number??"NO Number",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,

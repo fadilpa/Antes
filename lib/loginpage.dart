@@ -113,8 +113,9 @@ class _LoginPageState extends State<LoginPage> {
               prefs.setString('Name', userName);
               prefs.setString('Mobile', mobileNumber);
               
-              print(userName);
-              print(mobileNumber);              Navigator.of(context)
+              // print(userName);
+              // print(mobileNumber);         
+                   Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => HomePage()));
               emailController.clear();
               passwordController.clear();
