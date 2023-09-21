@@ -50,11 +50,10 @@ class _CompletedPageState extends State<CompletedPage> {
               child: GestureDetector(
                 child: GridView.builder(
                   shrinkWrap: true,
-                  gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 10,
-                          crossAxisSpacing: 5),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 5),
                   itemCount: dataList.length,
                   itemBuilder: (context, index) {
                     var servicename = dataList[index].serviceName!;

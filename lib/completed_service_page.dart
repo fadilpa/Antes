@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mentegoz_technologies/api.dart';
 import 'package:mentegoz_technologies/compledted_model.dart';
 import 'package:mentegoz_technologies/custom_button.dart';
+import 'package:mentegoz_technologies/get_user_name_number.dart';
 
 import 'package:mentegoz_technologies/ticketpage.dart';
 import 'package:mentegoz_technologies/uploadedbill.dart';
@@ -51,6 +52,7 @@ class CompletedServicePage extends StatefulWidget {
 }
 
 class _CompletedServicePageState extends State<CompletedServicePage> {
+  GetUserNameAndNumber nameandnumber = GetUserNameAndNumber();
   String? name;
   String? number;
   LocationData? currentLocation;
@@ -329,6 +331,7 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
     name = prefs.getString('Name');
     number = prefs.getString('Mobile');
   }
+
 @override
   void initState() {
     super.initState();

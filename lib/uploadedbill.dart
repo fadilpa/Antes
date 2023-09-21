@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,14 +10,14 @@ class UpLoadBill extends StatefulWidget {
   const UpLoadBill({Key? key}) : super(key: key);
 
   @override
-  _UpLoadBillState createState() => _UpLoadBillState();
+  UpLoadBillState createState() => UpLoadBillState();
 }
 
-class _UpLoadBillState extends State<UpLoadBill> {
+class UpLoadBillState extends State<UpLoadBill> {
   File? _selectedImage;
-   String? name;
- String? number;
-  Future<void> _pickImage(ImageSource source) async {
+  String? name;
+  String? number;
+  Future<void> pickImage(ImageSource source) async {
     final pickedImage = await ImagePicker().pickImage(source: source);
 
     if (pickedImage == null) {
@@ -34,7 +33,7 @@ class _UpLoadBillState extends State<UpLoadBill> {
     final imageSizeInBytes = _selectedImage!.lengthSync();
     final double imageSizeInMb = imageSizeInBytes / (1024 * 1024);
 
-    if (imageSizeInMb > 1.0) {
+    if (imageSizeInBytes > 100) {
       // Compress the image if it's larger than 1 MB
       final compressedImage = await FlutterImageCompress.compressWithFile(
         _selectedImage!.path,
@@ -46,10 +45,18 @@ class _UpLoadBillState extends State<UpLoadBill> {
       try {
         final response = await http.post(
           Uri.parse(
-              'https://api.escuelajs.co/api/v1/files/upload'), // Replace with your API endpoint
+              'https://antes.meduco.in/api/upload_bill'), // Replace with your API endpoint
           body: {
-            'image':
-                base64Encode(compressedImage!), // Convert to base64 if needed
+            "firebase_id": "syuxKE42GTXQaZaZBdoUBwgTAfi1",
+            "service_id": "1",
+            "geolocation": "",
+            "category": "",
+            "option": "",
+            "description": "",
+            "date_time": "",
+            "amount": "",
+            "image": ""
+            // base64Encode(compressedImage!), // Convert to base64 if needed
           },
         );
 
@@ -69,10 +76,19 @@ class _UpLoadBillState extends State<UpLoadBill> {
       try {
         final response = await http.post(
           Uri.parse(
-              'https://api.escuelajs.co/api/v1/files/upload'), // Replace with your API endpoint
+              'https://antes.meduco.in/api/upload_bill'), // Replace with your API endpoint
           body: {
-            'image': base64Encode(_selectedImage!
-                .readAsBytesSync()), // Convert to base64 if needed
+            "firebase_id": "syuxKE42GTXQaZaZBdoUBwgTAfi1",
+            "service_id": 'Service 1',
+            "geolocation": 'location',
+            "travel_mode": '56eesdtry',
+            "date_time": 'yetdf',
+            'image': MultipartFile.fromFile(_selectedImage as String,
+                filename: 'image'),
+            // base64Encode(_selectedImage!
+            //     .readAsBytesSync()),
+
+            // Convert to base64 if needed
           },
         );
 
@@ -94,7 +110,8 @@ class _UpLoadBillState extends State<UpLoadBill> {
     name = prefs.getString('Name');
     number = prefs.getString('Mobile');
   }
-@override
+
+  @override
   void initState() {
     super.initState();
     getusername_and_number();
@@ -102,6 +119,7 @@ class _UpLoadBillState extends State<UpLoadBill> {
 
   @override
   Widget build(BuildContext context) {
+    String? selectedTravelMode;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -141,7 +159,7 @@ class _UpLoadBillState extends State<UpLoadBill> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                         name??"User Name",
+                        name ?? "User Name",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,
@@ -149,7 +167,7 @@ class _UpLoadBillState extends State<UpLoadBill> {
                         ),
                       ),
                       Text(
-                        number??"NO Number",
+                        number ?? "NO Number",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,
@@ -173,30 +191,134 @@ class _UpLoadBillState extends State<UpLoadBill> {
             delegate: SliverChildListDelegate(
               [
                 SizedBox(
-                  height: screenHeight / 3.5,
+                  height: screenHeight / 7,
                 ),
+                Container(
+                  height: 50,
+                  width: 100,
+                  color: Colors.white,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text("Category"),
+                      Container(
+                        width: 100,
+                        height: 50,
+                        color: Colors.red,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Food"),
+                            DropdownButton<String>(
+                              items: <String>['Food'].map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              onChanged: (_) {},
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Container(
+                  height: 50,
+                  width: 100,
+                  color: Colors.white,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        width: 100,
+                        height: 50,
+                        color: Colors.amber,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Select"),
+                            DropdownButton<String>(
+                              items: <String>['Food'].map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              onChanged: (_) {},
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: 200,
+                  height: 50,
+                  color: Colors.amber,
+                )
+                // Text("Amount"),
+                //  Container(
+                //   height: 50,
+                //   width: 100,
+                //   color: Colors.white60,
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     children: [
+                //       Text("Select"),
+                //       DropdownButton<String>(
+                //         items: <String>['A', 'B', 'C', 'D']
+                //             .map((String value) {
+                //           return DropdownMenuItem<String>(
+                //             value: value,
+                //             child: Text(value),
+                //           );
+                //         }).toList(),
+                //         onChanged: (_) {},
+                //       )
+                //     ],
+                //   ),
+                // ),
+                //     Text("Amount"),
+                //      TextField(
+                //   decoration: InputDecoration(
+                //     labelText: "Enter Amount",
+                //   ),
+                // ),
+                // Text("Description"),
+                //  TextField(
+                //   decoration: InputDecoration(
+                //     labelText: "Enter Description",
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: screenHeight / 3.5,
+                // ),
+                ,
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'Lorem ipsum dolor sit amet consectetur.\n                     Feugiat et aliquat',
-                    ),
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         GestureDetector(
                           onTap: () {
-                            _pickImage(ImageSource.camera);
+                            pickImage(ImageSource.camera);
                           },
                           child: Container(
                             height: 70,
                             width: 70,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                             color: Color.fromARGB(255, 60,180,229),
+                              color: Color.fromARGB(255, 60, 180, 229),
                             ),
                             child: const Icon(
                               Icons.camera_alt,
@@ -210,18 +332,17 @@ class _UpLoadBillState extends State<UpLoadBill> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            _pickImage(ImageSource.gallery);
+                            pickImage(ImageSource.gallery);
                           },
                           child: Container(
                             height: 70,
                             width: 70,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color:Color.fromARGB(255, 60,180,229),
+                              color: Color.fromARGB(255, 60, 180, 229),
                             ),
                             child: const Icon(
                               Icons.photo_album,
-                              
                               size: 60,
                               color: Colors.white,
                             ),

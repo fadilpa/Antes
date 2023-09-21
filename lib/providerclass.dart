@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FirebaseIdProvider extends ChangeNotifier {
+
   String? _firebaseId;
 
   String? get firebaseId => _firebaseId;
@@ -12,12 +13,13 @@ class FirebaseIdProvider extends ChangeNotifier {
 }
 
 class NameProvider extends ChangeNotifier {
-  String? _userName;
+  // late var userdatalist=get_profile_data
+  late var userName;
 
-  String? get userName => _userName;
+  String? get userName_data => userName;
 
   void setuserName(String id) {
-    _userName = id;
+    userName = id;
     notifyListeners();
   }
 }

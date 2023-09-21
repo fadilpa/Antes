@@ -1,7 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+ File ? image;
 class RaisedTicket extends StatefulWidget {
   const RaisedTicket({super.key});
 
@@ -12,6 +14,7 @@ class RaisedTicket extends StatefulWidget {
 class _RaisedTicketState extends State<RaisedTicket> {
      String? name;
  String? number;
+
   bool isTicketSubmitted = false; // Add a flag to track ticket submission
   Future<void> _showImageSourceDialog(BuildContext context) async {
     return showDialog<void>(
@@ -28,6 +31,10 @@ class _RaisedTicketState extends State<RaisedTicket> {
                 );
                 // Handle the selected image from the camera
                 if (pickedImage != null) {
+                  final imagebytes= await pickedImage.readAsBytes();
+                  setState(() {
+                    image =File(pickedImage.path);
+                  });
                   // Process the image here
 
                   // Once processing is successful, set the flag to true
@@ -46,6 +53,8 @@ class _RaisedTicketState extends State<RaisedTicket> {
                 );
                 // Handle the selected image from the gallery
                 if (pickedImage != null) {
+                  final imagebytes=await pickedImage.readAsBytes();
+
                   // Process the image here
                 }
               },

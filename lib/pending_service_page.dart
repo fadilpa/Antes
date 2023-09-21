@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:geocode/geocode.dart';
+// import 'package:http/http.dart';
 import 'package:location/location.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,12 +12,15 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mentegoz_technologies/api.dart';
 import 'package:mentegoz_technologies/custom_button.dart';
 import 'package:mentegoz_technologies/pendin_model.dart';
+import 'package:mentegoz_technologies/start_api_journey.dart';
 import 'package:mentegoz_technologies/ticketpage.dart';
 import 'package:mentegoz_technologies/uploadedbill.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+String? addressResult;
+
 class PendingServicePage extends StatefulWidget {
-   PendingServicePage(
+  PendingServicePage(
       {super.key,
       required this.index,
       required this.clientName,
@@ -40,57 +47,66 @@ class PendingServicePage extends StatefulWidget {
 }
 
 class _PendingServicePageState extends State<PendingServicePage> {
-     String? name;
- String? number;
+  // StartJourneyState startjourney = StartJourneyState();
+  // EndJourneyState endjourney = EndJourneyState();
+  // LocateUserAddress locateuser = LocateUserAddress();
+  TextEditingController _controller =TextEditingController();
+  String con ="";
+
+  String? name;
+  String? number;
   LocationData? currentLocation;
   String address = "";
   bool journeyStarted = false;
-  TimeOfDay currentTime = TimeOfDay.now();
+  String currentTime = TimeOfDay.now().toString();
   final geolocate = Geolocator();
-  Future<Position> _determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
+  var data = {};
+  var datas = {};
+  String? selectedTravelMode;
 
-    // Test if location services are enabled.
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
-      return Future.error('Location services are disabled.');
-    }
+  // Future<Position> _determinePosition() async {
+  //   bool serviceEnabled;
+  //   LocationPermission permission;
 
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
-        return Future.error('Location permissions are denied');
-      }
-    }
+  //   // Test if location services are enabled.
+  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //   if (!serviceEnabled) {
+  //     // Location services are not enabled don't continue
+  //     // accessing the position and request users of the
+  //     // App to enable the location services.
+  //     return Future.error('Location services are disabled.');
+  //   }
 
-    if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
+  //   permission = await Geolocator.checkPermission();
+  //   if (permission == LocationPermission.denied) {
+  //     permission = await Geolocator.requestPermission();
+  //     if (permission == LocationPermission.denied) {
+  //       // Permissions are denied, next time you could try
+  //       // requesting permissions again (this is also where
+  //       // Android's shouldShowRequestPermissionRationale
+  //       // returned true. According to Android guidelines
+  //       // your App should show an explanatory UI now.
+  //       return Future.error('Location permissions are denied');
+  //     }
+  //   }
 
-    // When we reach here, permissions are granted and we can
-    // continue accessing the position of the device.
-    return await Geolocator.getCurrentPosition();
-  }
+  //   if (permission == LocationPermission.deniedForever) {
+  //     // Permissions are denied forever, handle appropriately.
+  //     return Future.error(
+  //         'Location permissions are permanently denied, we cannot request permissions.');
+  //   }
 
-  double? latitude;
-  double? longitide;
+  //   // When we reach here, permissions are granted and we can
+  //   // continue accessing the position of the device.
+  //   return await Geolocator.getCurrentPosition();
+  // }
 
-  Future<void> _getLocationAndAddress() async {
+  // double? latitude;
+  // double? longitide;
+
+  Future<void> getLocationAndAddress() async {
     Location location = Location();
     LocationData? locationData;
-    String? addressResult;
 
     // Check if location service is enabled.
     bool serviceEnabled = await location.serviceEnabled();
@@ -171,7 +187,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                 child: Text("OK"),
+                child: Text("OK"),
               ),
             ],
           );
@@ -183,7 +199,11 @@ class _PendingServicePageState extends State<PendingServicePage> {
     }
   }
 
-  Future<dynamic> start_dialog(BuildContext context) {
+  Future<dynamic> start_dialog(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+// ignore: unused_local_variable
+    String? Firebase_Id = prefs.getString('Firebase_Id');
+    int n = 1;
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -209,6 +229,9 @@ class _PendingServicePageState extends State<PendingServicePage> {
                 }).toList(),
                 onChanged: (value) {
                   // Handle dropdown value change if needed
+                  setState(() {
+                    selectedTravelMode = value;
+                  });
                 },
               ),
             ],
@@ -223,10 +246,20 @@ class _PendingServicePageState extends State<PendingServicePage> {
             TextButton(
               onPressed: () async {
                 // Start a new journey here
-                _getLocationAndAddress();
+                getLocationAndAddress();
                 currentTime;
-                print(currentTime);
+                data = {
+                  "firebase_id": Firebase_Id,
+                  "service_id": 'Service $n',
+                  "geolocation": addressResult??"Address Not Found ",
+                  "travel_mode": selectedTravelMode,
+                  "date_time": currentTime,
+                };
+                print(data);
+
+                await PostData().postData(data, selectedTravelMode);
                 setState(() {
+                  n++;
                   journeyStarted = true;
                 });
                 Navigator.of(context).pop();
@@ -240,6 +273,12 @@ class _PendingServicePageState extends State<PendingServicePage> {
   }
 
   Future<void> endDialogBox(BuildContext context) async {
+    File? _selectedImage;
+    UpLoadBillState uploadbill = UpLoadBillState();
+    final prefs = await SharedPreferences.getInstance();
+// ignore: unused_local_variable
+    String? Firebase_Id = prefs.getString('Firebase_Id');
+    int n = 1;
     if (journeyStarted) {
       await showDialog(
         context: context,
@@ -250,9 +289,11 @@ class _PendingServicePageState extends State<PendingServicePage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextField(
+                  controller: _controller,
                   decoration: InputDecoration(
                     labelText: "Enter Amount",
                   ),
+
                 ),
                 TextField(
                   decoration: InputDecoration(
@@ -260,11 +301,13 @@ class _PendingServicePageState extends State<PendingServicePage> {
                     suffixIcon: IconButton(
                       icon: Icon(Icons.camera_alt),
                       onPressed: () async {
+                        // uploadbill.pickImage(ImageSource.camera);
                         openCamera();
                       },
                     ),
                   ),
                 ),
+               
               ],
             ),
             actions: <Widget>[
@@ -275,12 +318,25 @@ class _PendingServicePageState extends State<PendingServicePage> {
                 child: Text("Back"),
               ),
               TextButton(
-                onPressed: () {
-                  _getLocationAndAddress();
+                onPressed: () async {
+                  datas = {
+                    "firebase_id": Firebase_Id,
+                    "service_id": 'Service $n',
+                    "geolocation":
+                        addressResult ?? "Address Not Found",
+                    "travel_mode": selectedTravelMode,
+                    "date_time": currentTime.toString(),
+                    "amount": con,
+                    'image': '',
+                  };
+                  getLocationAndAddress();
+                  await PostData().postEndData(datas);
                   currentTime;
                   print(currentTime.toString());
                   Navigator.of(context).pop();
                   setState(() {
+                    con=_controller.toString();
+                    n++;
                     journeyStarted =
                         false; // Journey has ended, enable "Start" button
                   });
@@ -297,8 +353,8 @@ class _PendingServicePageState extends State<PendingServicePage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Journey not started"),
-            content: Text("Please start the journey before ending it."),
+            title: const Text("Journey not started"),
+            content: const Text("Please start the journey before ending it."),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
@@ -313,12 +369,13 @@ class _PendingServicePageState extends State<PendingServicePage> {
     }
   }
 
-    getusername_and_number() async {
+  getusername_and_number() async {
     final prefs = await SharedPreferences.getInstance();
     name = prefs.getString('Name');
     number = prefs.getString('Mobile');
   }
-@override
+
+  @override
   void initState() {
     super.initState();
     getusername_and_number();
@@ -333,7 +390,6 @@ class _PendingServicePageState extends State<PendingServicePage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return FutureBuilder<List<Autogenerated>>(
-      
         future: fetchAlbum(), // Provide the correct firebaseId
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -386,7 +442,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                   name??"User Name",
+                                    name ?? "User Name",
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 16,
@@ -394,7 +450,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                     ),
                                   ),
                                   Text(
-                                  number??"NO Number",
+                                    number ?? "NO Number",
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 16,

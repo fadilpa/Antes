@@ -1,11 +1,8 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:mentegoz_technologies/homepage.dart';
-import 'package:mentegoz_technologies/providerclass.dart';
+import 'package:mentegoz_technologies/request_location_permissions.dart';
 import 'dart:math' as math;
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'login_functions.dart'; 
 
 // ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
@@ -15,122 +12,14 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage> { 
+  ReqLocation reqlocation = ReqLocation();
   LocationPermission? permission;
 
   @override
   void initState() {
     super.initState();
-    _requestLocationPermission();
-  }
-
-  Future<void> _requestLocationPermission() async {
-    LocationPermission permissionResult;
-    try {
-      permissionResult = await Geolocator.requestPermission();
-      setState(() {
-        permission = permissionResult;
-      });
-    } catch (e) {
-      // Handle any errors related to location permission
-      print("Error requesting location permission: $e");
-    }
-  }
-
-  final TextEditingController emailController = TextEditingController();
-
-  final TextEditingController passwordController = TextEditingController();
-
-  // final AuthService _authService = AuthService();
-  void _showWrongPasswordAlert(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Wrong Password'),
-          content:
-              Text('The provided credentials are incorrect. Please try again.'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the alert
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> _login(BuildContext context) async {
-    final String apiUrl = 'https://antes.meduco.in/api/applogin';
-    final String email = emailController.text;
-    final String password = passwordController.text;
-
-    try {
-      final dio = Dio();
-      // final response = await dio.post(
-      //   apiUrl,
-      final options = Options(
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-        },
-      );
-
-      // Define the request data (body)
-      final data = {
-        'email': email,
-        'password': password,
-      };
-
-      final response = await dio.post(apiUrl, data: data, options: options);
-
-      if (response.statusCode == 200) {
-        final data = response.data;
-
-        if (data is List) {
-          for (var userData in data) {
-            final status = userData['data'][0]['status'];
-
-            if (status == 'pending') {
-              final firebaseId = data[0]["data"][0]["firebase_id"].toString();
-              final userName = data[0]["data"][0]["name"].toString();
-              final mobileNumber = data[0]["data"][0]["mobile"].toString();
-              print(firebaseId);
-              final firebaseIdProvider =
-                  Provider.of<FirebaseIdProvider>(context, listen: false);
-              firebaseIdProvider.setFirebaseId(firebaseId);
-              final nameProvider =
-                  Provider.of<NameProvider>(context, listen: false);
-              nameProvider.setuserName(userName);
-              final mobileProvider =
-                  Provider.of<MobileProvider>(context, listen: false);
-              mobileProvider.setmobileNumber(mobileNumber);
-              final prefs = await SharedPreferences.getInstance();
-              prefs.setBool('isLoggedIn', true);
-              prefs.setString('Firebase_Id', firebaseId);
-              prefs.setString('Name', userName);
-              prefs.setString('Mobile', mobileNumber);
-              
-              // print(userName);
-              // print(mobileNumber);         
-                   Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => HomePage()));
-              emailController.clear();
-              passwordController.clear();
-              return;
-            }
-          }
-          _showWrongPasswordAlert(context);
-        }
-      } else {
-        _showWrongPasswordAlert(context);
-      }
-    } catch (e) {
-      print('Error: $e');
-      _showWrongPasswordAlert(context);
-    }
+   reqlocation.requestLocationPermission();
   }
 
   @override
@@ -302,14 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                             width: 200,
                             child: ElevatedButton(
                               onPressed: () {
-                                _login(context);
-
-                                // if (_formKey.currentState!.validate()) {
-                                //   ScaffoldMessenger.of(context).showSnackBar(
-                                //     const SnackBar(
-                                //         content: Text('Processing Data')),
-                                //   );
-                                // }
+                               login(context);
                               },
                               style: ElevatedButton.styleFrom(
                                 elevation: 10,
