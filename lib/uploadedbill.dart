@@ -4,8 +4,12 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:mentegoz_technologies/custom_button.dart';
+import 'package:mentegoz_technologies/pending_service_page.dart';
+import 'package:mentegoz_technologies/start_journey_function.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+    List<String> category_list = <String>['Food'];
+      List<String> option_list = <String>['Break Fast','Lunch','Dinner'];
 class UpLoadBill extends StatefulWidget {
   const UpLoadBill({Key? key}) : super(key: key);
 
@@ -14,6 +18,10 @@ class UpLoadBill extends StatefulWidget {
 }
 
 class UpLoadBillState extends State<UpLoadBill> {
+   String dropdownValue = category_list.first;
+   String Option_value=option_list.first;
+TextEditingController Description_Controller=TextEditingController();
+TextEditingController  Amount_Controller=TextEditingController();
   File? _selectedImage;
   String? name;
   String? number;
@@ -28,7 +36,6 @@ class UpLoadBillState extends State<UpLoadBill> {
     setState(() {
       _selectedImage = File(pickedImage.path);
     });
-
     // Check the size of the selected image
     final imageSizeInBytes = _selectedImage!.lengthSync();
     final double imageSizeInMb = imageSizeInBytes / (1024 * 1024);
@@ -80,9 +87,9 @@ class UpLoadBillState extends State<UpLoadBill> {
           body: {
             "firebase_id": "syuxKE42GTXQaZaZBdoUBwgTAfi1",
             "service_id": 'Service 1',
-            "geolocation": 'location',
+            "geolocation": addressResult,
             "travel_mode": '56eesdtry',
-            "date_time": 'yetdf',
+            "date_time": currentTime,
             'image': MultipartFile.fromFile(_selectedImage as String,
                 filename: 'image'),
             // base64Encode(_selectedImage!
@@ -102,6 +109,63 @@ class UpLoadBillState extends State<UpLoadBill> {
         // Handle exceptions or network errors
         print('Error sending image to API: $error');
       }
+    }
+  }
+
+  File? _image;
+  final _picker = ImagePicker();
+  // Implementing the image picker
+  Future<void> _openImagePicker() async {
+    final XFile? pickedImage =
+        await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      final imageBytes = await pickedImage.readAsBytes();
+      setState(() {
+        _image = File(pickedImage.path);
+      });
+    }
+  }
+
+  final dio = Dio();
+
+  String? serviceCount;
+
+  Future Upload(
+    serviceCount,
+    filepath,
+    description,
+    amount
+  ) async {
+    // print(caption + title + filepath);
+    print('aaaaaaaaaaaaaaaaaaaaa');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final firebase_id = prefs.getString('Firebase_Id');
+    final formData = FormData.fromMap({
+      "firebase_id": firebase_id,
+      "service_id": "Serive $serviceCount",
+      "geolocation": addressResult,
+      "category": dropdownValue,
+      "option": Option_value,
+      "description":description ,
+      "date_time": currentTime.toString(),
+      "amount": amount,
+      'image': await MultipartFile.fromFile(filepath, filename: 'image'),
+    });
+    final response = await dio.post(
+      'https://antes.meduco.in/api/upload_bill',
+      data: formData,
+    );
+    print(response.statusCode);
+
+    if (response.statusCode == 200) {
+      // Navigator.pop(context);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Upload Succesful')));
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Check Your Internet')));
+      throw Exception();
+      // ignore: prefer_const_constructors
     }
   }
 
@@ -190,9 +254,9 @@ class UpLoadBillState extends State<UpLoadBill> {
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                SizedBox(
-                  height: screenHeight / 7,
-                ),
+                // SizedBox(
+                //   height: screenHeight / ,
+                // ),
                 Container(
                   height: 50,
                   width: 100,
@@ -204,64 +268,118 @@ class UpLoadBillState extends State<UpLoadBill> {
                       Container(
                         width: 100,
                         height: 50,
-                        color: Colors.red,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Food"),
-                            DropdownButton<String>(
-                              items: <String>['Food'].map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              onChanged: (_) {},
-                            )
-                          ],
-                        ),
+                        color: Colors.white60,
+                        child: DropdownButton<String>(
+      value: dropdownValue,
+      // icon: const Icon(Icons.arrow_downward),
+      elevation: 16,
+      style: const TextStyle(color: Colors.black),
+      // underline: Container(
+      //   height: 2,
+      //   color: Colors.deepPurpleAccent,
+      // ),
+      onChanged: (String? value) {
+        // This is called when the user selects an item.
+        setState(() {
+          dropdownValue = value!;
+        });
+      },
+      items: category_list.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    ),
                       ),
                     ],
                   ),
                 ),
+                
                 SizedBox(
                   height: 15,
                 ),
-                Container(
-                  height: 50,
-                  width: 100,
-                  color: Colors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        width: 100,
-                        height: 50,
-                        color: Colors.amber,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Select"),
-                            DropdownButton<String>(
-                              items: <String>['Food'].map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              onChanged: (_) {},
-                            )
-                          ],
-                        ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text("Options"),
+                    Container(
+                      height: 50,
+                      width: 100,
+                      color: Colors.white38,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 100,
+                            color: Colors.white60,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                // Text("Select"),
+                               DropdownButton<String>(
+      value: Option_value,
+     // icon: const Icon(Icons.arrow_downward),
+      elevation: 16,
+      // style: const TextStyle(color: Colors.deepPurple),
+      // underline: Container(
+      //   height: 2,
+      //   color: Colors.deepPurpleAccent,
+      // ),
+      onChanged: (String? value) {
+        // This is called when the user selects an item.
+        setState(() {
+          Option_value = value!;
+        });
+      },
+      items: option_list.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                Container(
-                  width: 200,
-                  height: 50,
-                  color: Colors.amber,
-                )
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text("Amount"),
+                    SizedBox(
+                      height: 50,
+                      width: 200,
+                      child: TextField(
+                           controller: Amount_Controller,
+                          decoration: InputDecoration(
+                        labelText: "Enter Amount",
+                      )),
+                    ),
+                  ],
+                ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text("Description"),
+                    SizedBox(
+                      height: 200,
+                      width: 200,
+                      child: TextField(
+
+                          controller: Description_Controller,
+                          decoration: InputDecoration(
+                        labelText: "Enter Description",
+                      )),
+                    ),
+                  ],
+                ),
                 // Text("Amount"),
                 //  Container(
                 //   height: 50,
@@ -299,7 +417,7 @@ class UpLoadBillState extends State<UpLoadBill> {
                 // SizedBox(
                 //   height: screenHeight / 3.5,
                 // ),
-                ,
+
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -348,8 +466,14 @@ class UpLoadBillState extends State<UpLoadBill> {
                             ),
                           ),
                         ),
+                     
                       ],
                     ),
+                       CustmButton(
+                            butoontext: 'Upload',
+                            buttonaction: () {
+                              Upload(serviceCount, _image!.path,Description_Controller.text,Amount_Controller.text);
+                            }),
                   ],
                 ),
               ],

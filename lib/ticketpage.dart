@@ -1,9 +1,14 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mentegoz_technologies/pending_service_page.dart';
+import 'package:mentegoz_technologies/start_journey_function.dart';
 import 'package:shared_preferences/shared_preferences.dart';
- File ? image;
+
+File? image;
+
 class RaisedTicket extends StatefulWidget {
   const RaisedTicket({super.key});
 
@@ -12,8 +17,58 @@ class RaisedTicket extends StatefulWidget {
 }
 
 class _RaisedTicketState extends State<RaisedTicket> {
-     String? name;
- String? number;
+  File? _image;
+  final _picker = ImagePicker();
+  // Implementing the image picker
+  Future<void> _openImagePicker() async {
+    final XFile? pickedImage =
+        await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      final imageBytes = await pickedImage.readAsBytes();
+      setState(() {
+        _image = File(pickedImage.path);
+      });
+    }
+  }
+
+  final dio = Dio();
+  String? serviceCount;
+  Future Upload(
+    serviceCount,
+    filepath,
+  ) async {
+    // print(caption + title + filepath);
+    print('aaaaaaaaaaaaaaaaaaaaa');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final firebaseId = prefs.getString('Firebase_id');
+    final formData = FormData.fromMap({
+      "firebase_id": firebaseId,
+      "service_id": "Serive $serviceCount",
+      "geolocation": addressResult,
+      "subject": '',
+      "description": '',
+      "date_time": currentTime.toString(),
+      'image': await MultipartFile.fromFile(filepath, filename: 'image'),
+    });
+    final response = await dio.post(
+      'https://antes.meduco.in/api/ticket_submit',
+      data: formData,
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      // Navigator.pop(context);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Upload Succesful')));
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Check Your Internet')));
+      throw Exception();
+      // ignore: prefer_const_constructors
+    }
+  }
+
+  String? name;
+  String? number;
 
   bool isTicketSubmitted = false; // Add a flag to track ticket submission
   Future<void> _showImageSourceDialog(BuildContext context) async {
@@ -31,9 +86,9 @@ class _RaisedTicketState extends State<RaisedTicket> {
                 );
                 // Handle the selected image from the camera
                 if (pickedImage != null) {
-                  final imagebytes= await pickedImage.readAsBytes();
+                  final imagebytes = await pickedImage.readAsBytes();
                   setState(() {
-                    image =File(pickedImage.path);
+                    image = File(pickedImage.path);
                   });
                   // Process the image here
 
@@ -53,7 +108,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                 );
                 // Handle the selected image from the gallery
                 if (pickedImage != null) {
-                  final imagebytes=await pickedImage.readAsBytes();
+                  final imagebytes = await pickedImage.readAsBytes();
 
                   // Process the image here
                 }
@@ -66,12 +121,13 @@ class _RaisedTicketState extends State<RaisedTicket> {
     );
   }
 
-    getusername_and_number() async {
+  getusername_and_number() async {
     final prefs = await SharedPreferences.getInstance();
     name = prefs.getString('Name');
     number = prefs.getString('Mobile');
   }
-@override
+
+  @override
   void initState() {
     super.initState();
     getusername_and_number();
@@ -120,7 +176,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                           name??"User Name",
+                          name ?? "User Name",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
@@ -128,7 +184,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                           ),
                         ),
                         Text(
-                          number??"NO Number",
+                          number ?? "NO Number",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
@@ -147,14 +203,12 @@ class _RaisedTicketState extends State<RaisedTicket> {
               ],
             ),
             SliverToBoxAdapter(
-              
               child: Center(
-
                 child: Padding(
-                  padding:  EdgeInsets.only(top: screenHeight/10),
+                  padding: EdgeInsets.only(top: screenHeight / 10),
                   child: Container(
-                    height: screenHeight/2,
-                    width: screenWidth/1.2,
+                    height: screenHeight / 2,
+                    width: screenWidth / 1.2,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(15),
@@ -169,10 +223,10 @@ class _RaisedTicketState extends State<RaisedTicket> {
                     child: Column(
                       children: [
                         Container(
-                          height: screenHeight/6.7,
-                          width: screenWidth/1.2,
+                          height: screenHeight / 6.7,
+                          width: screenWidth / 1.2,
                           decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 60,180,229),
+                            color: Color.fromARGB(255, 60, 180, 229),
                             borderRadius: BorderRadius.only(
                               topRight: Radius.circular(15),
                               topLeft: Radius.circular(15),
@@ -181,10 +235,10 @@ class _RaisedTicketState extends State<RaisedTicket> {
                           child: Column(
                             children: [
                               Container(
-                                height: screenHeight/6.7,
-                                width: screenWidth/1.2,
+                                height: screenHeight / 6.7,
+                                width: screenWidth / 1.2,
                                 decoration: const BoxDecoration(
-                                  color: Color.fromARGB(255, 60,180,229),
+                                  color: Color.fromARGB(255, 60, 180, 229),
                                   borderRadius: BorderRadius.only(
                                     topRight: Radius.circular(15),
                                     topLeft: Radius.circular(15),
@@ -221,19 +275,20 @@ class _RaisedTicketState extends State<RaisedTicket> {
                         ),
                         Column(
                           children: [
-                            SizedBox(height: screenHeight/20),
+                            SizedBox(height: screenHeight / 20),
                             SizedBox(
-                              width: screenWidth/1.6,
-                              height: screenHeight/6.7,
+                              width: screenWidth / 1.6,
+                              height: screenHeight / 6.7,
                               child: Card(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                color: const Color.fromARGB(255, 210,254,166),
+                                color: const Color.fromARGB(255, 210, 254, 166),
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: const [
@@ -250,10 +305,11 @@ class _RaisedTicketState extends State<RaisedTicket> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: screenHeight/40),
+                            SizedBox(height: screenHeight / 40),
                             CircleAvatar(
-                              radius: screenWidth/13.5,
-                              backgroundColor: Color.fromARGB(255,210,254,166),
+                              radius: screenWidth / 13.5,
+                              backgroundColor:
+                                  Color.fromARGB(255, 210, 254, 166),
                               child: Icon(
                                 Icons.done,
                                 size: 28,
@@ -338,10 +394,10 @@ class _RaisedTicketState extends State<RaisedTicket> {
             SliverToBoxAdapter(
               child: Center(
                 child: Padding(
-                  padding: EdgeInsets.only(top: screenHeight/10),
+                  padding: EdgeInsets.only(top: screenHeight / 10),
                   child: Container(
-                    height: screenHeight /1.9, // Adjusted height
-                    width: screenWidth /1.2, // Adjusted width
+                    height: screenHeight / 1.9, // Adjusted height
+                    width: screenWidth / 1.2, // Adjusted width
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(15),
@@ -357,10 +413,10 @@ class _RaisedTicketState extends State<RaisedTicket> {
                       children: [
                         // SizedBox(height: screenWidth*0.1,),
                         Container(
-                          height: screenHeight /8, // Adjusted height
-                          width: screenWidth/1.2,
+                          height: screenHeight / 8, // Adjusted height
+                          width: screenWidth / 1.2,
                           decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 60,180,229),
+                            color: Color.fromARGB(255, 60, 180, 229),
                             borderRadius: BorderRadius.only(
                               topRight: Radius.circular(15),
                               topLeft: Radius.circular(15),
@@ -407,8 +463,9 @@ class _RaisedTicketState extends State<RaisedTicket> {
                                 },
                                 child: Container(
                                   alignment: Alignment.centerLeft,
-                                  height: screenHeight/12.5, // Adjusted height
-                                  width: screenWidth/1.3,
+                                  height:
+                                      screenHeight / 12.5, // Adjusted height
+                                  width: screenWidth / 1.3,
                                   decoration: BoxDecoration(
                                     border: Border(
                                       bottom: BorderSide(
@@ -416,8 +473,8 @@ class _RaisedTicketState extends State<RaisedTicket> {
                                       ),
                                     ),
                                   ),
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
                                   child: Row(
                                     children: [
                                       Text(
@@ -438,19 +495,20 @@ class _RaisedTicketState extends State<RaisedTicket> {
                                 ),
                               ),
                               SizedBox(
-                                height: screenHeight/20, // Adjusted height
+                                height: screenHeight / 20, // Adjusted height
                               ),
                               SizedBox(
-                                height: screenHeight /18, // Adjusted height
-                                width: screenWidth /3.5, // Adjusted width
+                                height: screenHeight / 18, // Adjusted height
+                                width: screenWidth / 3.5, // Adjusted width
                                 child: ElevatedButton(
                                   onPressed: () {
-                                     setState(() {
-                    isTicketSubmitted = true;
-                  });
+                                    setState(() {
+                                      isTicketSubmitted = true;
+                                    });
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Color.fromARGB(255, 60,180,229),
+                                    backgroundColor:
+                                        Color.fromARGB(255, 60, 180, 229),
                                     elevation: 10,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(30.0),

@@ -171,6 +171,61 @@ class _PendingServicePageState extends State<PendingServicePage> {
   //   }
   //   return "${picked?.format(context)}";
   // }
+File? _image;
+  // Implementing the image picker
+  Future<void> _openImagePicker() async {
+    final XFile? pickedImage =
+        await _picker.pickImage(source: ImageSource.camera);
+    if (pickedImage != null) {
+      final imageBytes = await pickedImage.readAsBytes();
+      setState(() {
+        _image = File(pickedImage.path);
+      });
+    }
+  }
+  final dio = Dio();
+   Future Upload(
+  Firebase_Id,
+  n,
+    filepath,
+  ) async {
+
+    print('aaaaaaaaaaaaaaaaaaaaa');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final retrieve = prefs.getString('access_token');
+    final formData = FormData.fromMap({
+      "firebase_id": Firebase_Id,
+                    "service_id": 'Service $n',
+                    "geolocation":
+                        addressResult ?? "Address Not Found",
+                    "travel_mode": selectedTravelMode,
+                    "date_time": currentTime.toString(),
+                    "amount": con,
+      'image': await MultipartFile.fromFile(filepath, filename: 'image'),
+    });
+    final response = await dio.post(
+      'https://antes.meduco.in/api/end_service_journey',
+      data: formData,
+      options: Options(headers: {'Authorization': 'Bearer $retrieve'}),
+      onSendProgress: (int sent, int total) {
+        String percentage = (sent / total * 100).toStringAsFixed(2);
+     
+      },
+    );
+    print(response.statusCode);
+    print('yyyyyyyyyyyyyy');
+    if (response.statusCode == 200) {
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Upload Succesful')));
+    } else {
+   
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Check Your Internet')));
+      throw Exception();
+      // ignore: prefer_const_constructors
+    }
+  }
 
   Future<void> showStartDialog(BuildContext context) async {
     if (journeyStarted) {
@@ -302,7 +357,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
                       icon: Icon(Icons.camera_alt),
                       onPressed: () async {
                         // uploadbill.pickImage(ImageSource.camera);
-                        openCamera();
+                      _openImagePicker();
                       },
                     ),
                   ),
@@ -319,18 +374,8 @@ class _PendingServicePageState extends State<PendingServicePage> {
               ),
               TextButton(
                 onPressed: () async {
-                  datas = {
-                    "firebase_id": Firebase_Id,
-                    "service_id": 'Service $n',
-                    "geolocation":
-                        addressResult ?? "Address Not Found",
-                    "travel_mode": selectedTravelMode,
-                    "date_time": currentTime.toString(),
-                    "amount": con,
-                    'image': '',
-                  };
-                  getLocationAndAddress();
-                  await PostData().postEndData(datas);
+                     getLocationAndAddress();
+                  // await PostData().postEndData(datas);
                   currentTime;
                   print(currentTime.toString());
                   Navigator.of(context).pop();
@@ -340,6 +385,19 @@ class _PendingServicePageState extends State<PendingServicePage> {
                     journeyStarted =
                         false; // Journey has ended, enable "Start" button
                   });
+                  Upload(  Firebase_Id,
+  n,_image!.path);
+                  // datas = {
+                  //   "firebase_id": Firebase_Id,
+                  //   "service_id": 'Service $n',
+                  //   "geolocation":
+                  //       addressResult ?? "Address Not Found",
+                  //   "travel_mode": selectedTravelMode,
+                  //   "date_time": currentTime.toString(),
+                  //   "amount": con,
+                  //   'image': '',
+                  // };
+               
                 },
                 child: Text("End"),
               ),
