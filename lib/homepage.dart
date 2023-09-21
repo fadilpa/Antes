@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mentegoz_technologies/Modal/User_Model.dart';
 import 'package:mentegoz_technologies/pending_page.dart';
-import 'package:mentegoz_technologies/providerclass.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'completed_page.dart';
 
@@ -29,14 +27,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     print(name);
     print(number);
   }
-var username;
+
   @override
   void initState() {
-     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      username= context.read()<NameProvider>().userName;
-    });
-     
-       print(username);
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
     setState(() {
@@ -48,7 +41,6 @@ var username;
   @override
   void dispose() {
     _tabController.dispose();
-  
     super.dispose();
   }
 
@@ -69,7 +61,7 @@ var username;
         break;
     }
   }
-
+User_Lgin_Data login_data=User_Lgin_Data();
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -144,7 +136,7 @@ var username;
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                  name??  "User Name",
+                            name ?? "User Name",
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
