@@ -50,8 +50,6 @@ class _PendingServicePageState extends State<PendingServicePage> {
   // StartJourneyState startjourney = StartJourneyState();
   // EndJourneyState endjourney = EndJourneyState();
   // LocateUserAddress locateuser = LocateUserAddress();
-  TextEditingController _controller =TextEditingController();
-  String con ="";
 
   String? name;
   String? number;
@@ -171,7 +169,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
   //   }
   //   return "${picked?.format(context)}";
   // }
-File? _image;
+  File? _image;
   // Implementing the image picker
   Future<void> _openImagePicker() async {
     final XFile? pickedImage =
@@ -183,43 +181,78 @@ File? _image;
       });
     }
   }
+
+  TextEditingController AmountController = TextEditingController();
+
   final dio = Dio();
-   Future Upload(
-  Firebase_Id,
-  n,
+  Future UploadEndData(
+    Firebase_Id,
+    serviceCount,
+    Amount,
     filepath,
   ) async {
-
     print('aaaaaaaaaaaaaaaaaaaaa');
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final retrieve = prefs.getString('access_token');
+    final firebaseId = prefs.getString('Firebase_Id');
     final formData = FormData.fromMap({
-      "firebase_id": Firebase_Id,
-                    "service_id": 'Service $n',
-                    "geolocation":
-                        addressResult ?? "Address Not Found",
-                    "travel_mode": selectedTravelMode,
-                    "date_time": currentTime.toString(),
-                    "amount": con,
+      "firebase_id": firebaseId,
+      "service_id": 'Service $serviceCount',
+      "geolocation": addressResult ?? "Address Not Found",
+      "travel_mode": selectedTravelMode,
+      "date_time": currentTime.toString(),
+      "amount": Amount,
       'image': await MultipartFile.fromFile(filepath, filename: 'image'),
     });
     final response = await dio.post(
       'https://antes.meduco.in/api/end_service_journey',
       data: formData,
-      options: Options(headers: {'Authorization': 'Bearer $retrieve'}),
+      // options: Options(headers: {'Authorization': 'Bearer $firebsaeId'}),
+      // onSendProgress: (int sent, int total) {
+      //   String percentage = (sent / total * 100).toStringAsFixed(2);
+      // },
+    );
+    print(response.statusCode);
+    // print('yyyyyyyyyyyyyy');
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Upload Succesful')));
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Check Your Internet')));
+      throw Exception();
+      // ignore: prefer_const_constructors
+    }
+  }
+
+  Future UploadStartData(
+    Firebase_Id,
+    serviceCount,
+    filepath,
+  ) async {
+    print('aaaaaaaaaaaaaaaaaaaaa');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final firebaseId = prefs.getString('Firebase_Id');
+    final formData = FormData.fromMap({
+      "firebase_id": firebaseId,
+      "service_id": 'Service $serviceCount',
+      "geolocation": addressResult ?? "Address Not Found",
+      "travel_mode": selectedTravelMode,
+      "date_time": currentTime.toString(),
+    });
+    final response = await dio.post(
+      'https://antes.meduco.in/api/start_service_journey',
+      data: formData,
+      options: Options(headers: {'Authorization': 'Bearer $firebaseId'}),
       onSendProgress: (int sent, int total) {
         String percentage = (sent / total * 100).toStringAsFixed(2);
-     
       },
     );
     print(response.statusCode);
     print('yyyyyyyyyyyyyy');
     if (response.statusCode == 200) {
-
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Upload Succesful')));
     } else {
-   
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Check Your Internet')));
       throw Exception();
@@ -306,13 +339,13 @@ File? _image;
                 data = {
                   "firebase_id": Firebase_Id,
                   "service_id": 'Service $n',
-                  "geolocation": addressResult??"Address Not Found ",
+                  "geolocation": addressResult ?? "Address Not Found ",
                   "travel_mode": selectedTravelMode,
                   "date_time": currentTime,
                 };
                 print(data);
 
-                await PostData().postData(data, selectedTravelMode);
+                // await PostData().postData(data, selectedTravelMode);
                 setState(() {
                   n++;
                   journeyStarted = true;
@@ -333,7 +366,7 @@ File? _image;
     final prefs = await SharedPreferences.getInstance();
 // ignore: unused_local_variable
     String? Firebase_Id = prefs.getString('Firebase_Id');
-    int n = 1;
+    int serbiceCount = 1;
     if (journeyStarted) {
       await showDialog(
         context: context,
@@ -344,11 +377,10 @@ File? _image;
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextField(
-                  controller: _controller,
+                  controller: AmountController,
                   decoration: InputDecoration(
                     labelText: "Enter Amount",
                   ),
-
                 ),
                 TextField(
                   decoration: InputDecoration(
@@ -357,12 +389,11 @@ File? _image;
                       icon: Icon(Icons.camera_alt),
                       onPressed: () async {
                         // uploadbill.pickImage(ImageSource.camera);
-                      _openImagePicker();
+                        _openImagePicker();
                       },
                     ),
                   ),
                 ),
-               
               ],
             ),
             actions: <Widget>[
@@ -374,19 +405,18 @@ File? _image;
               ),
               TextButton(
                 onPressed: () async {
-                     getLocationAndAddress();
+                  getLocationAndAddress();
                   // await PostData().postEndData(datas);
                   currentTime;
                   print(currentTime.toString());
                   Navigator.of(context).pop();
                   setState(() {
-                    con=_controller.toString();
-                    n++;
+                    serbiceCount++;
                     journeyStarted =
                         false; // Journey has ended, enable "Start" button
                   });
-                  Upload(  Firebase_Id,
-  n,_image!.path);
+                  UploadEndData(Firebase_Id, serbiceCount, _image!.path,
+                      AmountController.text);
                   // datas = {
                   //   "firebase_id": Firebase_Id,
                   //   "service_id": 'Service $n',
@@ -397,7 +427,6 @@ File? _image;
                   //   "amount": con,
                   //   'image': '',
                   // };
-               
                 },
                 child: Text("End"),
               ),
@@ -478,7 +507,7 @@ File? _image;
                             "Services",
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 16.0,
+                              fontSize: 15.0,
                             ),
                           ),
                         ),
@@ -503,22 +532,22 @@ File? _image;
                                     name ?? "User Name",
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 16,
+                                      fontSize: 13,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                   Text(
-                                    number ?? "NO Number",
+                                    number ?? "Emp_no",
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 16,
+                                      fontSize: 13,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                 ],
                               ),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.02,
+                                width: MediaQuery.of(context).size.width /30,
                               ),
                               Padding(
                                 padding:
@@ -681,6 +710,7 @@ File? _image;
                                 Row(
                                   children: [
                                     CustmButton(
+
                                         butoontext: 'Start Journey',
                                         buttonaction: () {
                                           showStartDialog(context);
@@ -732,7 +762,7 @@ File? _image;
             );
           }
           return Container(
-            color: Colors.amber,
+            color: Colors.red,
           );
         });
   }

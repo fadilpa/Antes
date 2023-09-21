@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mentegoz_technologies/Modal/User_Model.dart';
+import 'package:mentegoz_technologies/logoutpage.dart';
 import 'package:mentegoz_technologies/pending_page.dart';
+import 'package:mentegoz_technologies/recordpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'completed_page.dart';
 
@@ -22,10 +24,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   getusername_and_number() async {
     final prefs = await SharedPreferences.getInstance();
-    name = prefs.getString('Name');
-    number = prefs.getString('Mobile');
-    print(name);
-    print(number);
+    setState(() {
+      name = prefs.getString('Name');
+      number = prefs.getString('Mobile');
+    });
   }
 
   @override
@@ -44,24 +46,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  void _onMenuItemSelected(int index) {
-    // Handle menu item selection
-    switch (index) {
-      case 0:
-        // Handle "Tickets" menu item
-        break;
-      case 1:
-        // Handle "Logout" menu item
-        break;
-      case 2:
-        // Handle "Settings" menu item
-        break;
-      case 3:
-        // Handle "Bills Uploaded" menu item
-        break;
-    }
-  }
-User_Lgin_Data login_data=User_Lgin_Data();
+  // void _onMenuItemSelected(int index) {
+  //   // Handle menu item selection
+  //   switch (index) {
+  //     // case 0:
+  //     //   // Handle "Tickets" menu item
+  //     //   break
+  //   }
+  // }
+
+  User_Lgin_Data login_data = User_Lgin_Data();
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -88,9 +82,16 @@ User_Lgin_Data login_data=User_Lgin_Data();
               leading: Icon(Icons.logout),
               title: Text('Logout'),
               onTap: () {
-                // _logout(context);
-                // Close the drawer after handling the selection
+                logout(context);
                 Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.post_add_sharp),
+              title: Text('Tickets'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => TicketsPage()));
               },
             ),
           ],
@@ -114,7 +115,7 @@ User_Lgin_Data login_data=User_Lgin_Data();
                     "Services",
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 16.0,
+                      fontSize: 15.0,
                     ),
                   ),
                 ),
@@ -139,7 +140,7 @@ User_Lgin_Data login_data=User_Lgin_Data();
                             name ?? "User Name",
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 16,
+                              fontSize: 13,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -147,13 +148,13 @@ User_Lgin_Data login_data=User_Lgin_Data();
                             number ?? "Mobile Number",
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 16,
+                              fontSize: 13,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(width: screenWidth * 0.02),
+                      SizedBox(width: screenWidth / 30),
                       Padding(
                         padding: EdgeInsets.only(right: screenWidth / 30),
                         child: CircleAvatar(),
@@ -163,29 +164,34 @@ User_Lgin_Data login_data=User_Lgin_Data();
                 ],
               ),
               SliverPadding(
-                padding: EdgeInsets.only(top: screenHeight * 0.05),
+                padding: EdgeInsets.only(top: screenHeight/45),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate(
                     [
                       Container(
-                        height: screenHeight * 0.065,
+                        height: screenHeight / 13.5,
                         decoration: BoxDecoration(
                           color: Color.fromARGB(255, 233, 233, 233),
                           borderRadius: BorderRadius.circular(30),
                         ),
-                        child: TabBar(
-                          controller: _tabController,
-                          indicator: BoxDecoration(
-                            color: Color.fromARGB(255, 60, 180, 229),
-                            borderRadius: BorderRadius.circular(30),
+                        child: Padding(
+                          padding: EdgeInsets.all(screenWidth / 60),
+                          child: Container(
+                            child: TabBar(
+                              controller: _tabController,
+                              indicator: BoxDecoration(
+                                color: Color.fromARGB(255, 60, 180, 229),
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              labelColor: Colors.white,
+                              unselectedLabelColor:
+                                  Color.fromARGB(255, 60, 180, 229),
+                              tabs: const [
+                                Tab(text: "Pending"),
+                                Tab(text: "Completed"),
+                              ],
+                            ),
                           ),
-                          labelColor: Colors.white,
-                          unselectedLabelColor:
-                              Color.fromARGB(255, 60, 180, 229),
-                          tabs: const [
-                            Tab(text: "Pending"),
-                            Tab(text: "Completed"),
-                          ],
                         ),
                       ),
                     ],

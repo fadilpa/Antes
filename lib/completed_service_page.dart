@@ -377,7 +377,7 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                             "Services",
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 16.0,
+                              fontSize: 15.0,
                             ),
                           ),
                         ),
@@ -402,22 +402,22 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                                     name ?? "User Name",
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 16,
+                                      fontSize: 13,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                   Text(
-                                    number ?? "No Number",
+                                    number ?? "Emp_no",
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 16,
+                                      fontSize: 13,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                 ],
                               ),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.02,
+                                width: MediaQuery.of(context).size.width /30,
                               ),
                               Padding(
                                 padding:

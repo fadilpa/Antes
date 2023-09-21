@@ -31,22 +31,27 @@ class _RaisedTicketState extends State<RaisedTicket> {
     }
   }
 
+  TextEditingController SubjectController = TextEditingController();
+  TextEditingController DescriptionController = TextEditingController();
+
   final dio = Dio();
   String? serviceCount;
   Future Upload(
+    description,
+    subject,
     serviceCount,
     filepath,
   ) async {
     // print(caption + title + filepath);
     print('aaaaaaaaaaaaaaaaaaaaa');
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final firebaseId = prefs.getString('Firebase_id');
+    final firebaseId = prefs.getString('Firebase_Id');
     final formData = FormData.fromMap({
       "firebase_id": firebaseId,
       "service_id": "Serive $serviceCount",
       "geolocation": addressResult,
-      "subject": '',
-      "description": '',
+      "subject": subject,
+      "description": description,
       "date_time": currentTime.toString(),
       'image': await MultipartFile.fromFile(filepath, filename: 'image'),
     });
@@ -123,8 +128,10 @@ class _RaisedTicketState extends State<RaisedTicket> {
 
   getusername_and_number() async {
     final prefs = await SharedPreferences.getInstance();
-    name = prefs.getString('Name');
-    number = prefs.getString('Mobile');
+    setState(() {
+      name = prefs.getString('Name');
+      number = prefs.getString('Mobile');
+    });
   }
 
   @override
@@ -155,7 +162,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                   "Raise a Ticket",
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 16.0,
+                    fontSize: 15.0,
                   ),
                 ),
               ),
@@ -179,21 +186,21 @@ class _RaisedTicketState extends State<RaisedTicket> {
                           name ?? "User Name",
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 16,
+                            fontSize: 13,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         Text(
-                          number ?? "NO Number",
+                          number ?? "Emp_no",
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 16,
+                            fontSize: 13,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(width: screenWidth * 0.02),
+                    SizedBox(width: screenWidth /screenWidth/30),
                     Padding(
                       padding: EdgeInsets.only(right: screenWidth / 30),
                       child: CircleAvatar(),
@@ -293,11 +300,11 @@ class _RaisedTicketState extends State<RaisedTicket> {
                                         MainAxisAlignment.spaceEvenly,
                                     children: const [
                                       Text(
-                                        'Hello, Your Ticket accepted!',
+                                        'Hello!',
                                         style: TextStyle(fontSize: 15),
                                       ),
                                       Text(
-                                        'Lorem ipsum dolor sit\n amet cosecteur',
+                                        'Your Ticket accepted!',
                                         style: TextStyle(fontSize: 15),
                                       ),
                                     ],
@@ -365,7 +372,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Thomas',
+                          name ?? "User Name",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
@@ -373,7 +380,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                           ),
                         ),
                         Text(
-                          '123456',
+                          number ?? "Mobile Number",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
@@ -449,11 +456,13 @@ class _RaisedTicketState extends State<RaisedTicket> {
                           padding: const EdgeInsets.all(20.0),
                           child: Column(
                             children: [
-                              const TextField(
+                              TextField(
+                                controller: SubjectController,
                                 decoration:
                                     InputDecoration(hintText: '  Subject'),
                               ),
-                              const TextField(
+                              TextField(
+                                controller: DescriptionController,
                                 decoration:
                                     InputDecoration(hintText: '  Description'),
                               ),
@@ -502,6 +511,11 @@ class _RaisedTicketState extends State<RaisedTicket> {
                                 width: screenWidth / 3.5, // Adjusted width
                                 child: ElevatedButton(
                                   onPressed: () {
+                                    Upload(
+                                        DescriptionController.text,
+                                        SubjectController.text,
+                                        serviceCount,
+                                        _image!.path);
                                     setState(() {
                                       isTicketSubmitted = true;
                                     });

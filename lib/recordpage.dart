@@ -42,7 +42,7 @@ class _TicketsPageState extends State<TicketsPage> {
                 "Tickets",
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 16.0,
+                  fontSize: 15.0,
                 ),
               ),
             ),
@@ -66,21 +66,21 @@ class _TicketsPageState extends State<TicketsPage> {
                          name??"User Name",
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 16,
+                          fontSize: 13,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       Text(
-                        number??"NO Number",
+                        number??"Emp_no",
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 16,
+                          fontSize: 13,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(width: 10,),
+                  SizedBox(width: screenWidth/30,),
                   Padding(
                         padding:  EdgeInsets.only(right: screenWidth/30),
                         child: CircleAvatar(),

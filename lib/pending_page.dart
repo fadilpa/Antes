@@ -96,7 +96,7 @@ class _PendingPageState extends State<PendingPage> {
                               height: 10,
                             ),
                             Container(
-                              height: screenHeight / 5.2,
+                              height: screenHeight / 4.8,
                               width: screenWidth / 2.5,
                               decoration: BoxDecoration(
                                 color: Color.fromARGB(255, 60, 180, 229),

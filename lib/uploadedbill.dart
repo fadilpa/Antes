@@ -8,8 +8,10 @@ import 'package:mentegoz_technologies/custom_button.dart';
 import 'package:mentegoz_technologies/pending_service_page.dart';
 import 'package:mentegoz_technologies/start_journey_function.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-    List<String> category_list = <String>['Food'];
-      List<String> option_list = <String>['Break Fast','Lunch','Dinner'];
+
+List<String> category_list = <String>['Food'];
+List<String> option_list = <String>['Break Fast', 'Lunch', 'Dinner'];
+
 class UpLoadBill extends StatefulWidget {
   const UpLoadBill({Key? key}) : super(key: key);
 
@@ -18,10 +20,10 @@ class UpLoadBill extends StatefulWidget {
 }
 
 class UpLoadBillState extends State<UpLoadBill> {
-   String dropdownValue = category_list.first;
-   String Option_value=option_list.first;
-TextEditingController Description_Controller=TextEditingController();
-TextEditingController  Amount_Controller=TextEditingController();
+  String dropdownValue = category_list.first;
+  String Option_value = option_list.first;
+  TextEditingController Description_Controller = TextEditingController();
+  TextEditingController Amount_Controller = TextEditingController();
   File? _selectedImage;
   String? name;
   String? number;
@@ -130,12 +132,7 @@ TextEditingController  Amount_Controller=TextEditingController();
 
   String? serviceCount;
 
-  Future Upload(
-    serviceCount,
-    filepath,
-    description,
-    amount
-  ) async {
+  Future Upload(serviceCount, filepath, description, amount) async {
     // print(caption + title + filepath);
     print('aaaaaaaaaaaaaaaaaaaaa');
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -146,7 +143,7 @@ TextEditingController  Amount_Controller=TextEditingController();
       "geolocation": addressResult,
       "category": dropdownValue,
       "option": Option_value,
-      "description":description ,
+      "description": description,
       "date_time": currentTime.toString(),
       "amount": amount,
       'image': await MultipartFile.fromFile(filepath, filename: 'image'),
@@ -171,8 +168,10 @@ TextEditingController  Amount_Controller=TextEditingController();
 
   getusername_and_number() async {
     final prefs = await SharedPreferences.getInstance();
-    name = prefs.getString('Name');
+    setState(() {
+      name = prefs.getString('Name');
     number = prefs.getString('Mobile');
+    });
   }
 
   @override
@@ -202,7 +201,7 @@ TextEditingController  Amount_Controller=TextEditingController();
                 "Upload Bill",
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 16.0,
+                  fontSize: 15.0,
                 ),
               ),
             ),
@@ -226,22 +225,22 @@ TextEditingController  Amount_Controller=TextEditingController();
                         name ?? "User Name",
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 16,
+                          fontSize: 13,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       Text(
-                        number ?? "NO Number",
+                        number ?? "Emp_no",
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 16,
+                          fontSize: 13,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
                   ),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.02,
+                    width: MediaQuery.of(context).size.width /30,
                   ),
                   Padding(
                     padding: EdgeInsets.only(right: screenWidth / 30),
@@ -254,131 +253,159 @@ TextEditingController  Amount_Controller=TextEditingController();
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                // SizedBox(
-                //   height: screenHeight / ,
-                // ),
-                Container(
-                  height: 50,
-                  width: 100,
-                  color: Colors.white,
+                SizedBox(
+                  height: screenHeight / 13,
+                ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    const Text("Category   "),
+                    Container(
+                      width: screenWidth / 2,
+                      height: screenHeight / 15,
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.grey[200],
+                      ),
+                      child: Center(
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: dropdownValue,
+                            // icon: const Icon(Icons.arrow_downward),
+                            elevation: 16,
+                            style: const TextStyle(color: Colors.black),
+                            // underline: Container(
+                            //   height: 2,
+                            //   color: Colors.deepPurpleAccent,
+                            // ),
+                        
+                            onChanged: (String? value) {
+                              // This is called when the user selects an item.
+                              setState(() {
+                                dropdownValue = value!;
+                              });
+                            },
+                            items: category_list
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                SizedBox(
+                  height: 25,
+                ),
+                Center(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text("Category"),
-                      Container(
-                        width: 100,
-                        height: 50,
-                        color: Colors.white60,
-                        child: DropdownButton<String>(
-      value: dropdownValue,
-      // icon: const Icon(Icons.arrow_downward),
-      elevation: 16,
-      style: const TextStyle(color: Colors.black),
-      // underline: Container(
-      //   height: 2,
-      //   color: Colors.deepPurpleAccent,
-      // ),
-      onChanged: (String? value) {
-        // This is called when the user selects an item.
-        setState(() {
-          dropdownValue = value!;
-        });
-      },
-      items: category_list.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-    ),
+                      Text("Options    "),
+                      Center(
+                        child: Container(
+                          width: screenWidth / 2,
+                          height: screenHeight / 18,
+                          decoration: BoxDecoration(
+                            border: Border.all(),
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.grey[200],
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // Text("Select"),
+                              DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                                  value: Option_value,
+                                  // icon: const Icon(Icons.arrow_downward),
+                                  elevation: 16,
+                                  // style: const TextStyle(color: Colors.deepPurple),
+                                  // underline: Container(
+                                  //   height: 2,
+                                  //   color: Colors.deepPurpleAccent,
+                                  // ),
+                                  onChanged: (String? value) {
+                                    // This is called when the user selects an item.
+                                    setState(() {
+                                      Option_value = value!;
+                                    });
+                                  },
+                                  items: option_list
+                                      .map<DropdownMenuItem<String>>(
+                                          (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
-                
+                SizedBox(
+                  height: 10,
+                ),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text("Amount     "),
+                      SizedBox(
+                        height: 50,
+                        width: screenWidth / 2,
+                        child: Container(
+                          color: Colors.grey[200],
+                          child: TextField(
+                              controller: Amount_Controller,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                
+                                
+                                hintText: "Enter Amount",
+                              )),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 SizedBox(
                   height: 15,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text("Options"),
-                    Container(
-                      height: 50,
-                      width: 100,
-                      color: Colors.white38,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Container(
-                            width: 100,
-                            height: 100,
-                            color: Colors.white60,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                // Text("Select"),
-                               DropdownButton<String>(
-      value: Option_value,
-     // icon: const Icon(Icons.arrow_downward),
-      elevation: 16,
-      // style: const TextStyle(color: Colors.deepPurple),
-      // underline: Container(
-      //   height: 2,
-      //   color: Colors.deepPurpleAccent,
-      // ),
-      onChanged: (String? value) {
-        // This is called when the user selects an item.
-        setState(() {
-          Option_value = value!;
-        });
-      },
-      items: option_list.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-    ),
-                              ],
-                            ),
-                          ),
-                        ],
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text("Description"),
+                      SizedBox(
+                        height: 100,
+                        width: screenWidth / 2,
+                        child: Container(
+                          color: Colors.grey[200],
+                          child: TextField(
+                              maxLines: 3,
+                              controller: Description_Controller,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: "EnterDescription",
+                              )),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text("Amount"),
-                    SizedBox(
-                      height: 50,
-                      width: 200,
-                      child: TextField(
-                           controller: Amount_Controller,
-                          decoration: InputDecoration(
-                        labelText: "Enter Amount",
-                      )),
-                    ),
-                  ],
-                ),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text("Description"),
-                    SizedBox(
-                      height: 200,
-                      width: 200,
-                      child: TextField(
-
-                          controller: Description_Controller,
-                          decoration: InputDecoration(
-                        labelText: "Enter Description",
-                      )),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 // Text("Amount"),
                 //  Container(
@@ -421,8 +448,8 @@ TextEditingController  Amount_Controller=TextEditingController();
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(
-                      height: 10,
+                     SizedBox(
+                      height: screenHeight/15,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -432,8 +459,8 @@ TextEditingController  Amount_Controller=TextEditingController();
                             pickImage(ImageSource.camera);
                           },
                           child: Container(
-                            height: 70,
-                            width: 70,
+                            height: screenHeight/12,
+                            width: screenWidth/5.5,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Color.fromARGB(255, 60, 180, 229),
@@ -445,16 +472,17 @@ TextEditingController  Amount_Controller=TextEditingController();
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          width: 20,
-                        ),
+                          SizedBox(
+                      width: screenWidth/15,
+                    ),
+                        
                         GestureDetector(
                           onTap: () {
                             pickImage(ImageSource.gallery);
                           },
                           child: Container(
-                            height: 70,
-                            width: 70,
+                            height: screenHeight/12,
+                            width: screenWidth/5.5,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Color.fromARGB(255, 60, 180, 229),
@@ -466,14 +494,21 @@ TextEditingController  Amount_Controller=TextEditingController();
                             ),
                           ),
                         ),
-                     
                       ],
                     ),
-                       CustmButton(
-                            butoontext: 'Upload',
-                            buttonaction: () {
-                              Upload(serviceCount, _image!.path,Description_Controller.text,Amount_Controller.text);
-                            }),
+                    
+                      SizedBox(
+                      height: screenHeight/35,
+                    ),
+                    CustmButton(
+                        butoontext: 'Upload',
+                        buttonaction: () {
+                          Upload(
+                              serviceCount,
+                              _image!.path,
+                              Description_Controller.text,
+                              Amount_Controller.text);
+                        }),
                   ],
                 ),
               ],
