@@ -131,7 +131,7 @@ class _CompletedPageState extends State<CompletedPage> {
                                         style: TextStyle(color: Colors.black),
                                       ),
                                     ],
-                                  ),
+                                   ),
                                 ),
                               ),
                             ],

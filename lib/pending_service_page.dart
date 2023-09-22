@@ -30,7 +30,12 @@ class PendingServicePage extends StatefulWidget {
       this.enddate,
       this.servicename,
       this.endtime,
-      this.starttime});
+      this.starttime,
+      this.Catgory,
+      this.Landmark,
+      this.Email,
+      this.Address,
+      this.Phone});
 
   final int index;
   final clientName;
@@ -41,6 +46,11 @@ class PendingServicePage extends StatefulWidget {
   final servicename;
   final endtime;
   final starttime;
+  final Catgory;
+  final Landmark;
+  final Email;
+  final Address;
+  final Phone;
 
   @override
   State<PendingServicePage> createState() => _PendingServicePageState();
@@ -182,22 +192,26 @@ class _PendingServicePageState extends State<PendingServicePage> {
     }
   }
 
+  // ignore: non_constant_identifier_names, prefer_typing_uninitialized_variables
+  var  serviceCount, filepath, Amount;
   TextEditingController AmountController = TextEditingController();
 
   final dio = Dio();
   Future UploadEndData(
     Firebase_Id,
     serviceCount,
-    Amount,
     filepath,
   ) async {
     print('aaaaaaaaaaaaaaaaaaaaa');
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final firebaseId = prefs.getString('Firebase_Id');
+      final prefs = await SharedPreferences.getInstance();
+// ignore: unused_local_variable
+    String? Firebase_Id = prefs.getString('Firebase_Id');
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // final firebaseId = prefs.getString('Firebase_Id');
     final formData = FormData.fromMap({
-      "firebase_id": firebaseId,
+      "firebase_id": Firebase_Id,
       "service_id": 'Service $serviceCount',
-      "geolocation": addressResult ?? "Address Not Found",
+      "geolocation": addressResult,
       "travel_mode": selectedTravelMode,
       "date_time": currentTime.toString(),
       "amount": Amount,
@@ -224,31 +238,28 @@ class _PendingServicePageState extends State<PendingServicePage> {
     }
   }
 
-  Future UploadStartData(
-    Firebase_Id,
-    serviceCount,
-    filepath,
-  ) async {
+  Future UploadStartData() async {
     print('aaaaaaaaaaaaaaaaaaaaa');
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final firebaseId = prefs.getString('Firebase_Id');
+     final prefs = await SharedPreferences.getInstance();
+// ignore: unused_local_variable
+    String? Firebase_Id = prefs.getString('Firebase_Id');
     final formData = FormData.fromMap({
-      "firebase_id": firebaseId,
+      "firebase_id": Firebase_Id,
       "service_id": 'Service $serviceCount',
-      "geolocation": addressResult ?? "Address Not Found",
+      "geolocation": addressResult,
       "travel_mode": selectedTravelMode,
       "date_time": currentTime.toString(),
     });
     final response = await dio.post(
       'https://antes.meduco.in/api/start_service_journey',
       data: formData,
-      options: Options(headers: {'Authorization': 'Bearer $firebaseId'}),
-      onSendProgress: (int sent, int total) {
-        String percentage = (sent / total * 100).toStringAsFixed(2);
-      },
+      // options: Options(headers: {'Authorization': 'Bearer $firebaseId'}),
+      // onSendProgress: (int sent, int total) {
+      //   String percentage = (sent / total * 100).toStringAsFixed(2);
+      // },
     );
     print(response.statusCode);
-    print('yyyyyyyyyyyyyy');
+    // print('yyyyyyyyyyyyyy');
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Upload Succesful')));
@@ -333,19 +344,23 @@ class _PendingServicePageState extends State<PendingServicePage> {
             ),
             TextButton(
               onPressed: () async {
+                // UploadStartData(Firebase_Id,selectedTravelMode,_image!.path);
                 // Start a new journey here
                 getLocationAndAddress();
                 currentTime;
                 data = {
                   "firebase_id": Firebase_Id,
                   "service_id": 'Service $n',
-                  "geolocation": addressResult ?? "Address Not Found ",
+                  "geolocation": addressResult,
                   "travel_mode": selectedTravelMode,
                   "date_time": currentTime,
                 };
                 print(data);
 
-                // await PostData().postData(data, selectedTravelMode);
+                await PostData().postData(
+                  data,
+                  selectedTravelMode,
+                );
                 setState(() {
                   n++;
                   journeyStarted = true;
@@ -360,13 +375,43 @@ class _PendingServicePageState extends State<PendingServicePage> {
     );
   }
 
-  Future<void> endDialogBox(BuildContext context) async {
-    File? _selectedImage;
-    UpLoadBillState uploadbill = UpLoadBillState();
+  Future<void> showEndConfirmationDialog(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
 // ignore: unused_local_variable
     String? Firebase_Id = prefs.getString('Firebase_Id');
     int serbiceCount = 1;
+    // filepath;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("End Journey"),
+          content: Text("Are you sure you want to end the journey?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () async {
+                
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> endDialogBox(BuildContext context) async {
+      final prefs = await SharedPreferences.getInstance();
+// ignore: unused_local_variable
+    String? Firebase_Id = prefs.getString('Firebase_Id');
+    UpLoadBillState uploadbill = UpLoadBillState();
+int serbiceCount = 1;
     if (journeyStarted) {
       await showDialog(
         context: context,
@@ -405,28 +450,32 @@ class _PendingServicePageState extends State<PendingServicePage> {
               ),
               TextButton(
                 onPressed: () async {
-                  getLocationAndAddress();
-                  // await PostData().postEndData(datas);
-                  currentTime;
-                  print(currentTime.toString());
-                  Navigator.of(context).pop();
-                  setState(() {
-                    serbiceCount++;
-                    journeyStarted =
-                        false; // Journey has ended, enable "Start" button
-                  });
-                  UploadEndData(Firebase_Id, serbiceCount, _image!.path,
-                      AmountController.text);
-                  // datas = {
-                  //   "firebase_id": Firebase_Id,
-                  //   "service_id": 'Service $n',
-                  //   "geolocation":
-                  //       addressResult ?? "Address Not Found",
-                  //   "travel_mode": selectedTravelMode,
-                  //   "date_time": currentTime.toString(),
-                  //   "amount": con,
-                  //   'image': '',
-                  // };
+                 getLocationAndAddress();
+                Navigator.of(context).pop(); // Close the dialog
+                currentTime.toString();
+                setState(() {
+                  serbiceCount++;
+                  journeyStarted =
+                      false; // Journey has ended, enable "Start" button
+                });
+                datas = {
+                  "firebase_id": Firebase_Id,
+                  "service_id": 'Service $serbiceCount',
+                  "geolocation": addressResult ?? "",
+                  "travel_mode": selectedTravelMode,
+                  "date_time": currentTime,
+                  "amount": Amount,
+                  'image':
+                      await MultipartFile.fromFile(filepath, filename: 'image'),
+                };
+                print(datas);
+
+                await PostData().postEndData(
+                  datas,
+                  selectedTravelMode,
+                  AmountController.text,
+                  image!.path,
+                );
                 },
                 child: Text("End"),
               ),
@@ -458,8 +507,10 @@ class _PendingServicePageState extends State<PendingServicePage> {
 
   getusername_and_number() async {
     final prefs = await SharedPreferences.getInstance();
-    name = prefs.getString('Name');
+    setState(() {
+      name = prefs.getString('Name');
     number = prefs.getString('Mobile');
+    });
   }
 
   @override
@@ -529,7 +580,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    name ?? "User Name",
+                                    name!.split(' ').first ?? "User Name",
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 13,
@@ -547,7 +598,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                 ],
                               ),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width /30,
+                                width: MediaQuery.of(context).size.width / 30,
                               ),
                               Padding(
                                 padding:
@@ -611,19 +662,22 @@ class _PendingServicePageState extends State<PendingServicePage> {
                           Row(
                             children: [
                               const Icon(
-                                CupertinoIcons.location_solid,
+                                CupertinoIcons
+                                    .rectangle_fill_on_rectangle_angled_fill,
                                 color: Color.fromARGB(255, 60, 180, 229),
                               ),
                               SizedBox(
                                 width: screenWidth / 50,
                               ),
-                              Text(
-                                widget.refNo.toUpperCase() ??
-                                    "No Referred".toUpperCase(),
-                                style: GoogleFonts.montserrat(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.black),
+                              Flexible(
+                                child: Text(
+                                  widget.Address.toUpperCase() ??
+                                      "No Address added".toUpperCase(),
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black),
+                                ),
                               )
                             ],
                           ),
@@ -633,19 +687,21 @@ class _PendingServicePageState extends State<PendingServicePage> {
                           Row(
                             children: [
                               const Icon(
-                                CupertinoIcons.phone_fill,
+                                CupertinoIcons.square_favorites_fill,
                                 color: Color.fromARGB(255, 60, 180, 229),
                               ),
                               SizedBox(
                                 width: screenWidth / 50,
                               ),
-                              Text(
-                                widget.category.toUpperCase() ??
-                                    "No Categorised".toUpperCase(),
-                                style: GoogleFonts.montserrat(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.black),
+                              Flexible(
+                                child: Text(
+                                  widget.Phone.toUpperCase() ??
+                                      "No Categorised".toUpperCase(),
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black),
+                                ),
                               )
                             ],
                           ),
@@ -655,7 +711,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
                           Row(
                             children: [
                               const Icon(
-                                Icons.access_time_filled_rounded,
+                                Icons.date_range,
                                 color: Color.fromARGB(255, 60, 180, 229),
                               ),
                               SizedBox(
@@ -681,7 +737,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
                           Row(
                             children: [
                               const Icon(
-                                Icons.access_time_filled_rounded,
+                                Icons.date_range,
                                 color: Color.fromARGB(255, 60, 180, 229),
                               ),
                               SizedBox(
@@ -710,7 +766,6 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                 Row(
                                   children: [
                                     CustmButton(
-
                                         butoontext: 'Start Journey',
                                         buttonaction: () {
                                           showStartDialog(context);

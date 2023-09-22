@@ -183,7 +183,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          name ?? "User Name",
+                          name!.split(' ').first ?? "User Name",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 13,
@@ -200,7 +200,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                         ),
                       ],
                     ),
-                    SizedBox(width: screenWidth /screenWidth/30),
+                    SizedBox(width: screenWidth / screenWidth / 30),
                     Padding(
                       padding: EdgeInsets.only(right: screenWidth / 30),
                       child: CircleAvatar(),

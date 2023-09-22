@@ -34,10 +34,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
-    setState(() {
-      getusername_and_number();
-      _selectedIndex = _tabController.index;
-    });
+    getusername_and_number();
+    _selectedIndex = _tabController.index;
   }
 
   @override
@@ -137,7 +135,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            name ?? "User Name",
+                            name!.split(' ').first ?? "User Name",
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 13,
@@ -164,7 +162,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 ],
               ),
               SliverPadding(
-                padding: EdgeInsets.only(top: screenHeight/45),
+                padding: EdgeInsets.only(top: screenHeight / 45),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate(
                     [

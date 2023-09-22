@@ -66,15 +66,20 @@ class _PendingPageState extends State<PendingPage> {
                     var startDate = dataList[index].startDate!;
                     var endDate = dataList[index].endDate!;
                     var priority = dataList[index].priority!;
-                    var endtime = dataList[index].endTime;
-                    var startTime = dataList[index].startTime;
+                    var endtime = dataList[index].endTime!;
+                    var startTime = dataList[index].startTime!;
+                    var address = dataList[index].address!;
+                    var email = dataList[index].email!;
+                     var phone = dataList[index].phone!;
+                    var landmark = dataList[index].landmark!;
+
                     return GestureDetector(
                         onTap: () {
                           // Navigate to the other page when an item is tapped.
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => PendingServicePage(
-                                index: index,
+                                index: index, 
                                 clientName: clientName,
                                 servicename: servicename,
                                 refNo: refNo,
@@ -83,6 +88,10 @@ class _PendingPageState extends State<PendingPage> {
                                 startdate: startDate,
                                 endtime: endtime,
                                 starttime: startTime,
+                                Address: address,
+                                Email: email,
+                                Phone: phone,
+                                Landmark: landmark,
                               ),
                               // Replace with the actual page you want to navigate to.
                             ),

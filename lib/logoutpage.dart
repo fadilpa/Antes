@@ -1,5 +1,4 @@
 // Implement your logout function here
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mentegoz_technologies/login_functions.dart';
 import 'package:mentegoz_technologies/loginpage.dart';

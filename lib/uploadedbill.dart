@@ -9,8 +9,17 @@ import 'package:mentegoz_technologies/pending_service_page.dart';
 import 'package:mentegoz_technologies/start_journey_function.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-List<String> category_list = <String>['Food'];
-List<String> option_list = <String>['Break Fast', 'Lunch', 'Dinner'];
+// List<String> category_list = <String>['Food', 'Travel'];
+// List<String> option_list = <String>['Break Fast', 'Lunch', 'Dinner'];
+
+Map<String, List<String>> categoryToOptions = {
+  'Food': ['Breakfast', 'Lunch', 'Dinner', 'uyc'],
+  'Travel': ['Flights', 'Hotels', 'Tours', 'utujk'],
+};
+
+String dropdownValue = categoryToOptions.keys.first;
+List<String> optionList = categoryToOptions[dropdownValue]!;
+String selectedOption = optionList.first;
 
 class UpLoadBill extends StatefulWidget {
   const UpLoadBill({Key? key}) : super(key: key);
@@ -20,8 +29,8 @@ class UpLoadBill extends StatefulWidget {
 }
 
 class UpLoadBillState extends State<UpLoadBill> {
-  String dropdownValue = category_list.first;
-  String Option_value = option_list.first;
+  // String dropdownValue = category_list.first;
+  // String Option_value = option_list.first;
   TextEditingController Description_Controller = TextEditingController();
   TextEditingController Amount_Controller = TextEditingController();
   File? _selectedImage;
@@ -90,7 +99,7 @@ class UpLoadBillState extends State<UpLoadBill> {
             "firebase_id": "syuxKE42GTXQaZaZBdoUBwgTAfi1",
             "service_id": 'Service 1',
             "geolocation": addressResult,
-            "travel_mode": '56eesdtry',
+            "travel_mode": 'jvjjb',
             "date_time": currentTime,
             'image': MultipartFile.fromFile(_selectedImage as String,
                 filename: 'image'),
@@ -142,7 +151,7 @@ class UpLoadBillState extends State<UpLoadBill> {
       "service_id": "Serive $serviceCount",
       "geolocation": addressResult,
       "category": dropdownValue,
-      "option": Option_value,
+      "option": optionList.first,
       "description": description,
       "date_time": currentTime.toString(),
       "amount": amount,
@@ -170,7 +179,7 @@ class UpLoadBillState extends State<UpLoadBill> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       name = prefs.getString('Name');
-    number = prefs.getString('Mobile');
+      number = prefs.getString('Mobile');
     });
   }
 
@@ -182,6 +191,20 @@ class UpLoadBillState extends State<UpLoadBill> {
 
   @override
   Widget build(BuildContext context) {
+    
+//     if (optionList.isEmpty) {
+//       return Container();
+//     }
+
+// // Make sure that the optionList variable does not contain any duplicate items.
+//     // optionList = optionList.toSet().toList();
+
+// // Make sure that the value property of the second dropdown button is set to a valid value that exists in the optionList variable.
+//     String? selectedValue = optionList.first;
+//     if (!optionList.contains(selectedValue)) {
+//       selectedValue = null;
+//     }
+
     String? selectedTravelMode;
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
@@ -222,7 +245,7 @@ class UpLoadBillState extends State<UpLoadBill> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        name ?? "User Name",
+                        name!.split(' ').first ?? "User Name",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 13,
@@ -240,7 +263,7 @@ class UpLoadBillState extends State<UpLoadBill> {
                     ],
                   ),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width /30,
+                    width: MediaQuery.of(context).size.width / 30,
                   ),
                   Padding(
                     padding: EdgeInsets.only(right: screenWidth / 30),
@@ -274,21 +297,14 @@ class UpLoadBillState extends State<UpLoadBill> {
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             value: dropdownValue,
-                            // icon: const Icon(Icons.arrow_downward),
-                            elevation: 16,
-                            style: const TextStyle(color: Colors.black),
-                            // underline: Container(
-                            //   height: 2,
-                            //   color: Colors.deepPurpleAccent,
-                            // ),
-                        
-                            onChanged: (String? value) {
-                              // This is called when the user selects an item.
+                            onChanged: (String? newValue) {
                               setState(() {
-                                dropdownValue = value!;
+                                dropdownValue = newValue!;
+                                optionList = categoryToOptions[dropdownValue]!;
+                                selectedOption = optionList.first;
                               });
                             },
-                            items: category_list
+                            items: categoryToOptions.keys
                                 .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
@@ -325,21 +341,14 @@ class UpLoadBillState extends State<UpLoadBill> {
                               // Text("Select"),
                               DropdownButtonHideUnderline(
                                 child: DropdownButton<String>(
-                                  value: Option_value,
-                                  // icon: const Icon(Icons.arrow_downward),
-                                  elevation: 16,
-                                  // style: const TextStyle(color: Colors.deepPurple),
-                                  // underline: Container(
-                                  //   height: 2,
-                                  //   color: Colors.deepPurpleAccent,
-                                  // ),
-                                  onChanged: (String? value) {
-                                    // This is called when the user selects an item.
+                                  value: selectedOption,
+                                  onChanged: (newValue) {
                                     setState(() {
-                                      Option_value = value!;
+                                      // print(dropdownValue);
+                                      selectedOption = newValue!;
                                     });
                                   },
-                                  items: option_list
+                                  items: optionList
                                       .map<DropdownMenuItem<String>>(
                                           (String value) {
                                     return DropdownMenuItem<String>(
@@ -373,8 +382,6 @@ class UpLoadBillState extends State<UpLoadBill> {
                               controller: Amount_Controller,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
-                                
-                                
                                 hintText: "Enter Amount",
                               )),
                         ),
@@ -448,8 +455,8 @@ class UpLoadBillState extends State<UpLoadBill> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                     SizedBox(
-                      height: screenHeight/15,
+                    SizedBox(
+                      height: screenHeight / 15,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -459,8 +466,8 @@ class UpLoadBillState extends State<UpLoadBill> {
                             pickImage(ImageSource.camera);
                           },
                           child: Container(
-                            height: screenHeight/12,
-                            width: screenWidth/5.5,
+                            height: screenHeight / 12,
+                            width: screenWidth / 5.5,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Color.fromARGB(255, 60, 180, 229),
@@ -472,17 +479,16 @@ class UpLoadBillState extends State<UpLoadBill> {
                             ),
                           ),
                         ),
-                          SizedBox(
-                      width: screenWidth/15,
-                    ),
-                        
+                        SizedBox(
+                          width: screenWidth / 15,
+                        ),
                         GestureDetector(
                           onTap: () {
                             pickImage(ImageSource.gallery);
                           },
                           child: Container(
-                            height: screenHeight/12,
-                            width: screenWidth/5.5,
+                            height: screenHeight / 12,
+                            width: screenWidth / 5.5,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Color.fromARGB(255, 60, 180, 229),
@@ -496,9 +502,8 @@ class UpLoadBillState extends State<UpLoadBill> {
                         ),
                       ],
                     ),
-                    
-                      SizedBox(
-                      height: screenHeight/35,
+                    SizedBox(
+                      height: screenHeight / 35,
                     ),
                     CustmButton(
                         butoontext: 'Upload',
