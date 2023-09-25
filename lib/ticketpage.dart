@@ -183,9 +183,9 @@ class _RaisedTicketState extends State<RaisedTicket> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          name!.split(' ').first ?? "User Name",
+                          name!.split(' ').first.toUpperCase() ?? "User Name",
                           style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.black54,
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
                           ),
@@ -193,7 +193,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                         Text(
                           number ?? "Emp_no",
                           style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.black54,
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
                           ),

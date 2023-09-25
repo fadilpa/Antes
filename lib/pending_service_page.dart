@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:expand_widget/expand_widget.dart';
 import 'package:geocode/geocode.dart';
 // import 'package:http/http.dart';
 import 'package:location/location.dart';
@@ -70,6 +71,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
   final geolocate = Geolocator();
   var data = {};
   var datas = {};
+  var enddata = {};
   String? selectedTravelMode;
 
   // Future<Position> _determinePosition() async {
@@ -193,7 +195,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
   }
 
   // ignore: non_constant_identifier_names, prefer_typing_uninitialized_variables
-  var  serviceCount, filepath, Amount;
+  var serviceCount, filepath, Amount;
   TextEditingController AmountController = TextEditingController();
 
   final dio = Dio();
@@ -203,7 +205,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
     filepath,
   ) async {
     print('aaaaaaaaaaaaaaaaaaaaa');
-      final prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
 // ignore: unused_local_variable
     String? Firebase_Id = prefs.getString('Firebase_Id');
     // SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -240,7 +242,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
 
   Future UploadStartData() async {
     print('aaaaaaaaaaaaaaaaaaaaa');
-     final prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
 // ignore: unused_local_variable
     String? Firebase_Id = prefs.getString('Firebase_Id');
     final formData = FormData.fromMap({
@@ -395,9 +397,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
               child: Text("Cancel"),
             ),
             TextButton(
-              onPressed: () async {
-                
-              },
+              onPressed: () async {},
               child: Text("OK"),
             ),
           ],
@@ -407,11 +407,11 @@ class _PendingServicePageState extends State<PendingServicePage> {
   }
 
   Future<void> endDialogBox(BuildContext context) async {
-      final prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
 // ignore: unused_local_variable
     String? Firebase_Id = prefs.getString('Firebase_Id');
     UpLoadBillState uploadbill = UpLoadBillState();
-int serbiceCount = 1;
+    int serbiceCount = 1;
     if (journeyStarted) {
       await showDialog(
         context: context,
@@ -450,32 +450,32 @@ int serbiceCount = 1;
               ),
               TextButton(
                 onPressed: () async {
-                 getLocationAndAddress();
-                Navigator.of(context).pop(); // Close the dialog
-                currentTime.toString();
-                setState(() {
-                  serbiceCount++;
-                  journeyStarted =
-                      false; // Journey has ended, enable "Start" button
-                });
-                datas = {
-                  "firebase_id": Firebase_Id,
-                  "service_id": 'Service $serbiceCount',
-                  "geolocation": addressResult ?? "",
-                  "travel_mode": selectedTravelMode,
-                  "date_time": currentTime,
-                  "amount": Amount,
-                  'image':
-                      await MultipartFile.fromFile(filepath, filename: 'image'),
-                };
-                print(datas);
+                  getLocationAndAddress();
+                  Navigator.of(context).pop(); // Close the dialog
+                  currentTime.toString();
+                  setState(() {
+                    serbiceCount++;
+                    journeyStarted =
+                        false; // Journey has ended, enable "Start" button
+                  });
+                  datas = {
+                    "firebase_id": Firebase_Id,
+                    "service_id": 'Service $serbiceCount',
+                    "geolocation": addressResult ?? "",
+                    "travel_mode": selectedTravelMode,
+                    "date_time": currentTime,
+                    "amount": Amount,
+                    'image': await MultipartFile.fromFile(filepath,
+                        filename: 'image'),
+                  };
+                  print(datas);
 
-                await PostData().postEndData(
-                  datas,
-                  selectedTravelMode,
-                  AmountController.text,
-                  image!.path,
-                );
+                  await PostData().postEndData(
+                    datas,
+                    selectedTravelMode,
+                    AmountController.text,
+                    image!.path,
+                  );
                 },
                 child: Text("End"),
               ),
@@ -509,7 +509,7 @@ int serbiceCount = 1;
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       name = prefs.getString('Name');
-    number = prefs.getString('Mobile');
+      number = prefs.getString('Mobile');
     });
   }
 
@@ -580,9 +580,9 @@ int serbiceCount = 1;
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    name!.split(' ').first ?? "User Name",
+                                    name!.split(' ').first.toUpperCase() ?? "User Name",
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: Colors.black54,
                                       fontSize: 13,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -590,7 +590,7 @@ int serbiceCount = 1;
                                   Text(
                                     number ?? "Emp_no",
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: Colors.black54,
                                       fontSize: 13,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -611,19 +611,14 @@ int serbiceCount = 1;
                       ),
                     ];
                   },
-                  body: Container(
-                    height: screenHeight / 1,
-                    width: screenWidth / 2,
-                    color: Colors.transparent,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 40),
-                      child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: screenHeight / 15,
-                          ),
+                  body: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: screenHeight / 25,
+                        ),
+                        Column(children: [
                           Text(
                             widget.servicename.toUpperCase() ??
                                 "No Service Name".toUpperCase(),
@@ -635,133 +630,246 @@ int serbiceCount = 1;
                             ),
                           ),
                           SizedBox(
-                            height: screenHeight / 20,
+                            height: screenHeight / 25,
                           ),
-                          Row(
-                            children: [
-                              const Icon(
-                                CupertinoIcons.person_solid,
-                                color: Color.fromARGB(255, 60, 180, 229),
-                              ),
-                              SizedBox(
-                                width: screenWidth / 50,
-                              ),
-                              Text(
-                                widget.clientName.toUpperCase() ??
-                                    "No Client Name".toUpperCase(),
-                                style: GoogleFonts.montserrat(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.black),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: screenHeight / 20,
-                          ),
-                          Row(
-                            children: [
-                              const Icon(
-                                CupertinoIcons
-                                    .rectangle_fill_on_rectangle_angled_fill,
-                                color: Color.fromARGB(255, 60, 180, 229),
-                              ),
-                              SizedBox(
-                                width: screenWidth / 50,
-                              ),
-                              Flexible(
-                                child: Text(
-                                  widget.Address.toUpperCase() ??
-                                      "No Address added".toUpperCase(),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 40),
+                            child: Column(
+                            
+                              children:[
+                            Row(
+                              children: [
+                                const Icon(
+                                  CupertinoIcons.person_solid,
+                                  color: Color.fromARGB(255, 60, 180, 229),
+                                ),
+                                SizedBox(
+                                  width: screenWidth / 50,
+                                ),
+                                Text(
+                                  widget.clientName.toUpperCase() ??
+                                      "No Client Name".toUpperCase(),
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: screenHeight / 25,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  CupertinoIcons
+                                      .rectangle_fill_on_rectangle_angled_fill,
+                                  color: Color.fromARGB(255, 60, 180, 229),
+                                ),
+                                SizedBox(
+                                  width: screenWidth / 50,
+                                ),
+                                Flexible(
+                                  child: Text(
+                                    widget.Address.toUpperCase() ??
+                                        "No Address added".toUpperCase(),
+                                    style: GoogleFonts.montserrat(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black),
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: screenHeight / 25,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  CupertinoIcons.square_favorites_fill,
+                                  color: Color.fromARGB(255, 60, 180, 229),
+                                ),
+                                SizedBox(
+                                  width: screenWidth / 50,
+                                ),
+                                Flexible(
+                                  child: Text(
+                                    widget.Phone.toUpperCase() ??
+                                        "No Categorised".toUpperCase(),
+                                    style: GoogleFonts.montserrat(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black),
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: screenHeight / 25,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.date_range,
+                                  color: Color.fromARGB(255, 60, 180, 229),
+                                ),
+                                SizedBox(
+                                  width: screenWidth / 50,
+                                ),
+                                Text(
+                                  (widget.startdate == null
+                                          ? "Date Not Defined".toUpperCase()
+                                          : widget.startdate) +
+                                      (widget.starttime != null
+                                          ? " (${widget.starttime})"
+                                          : "Time Not Defined".toUpperCase()),
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: screenHeight / 25,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.date_range,
+                                  color: Color.fromARGB(255, 60, 180, 229),
+                                ),
+                                SizedBox(
+                                  width: screenWidth / 50,
+                                ),
+                                Text(
+                                  (widget.enddate == null
+                                          ? "Date Not Defined".toUpperCase()
+                                          : widget.enddate) +
+                                      (widget.endtime != null
+                                          ? " (${widget.endtime})"
+                                          : "Time Not Defined".toUpperCase()),
                                   style: GoogleFonts.montserrat(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400,
                                       color: Colors.black),
                                 ),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: screenHeight / 20,
-                          ),
-                          Row(
-                            children: [
-                              const Icon(
-                                CupertinoIcons.square_favorites_fill,
-                                color: Color.fromARGB(255, 60, 180, 229),
-                              ),
-                              SizedBox(
-                                width: screenWidth / 50,
-                              ),
-                              Flexible(
-                                child: Text(
-                                  widget.Phone.toUpperCase() ??
-                                      "No Categorised".toUpperCase(),
-                                  style: GoogleFonts.montserrat(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black),
+                             
+                              ],
+                            ),
+                            SizedBox(
+                              height: screenHeight / 25,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 20),
+                              child: ExpandChild(
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          CupertinoIcons.person_solid,
+                                          color:
+                                              Color.fromARGB(255, 60, 180, 229),
+                                        ),
+                                        SizedBox(
+                                          width: screenWidth / 50,
+                                        ),
+                                        Text(
+                                          widget.Catgory ??
+                                              "No Category".toUpperCase(),
+                                          style: GoogleFonts.montserrat(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: screenHeight / 25,
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          CupertinoIcons.person_solid,
+                                          color:
+                                              Color.fromARGB(255, 60, 180, 229),
+                                        ),
+                                        SizedBox(
+                                          width: screenWidth / 50,
+                                        ),
+                                        Text(
+                                          widget.Landmark.toUpperCase() ??
+                                              "No Landmark".toUpperCase(),
+                                          style: GoogleFonts.montserrat(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: screenHeight / 25,
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          CupertinoIcons.person_solid,
+                                          color:
+                                              Color.fromARGB(255, 60, 180, 229),
+                                        ),
+                                        SizedBox(
+                                          width: screenWidth / 50,
+                                        ),
+                                        Text(
+                                          widget.Email.toUpperCase() ??
+                                              "No Email".toUpperCase(),
+                                          style: GoogleFonts.montserrat(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: screenHeight / 25,
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          CupertinoIcons.person_solid,
+                                          color:
+                                              Color.fromARGB(255, 60, 180, 229),
+                                        ),
+                                        SizedBox(
+                                          width: screenWidth / 50,
+                                        ),
+                                        Text(
+                                          widget.refNo.toUpperCase() ??
+                                              "No refno".toUpperCase(),
+                                          style: GoogleFonts.montserrat(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black),
+                                        )
+                                      ],
+                                    ),
+                                   
+                                  ],
                                 ),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: screenHeight / 20,
-                          ),
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.date_range,
-                                color: Color.fromARGB(255, 60, 180, 229),
                               ),
-                              SizedBox(
-                                width: screenWidth / 50,
-                              ),
-                              Text(
-                                (widget.startdate == null
-                                        ? "Date Not Defined".toUpperCase()
-                                        : widget.startdate) +
-                                    (widget.starttime != null
-                                        ? " (${widget.starttime})"
-                                        : "Time Not Defined".toUpperCase()),
-                                style: GoogleFonts.montserrat(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.black),
-                              )
-                            ],
+                            ),
+                                                  ]),
                           ),
-                          SizedBox(
-                            height: screenHeight / 20,
-                          ),
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.date_range,
-                                color: Color.fromARGB(255, 60, 180, 229),
-                              ),
-                              SizedBox(
-                                width: screenWidth / 50,
-                              ),
-                              Text(
-                                (widget.enddate == null
-                                        ? "Date Not Defined".toUpperCase()
-                                        : widget.enddate) +
-                                    (widget.endtime != null
-                                        ? " (${widget.endtime})"
-                                        : "Time Not Defined".toUpperCase()),
-                                style: GoogleFonts.montserrat(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.black),
-                              )
-                            ],
-                          ),
-                          SizedBox(
-                            height: screenHeight / 15,
-                          ),
-                          Column(
-                              // mainAxisAlignment: MainAxisAlignment.center,
+                      ]),
+                        // SizedBox(
+                        //   height: screenHeight / 20,
+                        // ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 40),
+                          child: Column(
+                            
                               children: [
                                 Row(
                                   children: [
@@ -790,7 +898,8 @@ int serbiceCount = 1;
                                         buttonaction: () {
                                           Navigator.of(context)
                                               .push(MaterialPageRoute(
-                                            builder: (context) => UpLoadBill(),
+                                            builder: (context) =>
+                                                UpLoadBill(),
                                           ));
                                         }),
                                     SizedBox(
@@ -807,9 +916,50 @@ int serbiceCount = 1;
                                         })
                                   ],
                                 ),
-                              ])
-                        ],
-                      ),
+                                SizedBox(height: screenHeight/50,),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 20),
+                                  child: ElevatedButton(
+                                
+                                    style: ElevatedButton.styleFrom(
+                                      
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(32.0)),
+                                        minimumSize: const Size(143, 42),
+                                   
+                                        backgroundColor: (const Color.fromARGB(
+                                            255, 60, 180, 229))),
+                                    child: Text('End Service'),
+                                    onPressed: () async {
+                                      final prefs =
+                                          await SharedPreferences.getInstance();
+                                      // ignore: unused_local_variable
+                                      String? Firebase_Id =
+                                          prefs.getString('Firebase_Id');
+                                      print(Firebase_Id);
+                                      print('suiiiiiiiiiiiiiiiiiiiiiiiiii');
+                                      int serbiceCount = 1;
+                                      getLocationAndAddress();
+                                      currentTime.toString();
+                                      enddata = {
+                                        "firebase_id": Firebase_Id,
+                                        "service_id": 'Service $serbiceCount',
+                                        "geolocation": addressResult ?? "",
+                                        "date_time": currentTime,
+                                      };
+                                      setState(() {
+                                        serbiceCount++;
+                                      });
+                                      await PostData().postEndService(
+                                        enddata,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ]),
+                        )
+                      ],
                     ),
                   ),
                 ),

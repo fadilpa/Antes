@@ -1,3 +1,4 @@
+import 'package:expand_widget/expand_widget.dart';
 import 'package:location/location.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:mentegoz_technologies/api.dart';
 import 'package:mentegoz_technologies/compledted_model.dart';
 import 'package:mentegoz_technologies/custom_button.dart';
 import 'package:mentegoz_technologies/get_user_name_number.dart';
+import 'package:mentegoz_technologies/ticketpage.dart';
 import 'package:mentegoz_technologies/uploadedbill.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -130,9 +132,9 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    name!.split(' ').first ?? "User Name",
+                                    name!.split(' ').first.toUpperCase() ?? "User Name",
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: Colors.black54,
                                       fontSize: 13,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -140,7 +142,7 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                                   Text(
                                     number ?? "Emp_no",
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: Colors.black54,
                                       fontSize: 13,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -161,32 +163,31 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                       ),
                     ];
                   },
-                  body: Container(
-                    height: screenHeight / 1,
-                    width: screenWidth / 2,
-                    color: Colors.transparent,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 40),
-                      child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: screenHeight / 15,
+                  body: SingleChildScrollView(
+                    child: Column(
+                      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: screenHeight / 25,
+                        ),
+                        Text(
+                          widget.servicename.toUpperCase() ??
+                              "No Service Name".toUpperCase(),
+                          style: GoogleFonts.montserrat(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                            decoration: TextDecoration.underline,
                           ),
-                          Text(
-                            widget.servicename.toUpperCase() ??
-                                "No Service Name".toUpperCase(),
-                            style: GoogleFonts.montserrat(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                          SizedBox(
-                            height: screenHeight / 20,
-                          ),
+                        ),
+                        SizedBox(
+                          height: screenHeight / 25,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 40),
+                          child: Column(
+                            children:[
                           Row(
                             children: [
                               const Icon(
@@ -207,7 +208,7 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                             ],
                           ),
                           SizedBox(
-                            height: screenHeight / 20,
+                            height: screenHeight / 25,
                           ),
                           Row(
                             children: [
@@ -223,7 +224,6 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                                   widget.address.toUpperCase() ??
                                       "Not Address Added".toUpperCase(),
                                   style: GoogleFonts.montserrat(
-                                      
                                       fontSize: 16,
                                       fontWeight: FontWeight.w400,
                                       color: Colors.black),
@@ -232,7 +232,7 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                             ],
                           ),
                           SizedBox(
-                            height: screenHeight / 20,
+                            height: screenHeight / 25,
                           ),
                           Row(
                             children: [
@@ -254,7 +254,7 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                             ],
                           ),
                           SizedBox(
-                            height: screenHeight / 20,
+                            height: screenHeight / 25,
                           ),
                           Row(
                             children: [
@@ -280,7 +280,7 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                             ],
                           ),
                           SizedBox(
-                            height: screenHeight / 20,
+                            height: screenHeight / 25,
                           ),
                           Row(
                             children: [
@@ -306,28 +306,130 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                             ],
                           ),
                           SizedBox(
-                            height: screenHeight / 15,
+                            height: screenHeight / 25,
                           ),
-                          Column(
-                              // mainAxisAlignment: MainAxisAlignment.center,
-                              // crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    CustmButton(
-                                        butoontext: 'Upload Bill',
-                                        buttonaction: () {
-                                          Navigator.of(context)
-                                              .push(MaterialPageRoute(
-                                            builder: (context) => UpLoadBill(),
-                                          ));
-                                        }),
-                                  ],
-                                ),
-                              ])
-                        ],
-                      ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 40),
+                            child: ExpandChild(
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        CupertinoIcons.plus_rectangle,
+                                        color:
+                                            Color.fromARGB(255, 60, 180, 229),
+                                      ),
+                                      SizedBox(
+                                        width: screenWidth / 50,
+                                      ),
+                                      Text(
+                                        widget.priority ??
+                                            "No Priority".toUpperCase(),
+                                        style: GoogleFonts.montserrat(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: screenHeight / 25,
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                       Icons.phone,
+                                        color:
+                                            Color.fromARGB(255, 60, 180, 229),
+                                      ),
+                                      SizedBox(
+                                        width: screenWidth / 50,
+                                      ),
+                                      Text(
+                                        widget.phone.toUpperCase() ??
+                                            "No Landmark".toUpperCase(),
+                                        style: GoogleFonts.montserrat(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: screenHeight / 25,
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        CupertinoIcons.mail,
+                                        color:
+                                            Color.fromARGB(255, 60, 180, 229),
+                                      ),
+                                      SizedBox(
+                                        width: screenWidth / 50,
+                                      ),
+                                      Text(
+                                        widget.email.toUpperCase() ??
+                                            "No Email".toUpperCase(),
+                                        style: GoogleFonts.montserrat(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: screenHeight / 25,
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        CupertinoIcons.rectangle_fill_on_rectangle_angled_fill,
+                                        color:
+                                            Color.fromARGB(255, 60, 180, 229),
+                                      ),
+                                      SizedBox(
+                                        width: screenWidth / 50,
+                                      ),
+                                      Text(
+                                        widget.refNo.toUpperCase() ??
+                                            "No refno".toUpperCase(),
+                                        style: GoogleFonts.montserrat(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                                              ]),
+                        ),
+                        SizedBox(height: screenHeight/15,),
+                        Column(
+                            // mainAxisAlignment: MainAxisAlignment.center,
+                            // crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CustmButton(
+                                      butoontext: 'Raise a Ticket',
+                                      buttonaction: () {
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                          builder: (context) =>
+                                              RaisedTicket(),
+                                        ));
+                                      }),
+                                ],
+                              ),
+                            ]),
+                            SizedBox(height: screenHeight/20,),
+                      ],
                     ),
                   ),
                 ),

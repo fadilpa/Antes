@@ -68,11 +68,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               decoration: BoxDecoration(
                 color: Color.fromARGB(255, 60, 180, 229),
               ),
-              child: Text(
-                'Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
+              child: Center(
+                child: Text(
+                  'Menu',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                  ),
                 ),
               ),
             ),
@@ -135,9 +137,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            name!.split(' ').first ?? "User Name",
+                            name!.split(' ').first.toUpperCase() ?? "User Name",
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Colors.black54,
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
                             ),
@@ -145,7 +147,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           Text(
                             number ?? "Mobile Number",
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Colors.black54,
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
                             ),

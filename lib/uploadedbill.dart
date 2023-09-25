@@ -13,8 +13,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 // List<String> option_list = <String>['Break Fast', 'Lunch', 'Dinner'];
 
 Map<String, List<String>> categoryToOptions = {
-  'Food': ['Breakfast', 'Lunch', 'Dinner', 'uyc'],
-  'Travel': ['Flights', 'Hotels', 'Tours', 'utujk'],
+  'Food': ['Breakfast', 'Lunch', 'Dinner'],
+  // 'Travel': ['         '],
 };
 
 String dropdownValue = categoryToOptions.keys.first;
@@ -245,9 +245,9 @@ class UpLoadBillState extends State<UpLoadBill> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        name!.split(' ').first ?? "User Name",
+                        name!.split(' ').first.toUpperCase() ?? "User Name",
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.black54,
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
                         ),
@@ -255,7 +255,7 @@ class UpLoadBillState extends State<UpLoadBill> {
                       Text(
                         number ?? "Emp_no",
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.black54,
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
                         ),
@@ -289,7 +289,9 @@ class UpLoadBillState extends State<UpLoadBill> {
                       height: screenHeight / 15,
                       padding: EdgeInsets.all(5),
                       decoration: BoxDecoration(
-                        border: Border.all(),
+                        border: Border.all(
+                          color: Colors.grey
+                        ),
                         borderRadius: BorderRadius.circular(5),
                         color: Colors.grey[200],
                       ),
@@ -331,7 +333,9 @@ class UpLoadBillState extends State<UpLoadBill> {
                           width: screenWidth / 2,
                           height: screenHeight / 18,
                           decoration: BoxDecoration(
-                            border: Border.all(),
+                            border: Border.all(
+                              color: Colors.grey
+                            ),
                             borderRadius: BorderRadius.circular(5),
                             color: Colors.grey[200],
                           ),
@@ -495,7 +499,7 @@ class UpLoadBillState extends State<UpLoadBill> {
                             ),
                             child: const Icon(
                               Icons.photo_album,
-                              size: 60,
+                              size: 50,
                               color: Colors.white,
                             ),
                           ),

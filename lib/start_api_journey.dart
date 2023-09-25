@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class PostData {
@@ -34,7 +35,7 @@ class PostData {
     }
   }
 
-  Future<void> postEndData(data,selectedTravelMode,Amount,image) async {
+  Future<void> postEndData(datas,selectedTravelMode,Amount,image) async {
     // SharedPreferences prefs = await SharedPreferences.getInstance();
     // final firebaseId = prefs.getString('Firebase_id');
     File? _selectedImage;
@@ -54,10 +55,10 @@ class PostData {
     try {
       final response = await dio.post(
         url,
-        data: data, // Use the data parameter for the request body
+        data: datas, // Use the data parameter for the request body
         
       );
-      print(data);
+      print(datas);
 
       if (response.statusCode == 200) {
         // print('Data posted successfully');
@@ -69,4 +70,28 @@ class PostData {
       print('Error: $e');
     }
   }
+
+  Future<void> postEndService(endata) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final firebaseId = prefs.getString('Firebase_id');
+    final dio = Dio();
+    final url = 'https://antes.meduco.in/api/complete_service';
+
+    try {
+      final response = await dio.post(
+        url,
+        data: endata,
+      );
+
+      if (response.statusCode == 200) {
+        // print('Data posted successfully');
+        print(response.data); // Use response.data instead of response.body
+      } else {
+        print('Failed to post data: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
 }
