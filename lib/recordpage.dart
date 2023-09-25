@@ -66,7 +66,7 @@ class _TicketsPageState extends State<TicketsPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        name?.split(' ').first ?? "User Name",
+                        name!.split(' ').first ?? "User Name",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 13,

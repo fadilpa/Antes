@@ -112,7 +112,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
                   title: Text(
-                    "Services",
+                    "Services".toUpperCase(),
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 15.0,
@@ -169,7 +169,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   delegate: SliverChildListDelegate(
                     [
                       Container(
-                        height: screenHeight / 13.5,
+                        height: screenHeight / 14,
                         decoration: BoxDecoration(
                           color: Color.fromARGB(255, 233, 233, 233),
                           borderRadius: BorderRadius.circular(30),

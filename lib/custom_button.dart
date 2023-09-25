@@ -10,17 +10,24 @@ class CustmButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(32.0)),
-            minimumSize: const Size(143, 42),
-            backgroundColor: (const Color.fromARGB(255, 60, 180, 229))),
-        onPressed: buttonaction,
-        child: Text(
-          butoontext,
-          style: GoogleFonts.montserrat(
-              fontSize: 15, fontWeight: FontWeight.w400, color: Colors.white),
-        ));
+        final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    return SizedBox(
+      height: screenHeight/17,
+      width: screenWidth/2.7,
+      child: ElevatedButton(
+    
+          style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(32.0)),
+              
+              backgroundColor: (const Color.fromARGB(255, 60, 180, 229))),
+          onPressed: buttonaction,
+          child: Text(
+            butoontext,
+            style: GoogleFonts.montserrat(
+                fontSize: 15, fontWeight: FontWeight.w400, color: Colors.white),
+          )),
+    );
   }
 }

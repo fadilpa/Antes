@@ -107,7 +107,7 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                         flexibleSpace: FlexibleSpaceBar(
                           centerTitle: true,
                           title: Text(
-                            "Services",
+                            "Services".toUpperCase(),
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 15.0,
@@ -185,7 +185,7 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                           height: screenHeight / 25,
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 40),
+                          padding:  EdgeInsets.only(left: screenWidth/8.5),
                           child: Column(
                             children:[
                           Row(
@@ -197,13 +197,15 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                               SizedBox(
                                 width: screenWidth / 50,
                               ),
-                              Text(
-                                widget.clientName.toUpperCase() ??
-                                    "No Client Name".toUpperCase(),
-                                style: GoogleFonts.montserrat(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.black),
+                              Flexible(
+                                child: Text(
+                                  widget.clientName.toUpperCase() ??
+                                      "No Client Name".toUpperCase(),
+                                  style: GoogleFonts.montserrat(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black),
+                                ),
                               )
                             ],
                           ),
@@ -369,13 +371,15 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                                       SizedBox(
                                         width: screenWidth / 50,
                                       ),
-                                      Text(
-                                        widget.email.toUpperCase() ??
-                                            "No Email".toUpperCase(),
-                                        style: GoogleFonts.montserrat(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.black),
+                                      Flexible(
+                                        child: Text(
+                                          widget.email.toUpperCase() ??
+                                              "No Email".toUpperCase(),
+                                          style: GoogleFonts.montserrat(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black),
+                                        ),
                                       )
                                     ],
                                   ),

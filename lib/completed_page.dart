@@ -95,47 +95,49 @@ class _CompletedPageState extends State<CompletedPage> {
                             ),
                           );
                         },
-                        child: Center(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text('Service ${index + 1}'.toUpperCase()),
-                              const SizedBox(
-                                height: 10,
+                        child: 
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: screenHeight/70,
+                            ),
+                            Text('Service ${index + 1}'.toUpperCase()),
+                             SizedBox(
+                              height: screenHeight/70,
+                            ),
+                            Container(
+                              height: screenHeight / 6.1,
+                              width: screenWidth / 2.5,
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 60, 180, 229),
+                                borderRadius: BorderRadius.circular(5),
                               ),
-                              Container(
-                                height: screenHeight / 4.8,
-                                width: screenWidth / 2.5,
-                                decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 60, 180, 229),
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        clientName.toUpperCase(),
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      Text(
-                                        email.toLowerCase(),
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      Text(
-                                        phone.toUpperCase(),
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                    ],
-                                   ),
-                                ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      clientName.toUpperCase(),
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    Text(
+                                      email.toLowerCase(),
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    Text(
+                                      phone.toUpperCase(),
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ));
                   },
                 ),

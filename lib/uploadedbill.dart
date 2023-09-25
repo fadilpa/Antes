@@ -218,10 +218,10 @@ class UpLoadBillState extends State<UpLoadBill> {
             forceElevated: true,
             elevation: 3,
             backgroundColor: Colors.white,
-            flexibleSpace: const FlexibleSpaceBar(
+            flexibleSpace:  FlexibleSpaceBar(
               centerTitle: true,
               title: Text(
-                "Upload Bill",
+                "Upload Bill".toUpperCase(),
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 15.0,
@@ -283,7 +283,7 @@ class UpLoadBillState extends State<UpLoadBill> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    const Text("Category   "),
+                     Text("Category    ".toUpperCase()),
                     Container(
                       width: screenWidth / 2,
                       height: screenHeight / 15,
@@ -321,13 +321,13 @@ class UpLoadBillState extends State<UpLoadBill> {
                 ),
 
                 SizedBox(
-                  height: 25,
+                  height: screenHeight/35,
                 ),
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text("Options    "),
+                      Text("Options     ".toUpperCase()),
                       Center(
                         child: Container(
                           width: screenWidth / 2,
@@ -370,13 +370,13 @@ class UpLoadBillState extends State<UpLoadBill> {
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: screenHeight/35,
                 ),
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text("Amount     "),
+                      Text("Amount      ".toUpperCase()),
                       SizedBox(
                         height: 50,
                         width: screenWidth / 2,
@@ -394,24 +394,24 @@ class UpLoadBillState extends State<UpLoadBill> {
                   ),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: screenHeight/35,
                 ),
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text("Description"),
+                      Text("Description".toUpperCase()),
                       SizedBox(
-                        height: 100,
+                        // height: screenHeight/6,
                         width: screenWidth / 2,
                         child: Container(
                           color: Colors.grey[200],
                           child: TextField(
-                              maxLines: 3,
+                              maxLines: 4,
                               controller: Description_Controller,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
-                                hintText: "EnterDescription",
+                                hintText: "Enter Description",
                               )),
                         ),
                       ),
@@ -498,7 +498,7 @@ class UpLoadBillState extends State<UpLoadBill> {
                               color: Color.fromARGB(255, 60, 180, 229),
                             ),
                             child: const Icon(
-                              Icons.photo_album,
+                              Icons.photo,
                               size: 50,
                               color: Colors.white,
                             ),

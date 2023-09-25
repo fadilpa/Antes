@@ -100,12 +100,15 @@ class _PendingPageState extends State<PendingPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
+                            SizedBox(
+                              height: screenHeight/70,
+                            ),
                             Text('Service ${index + 1}'.toUpperCase()),
-                            const SizedBox(
-                              height: 10,
+                             SizedBox(
+                              height: screenHeight/70,
                             ),
                             Container(
-                              height: screenHeight / 4.8,
+                              height: screenHeight / 6.1,
                               width: screenWidth / 2.5,
                               decoration: BoxDecoration(
                                 color: Color.fromARGB(255, 60, 180, 229),

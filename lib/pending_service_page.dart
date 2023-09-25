@@ -555,7 +555,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
                         flexibleSpace: FlexibleSpaceBar(
                           centerTitle: true,
                           title: Text(
-                            "Services",
+                            "Services".toUpperCase(),
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 15.0,
@@ -580,7 +580,8 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    name!.split(' ').first.toUpperCase() ?? "User Name",
+                                    name!.split(' ').first.toUpperCase() ??
+                                        "User Name",
                                     style: TextStyle(
                                       color: Colors.black54,
                                       fontSize: 13,
@@ -618,347 +619,363 @@ class _PendingServicePageState extends State<PendingServicePage> {
                         SizedBox(
                           height: screenHeight / 25,
                         ),
-                        Column(children: [
-                          Text(
-                            widget.servicename.toUpperCase() ??
-                                "No Service Name".toUpperCase(),
-                            style: GoogleFonts.montserrat(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                          SizedBox(
-                            height: screenHeight / 25,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 40),
-                            child: Column(
-                            
-                              children:[
-                            Row(
-                              children: [
-                                const Icon(
-                                  CupertinoIcons.person_solid,
-                                  color: Color.fromARGB(255, 60, 180, 229),
-                                ),
-                                SizedBox(
-                                  width: screenWidth / 50,
-                                ),
-                                Text(
-                                  widget.clientName.toUpperCase() ??
-                                      "No Client Name".toUpperCase(),
-                                  style: GoogleFonts.montserrat(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: screenHeight / 25,
-                            ),
-                            Row(
-                              children: [
-                                const Icon(
-                                  CupertinoIcons
-                                      .rectangle_fill_on_rectangle_angled_fill,
-                                  color: Color.fromARGB(255, 60, 180, 229),
-                                ),
-                                SizedBox(
-                                  width: screenWidth / 50,
-                                ),
-                                Flexible(
-                                  child: Text(
-                                    widget.Address.toUpperCase() ??
-                                        "No Address added".toUpperCase(),
-                                    style: GoogleFonts.montserrat(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.black),
-                                  ),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: screenHeight / 25,
-                            ),
-                            Row(
-                              children: [
-                                const Icon(
-                                  CupertinoIcons.square_favorites_fill,
-                                  color: Color.fromARGB(255, 60, 180, 229),
-                                ),
-                                SizedBox(
-                                  width: screenWidth / 50,
-                                ),
-                                Flexible(
-                                  child: Text(
-                                    widget.Phone.toUpperCase() ??
-                                        "No Categorised".toUpperCase(),
-                                    style: GoogleFonts.montserrat(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.black),
-                                  ),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: screenHeight / 25,
-                            ),
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.date_range,
-                                  color: Color.fromARGB(255, 60, 180, 229),
-                                ),
-                                SizedBox(
-                                  width: screenWidth / 50,
-                                ),
-                                Text(
-                                  (widget.startdate == null
-                                          ? "Date Not Defined".toUpperCase()
-                                          : widget.startdate) +
-                                      (widget.starttime != null
-                                          ? " (${widget.starttime})"
-                                          : "Time Not Defined".toUpperCase()),
-                                  style: GoogleFonts.montserrat(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height: screenHeight / 25,
-                            ),
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.date_range,
-                                  color: Color.fromARGB(255, 60, 180, 229),
-                                ),
-                                SizedBox(
-                                  width: screenWidth / 50,
-                                ),
-                                Text(
-                                  (widget.enddate == null
-                                          ? "Date Not Defined".toUpperCase()
-                                          : widget.enddate) +
-                                      (widget.endtime != null
-                                          ? " (${widget.endtime})"
-                                          : "Time Not Defined".toUpperCase()),
-                                  style: GoogleFonts.montserrat(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black),
-                                ),
-                             
-                              ],
-                            ),
-                            SizedBox(
-                              height: screenHeight / 25,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 20),
-                              child: ExpandChild(
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          CupertinoIcons.person_solid,
-                                          color:
-                                              Color.fromARGB(255, 60, 180, 229),
-                                        ),
-                                        SizedBox(
-                                          width: screenWidth / 50,
-                                        ),
-                                        Text(
-                                          widget.Catgory ??
-                                              "No Category".toUpperCase(),
-                                          style: GoogleFonts.montserrat(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.black),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: screenHeight / 25,
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          CupertinoIcons.person_solid,
-                                          color:
-                                              Color.fromARGB(255, 60, 180, 229),
-                                        ),
-                                        SizedBox(
-                                          width: screenWidth / 50,
-                                        ),
-                                        Text(
-                                          widget.Landmark.toUpperCase() ??
-                                              "No Landmark".toUpperCase(),
-                                          style: GoogleFonts.montserrat(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.black),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: screenHeight / 25,
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          CupertinoIcons.person_solid,
-                                          color:
-                                              Color.fromARGB(255, 60, 180, 229),
-                                        ),
-                                        SizedBox(
-                                          width: screenWidth / 50,
-                                        ),
-                                        Text(
-                                          widget.Email.toUpperCase() ??
-                                              "No Email".toUpperCase(),
-                                          style: GoogleFonts.montserrat(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.black),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: screenHeight / 25,
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          CupertinoIcons.person_solid,
-                                          color:
-                                              Color.fromARGB(255, 60, 180, 229),
-                                        ),
-                                        SizedBox(
-                                          width: screenWidth / 50,
-                                        ),
-                                        Text(
-                                          widget.refNo.toUpperCase() ??
-                                              "No refno".toUpperCase(),
-                                          style: GoogleFonts.montserrat(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.black),
-                                        )
-                                      ],
-                                    ),
-                                   
-                                  ],
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                widget.servicename.toUpperCase() ??
+                                    "No Service Name".toUpperCase(),
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                  decoration: TextDecoration.underline,
                                 ),
                               ),
-                            ),
-                                                  ]),
-                          ),
-                      ]),
+                              SizedBox(
+                                height: screenHeight / 25,
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsets.only(left: screenWidth / 8.5),
+                                child: Column(children: [
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        CupertinoIcons.person_solid,
+                                        color:
+                                            Color.fromARGB(255, 60, 180, 229),
+                                      ),
+                                      SizedBox(
+                                        width: screenWidth / 50,
+                                      ),
+                                      Flexible(
+                                        child: Text(
+                                          widget.clientName.toUpperCase() ??
+                                              "No Client Name".toUpperCase(),
+                                          style: GoogleFonts.montserrat(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: screenHeight / 25,
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        CupertinoIcons
+                                            .rectangle_fill_on_rectangle_angled_fill,
+                                        color:
+                                            Color.fromARGB(255, 60, 180, 229),
+                                      ),
+                                      SizedBox(
+                                        width: screenWidth / 50,
+                                      ),
+                                      Flexible(
+                                        child: Text(
+                                          widget.Address.toUpperCase() ??
+                                              "No Address added".toUpperCase(),
+                                          style: GoogleFonts.montserrat(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: screenHeight / 25,
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        CupertinoIcons.square_favorites_fill,
+                                        color:
+                                            Color.fromARGB(255, 60, 180, 229),
+                                      ),
+                                      SizedBox(
+                                        width: screenWidth / 50,
+                                      ),
+                                      Flexible(
+                                        child: Text(
+                                          widget.Phone.toUpperCase() ??
+                                              "No Categorised".toUpperCase(),
+                                          style: GoogleFonts.montserrat(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: screenHeight / 25,
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.date_range,
+                                        color:
+                                            Color.fromARGB(255, 60, 180, 229),
+                                      ),
+                                      SizedBox(
+                                        width: screenWidth / 50,
+                                      ),
+                                      Text(
+                                        (widget.startdate == null
+                                                ? "Date Not Defined"
+                                                    .toUpperCase()
+                                                : widget.startdate) +
+                                            (widget.starttime != null
+                                                ? " (${widget.starttime})"
+                                                : "Time Not Defined"
+                                                    .toUpperCase()),
+                                        style: GoogleFonts.montserrat(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: screenHeight / 25,
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.date_range,
+                                        color:
+                                            Color.fromARGB(255, 60, 180, 229),
+                                      ),
+                                      SizedBox(
+                                        width: screenWidth / 50,
+                                      ),
+                                      Text(
+                                        (widget.enddate == null
+                                                ? "Date Not Defined"
+                                                    .toUpperCase()
+                                                : widget.enddate) +
+                                            (widget.endtime != null
+                                                ? " (${widget.endtime})"
+                                                : "Time Not Defined"
+                                                    .toUpperCase()),
+                                        style: GoogleFonts.montserrat(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: screenHeight / 25,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        right: screenWidth / 8.5),
+                                    child: ExpandChild(
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              const Icon(
+                                                CupertinoIcons.person_solid,
+                                                color: Color.fromARGB(
+                                                    255, 60, 180, 229),
+                                              ),
+                                              SizedBox(
+                                                width: screenWidth / 50,
+                                              ),
+                                              Text(
+                                                widget.Catgory ??
+                                                    "No Category".toUpperCase(),
+                                                style: GoogleFonts.montserrat(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.black),
+                                              )
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: screenHeight / 25,
+                                          ),
+                                          Row(
+                                            children: [
+                                              const Icon(
+                                                CupertinoIcons.person_solid,
+                                                color: Color.fromARGB(
+                                                    255, 60, 180, 229),
+                                              ),
+                                              SizedBox(
+                                                width: screenWidth / 50,
+                                              ),
+                                              Text(
+                                                widget.Landmark.toUpperCase() ??
+                                                    "No Landmark".toUpperCase(),
+                                                style: GoogleFonts.montserrat(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.black),
+                                              )
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: screenHeight / 25,
+                                          ),
+                                          Row(
+                                            children: [
+                                              const Icon(
+                                                CupertinoIcons.person_solid,
+                                                color: Color.fromARGB(
+                                                    255, 60, 180, 229),
+                                              ),
+                                              SizedBox(
+                                                width: screenWidth / 50,
+                                              ),
+                                              Flexible(
+                                                child: Text(
+                                                  widget.Email.toUpperCase() ??
+                                                      "No Email".toUpperCase(),
+                                                  style: GoogleFonts.montserrat(
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.w400,
+                                                      color: Colors.black),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: screenHeight / 25,
+                                          ),
+                                          Row(
+                                            children: [
+                                              const Icon(
+                                                CupertinoIcons.person_solid,
+                                                color: Color.fromARGB(
+                                                    255, 60, 180, 229),
+                                              ),
+                                              SizedBox(
+                                                width: screenWidth / 50,
+                                              ),
+                                              Text(
+                                                widget.refNo.toUpperCase() ??
+                                                    "No refno".toUpperCase(),
+                                                style: GoogleFonts.montserrat(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.black),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ]),
+                              ),
+                            ]),
                         // SizedBox(
                         //   height: screenHeight / 20,
                         // ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 40),
-                          child: Column(
-                            
-                              children: [
-                                Row(
-                                  children: [
-                                    CustmButton(
-                                        butoontext: 'Start Journey',
-                                        buttonaction: () {
-                                          showStartDialog(context);
-                                        }),
-                                    SizedBox(
-                                      width: screenWidth / 50,
-                                    ),
-                                    CustmButton(
-                                        butoontext: 'End Journey',
-                                        buttonaction: () {
-                                          endDialogBox(context);
-                                        })
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: screenHeight / 50,
-                                ),
-                                Row(
-                                  children: [
-                                    CustmButton(
-                                        butoontext: 'Upload Bill',
-                                        buttonaction: () {
-                                          Navigator.of(context)
-                                              .push(MaterialPageRoute(
-                                            builder: (context) =>
-                                                UpLoadBill(),
-                                          ));
-                                        }),
-                                    SizedBox(
-                                      width: screenWidth / 50,
-                                    ),
-                                    CustmButton(
-                                        butoontext: 'Raise a Ticket',
-                                        buttonaction: () {
-                                          Navigator.of(context)
-                                              .push(MaterialPageRoute(
-                                            builder: (context) =>
-                                                RaisedTicket(),
-                                          ));
-                                        })
-                                  ],
-                                ),
-                                SizedBox(height: screenHeight/50,),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 20),
-                                  child: ElevatedButton(
-                                
-                                    style: ElevatedButton.styleFrom(
-                                      
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(32.0)),
-                                        minimumSize: const Size(143, 42),
-                                   
-                                        backgroundColor: (const Color.fromARGB(
-                                            255, 60, 180, 229))),
-                                    child: Text('End Service'),
-                                    onPressed: () async {
-                                      final prefs =
-                                          await SharedPreferences.getInstance();
-                                      // ignore: unused_local_variable
-                                      String? Firebase_Id =
-                                          prefs.getString('Firebase_Id');
-                                      print(Firebase_Id);
-                                      print('suiiiiiiiiiiiiiiiiiiiiiiiiii');
-                                      int serbiceCount = 1;
-                                      getLocationAndAddress();
-                                      currentTime.toString();
-                                      enddata = {
-                                        "firebase_id": Firebase_Id,
-                                        "service_id": 'Service $serbiceCount',
-                                        "geolocation": addressResult ?? "",
-                                        "date_time": currentTime,
-                                      };
-                                      setState(() {
-                                        serbiceCount++;
-                                      });
-                                      await PostData().postEndService(
-                                        enddata,
-                                      );
-                                    },
+                        Column(
+                            // crossAxisAlignment: CrossAxisAlignment.center,
+                            // mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CustmButton(
+                                      butoontext: 'Start Journey',
+                                      buttonaction: () {
+                                        showStartDialog(context);
+                                      }),
+                                  SizedBox(
+                                    width: screenWidth / 50,
                                   ),
-                                ),
-                              ]),
-                        )
+                                  CustmButton(
+                                      butoontext: 'End Journey',
+                                      buttonaction: () {
+                                        endDialogBox(context);
+                                      })
+                                ],
+                              ),
+                              SizedBox(
+                                height: screenHeight / 50,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CustmButton(
+                                      butoontext: '   Upload Bill    ',
+                                      buttonaction: () {
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                          builder: (context) => UpLoadBill(),
+                                        ));
+                                      }),
+                                  SizedBox(
+                                    width: screenWidth / 50,
+                                  ),
+                                  CustmButton(
+                                      butoontext: 'Raise a Ticket',
+                                      buttonaction: () {
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                          builder: (context) => RaisedTicket(),
+                                        ));
+                                      })
+                                ],
+                              ),
+                              SizedBox(
+                                height: screenHeight / 50,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: screenHeight / 17,
+                                    width: screenWidth / 2.7,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(32.0)),
+                                          backgroundColor:
+                                              (const Color.fromARGB(
+                                                  255, 60, 180, 229))),
+                                      child: Text('End Service'),
+                                      onPressed: () async {
+                                        final prefs = await SharedPreferences
+                                            .getInstance();
+                                        // ignore: unused_local_variable
+                                        String? Firebase_Id =
+                                            prefs.getString('Firebase_Id');
+                                        print(Firebase_Id);
+                                        print('suiiiiiiiiiiiiiiiiiiiiiiiiii');
+                                        int serbiceCount = 1;
+                                        getLocationAndAddress();
+                                        currentTime.toString();
+                                        enddata = {
+                                          "firebase_id": Firebase_Id,
+                                          "service_id": 'Service $serbiceCount',
+                                          "geolocation": addressResult ?? "",
+                                          "date_time": currentTime,
+                                        };
+                                        setState(() {
+                                          serbiceCount++;
+                                        });
+                                        await PostData().postEndService(
+                                          enddata,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ])
                       ],
                     ),
                   ),

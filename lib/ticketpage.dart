@@ -156,7 +156,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
               forceElevated: true,
               elevation: 3,
               backgroundColor: Colors.white,
-              flexibleSpace: const FlexibleSpaceBar(
+              flexibleSpace: FlexibleSpaceBar(
                 centerTitle: true,
                 title: Text(
                   "Raise a Ticket",
@@ -345,10 +345,10 @@ class _RaisedTicketState extends State<RaisedTicket> {
               forceElevated: true,
               elevation: 3,
               backgroundColor: Colors.white,
-              flexibleSpace: const FlexibleSpaceBar(
+              flexibleSpace: FlexibleSpaceBar(
                 centerTitle: true,
                 title: Text(
-                  "Raise a Ticket",
+                  "Raise a Ticket".toUpperCase(),
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16.0,
@@ -494,9 +494,13 @@ class _RaisedTicketState extends State<RaisedTicket> {
                                         ),
                                       ),
                                       const Spacer(),
-                                      Icon(
-                                        Icons.camera_alt,
-                                        size: 30,
+                                      IconButton(
+                                        onPressed: () {
+                                          _showImageSourceDialog(context);
+                                        },
+                                        icon: Icon(Icons.camera),
+
+                                        // size: 30,
                                         color: Colors.grey.shade600,
                                       ),
                                     ],
