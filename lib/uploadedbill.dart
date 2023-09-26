@@ -14,7 +14,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Map<String, List<String>> categoryToOptions = {
   'Food': ['Breakfast', 'Lunch', 'Dinner'],
-  // 'Travel': ['         '],
+  'Travel': [],
+  
 };
 
 String dropdownValue = categoryToOptions.keys.first;
@@ -303,7 +304,8 @@ class UpLoadBillState extends State<UpLoadBill> {
                               setState(() {
                                 dropdownValue = newValue!;
                                 optionList = categoryToOptions[dropdownValue]!;
-                                selectedOption = optionList.first;
+                                space();
+                                
                               });
                             },
                             items: categoryToOptions.keys
@@ -319,11 +321,11 @@ class UpLoadBillState extends State<UpLoadBill> {
                     ),
                   ],
                 ),
-
-                SizedBox(
-                  height: screenHeight/35,
-                ),
-                Center(
+// SizedBox(height: 0,),
+                optionList.isNotEmpty?
+                
+                Padding(
+                  padding:  EdgeInsets.only(top:screenHeight/35),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -368,11 +370,13 @@ class UpLoadBillState extends State<UpLoadBill> {
                       ),
                     ],
                   ),
-                ),
+                )
+                :
                 SizedBox(
-                  height: screenHeight/35,
-                ),
+                                 ),
+                 SizedBox(height: screenHeight/35,),
                 Center(
+                  
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -527,4 +531,13 @@ class UpLoadBillState extends State<UpLoadBill> {
       ),
     );
   }
+}
+space(){
+if(categoryToOptions[0]==0){
+  optionList.first;
+
+}else{
+  
+null;
+    }
 }
