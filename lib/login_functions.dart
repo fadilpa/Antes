@@ -54,7 +54,7 @@ Future<void> login(BuildContext context) async {
             prefs.setString('Name', userName);
             prefs.setString('Mobile', mobileNumber);
             Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => HomePage()));
+                .pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
             emailController.clear();
             passwordController.clear();
             return;

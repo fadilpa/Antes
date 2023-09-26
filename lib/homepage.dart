@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   //   }
   // }
 
-  User_Lgin_Data login_data = User_Lgin_Data();
+  // User_Lgin_Data login_data = User_Lgin_Data();
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
