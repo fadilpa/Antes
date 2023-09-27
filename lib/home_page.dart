@@ -1,0 +1,170 @@
+import 'package:flutter/material.dart';
+import 'package:mentegoz_technologies/view/complete/completed_page.dart';
+import 'package:mentegoz_technologies/view/drawer.dart';
+import 'package:mentegoz_technologies/view/pending/pending_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+
+class HomePage extends StatefulWidget {
+    final bool initialIsStartButtonTapped;
+  const HomePage({
+    Key? key, required this.initialIsStartButtonTapped,
+  }) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  late TabController _tabController;
+  // ignore: unused_field
+  var _selectedIndex = 0;
+  String? name;
+  String? number;
+
+  getusername_and_number() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      name = prefs.getString('Name');
+      number = prefs.getString('Mobile');
+    });
+  }
+
+  @override
+  void initState() {
+    _tabController = TabController(length: 2, vsync: this);
+    super.initState();
+    getusername_and_number();
+    _selectedIndex = _tabController.index;
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // var userProvider = Provider.of<UserNameAndNumber>(context);
+    // userProvider.get_user_name_and_number();
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return Scaffold(
+      drawer:MenuDrawer(),
+      body: DefaultTabController(
+        length: 2,
+        child: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                pinned: true,
+                floating: true,
+                expandedHeight: screenHeight * 0.13,
+                forceElevated: true,
+                elevation: 3,
+                backgroundColor: Colors.white,
+                flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: true,
+                  title: Text(
+                    "Services".toUpperCase(),
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15.0,
+                    ),
+                  ),
+                ),
+                leading: IconButton(
+                  icon: Icon(
+                    Icons.menu,
+                    color: Colors.black,
+                  ),
+                  tooltip: 'Menu',
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                ),
+                actions: <Widget>[
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                           name?.split(' ').first.toUpperCase() ?? "User Name",
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                           number ?? "Mobile Number",
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: screenWidth / 30),
+                      Padding(
+                        padding: EdgeInsets.only(right: screenWidth / 30),
+                        child: CircleAvatar(),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              SliverPadding(
+                padding: EdgeInsets.only(top: screenHeight / 45),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      Container(
+                        height: screenHeight / 14,
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 233, 233, 233),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(screenWidth / 60),
+                          child: Container(
+                            child: TabBar(
+                              controller: _tabController,
+                              indicator: BoxDecoration(
+                                color: Color.fromARGB(255, 60, 180, 229),
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              labelColor: Colors.white,
+                              unselectedLabelColor:
+                                  Color.fromARGB(255, 60, 180, 229),
+                              tabs: const [
+                                Tab(text: "Pending"),
+                                Tab(text: "Completed"),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ];
+          },
+          body: TabBarView(
+            controller: _tabController,
+            children: [
+              PendingPage(),
+              CompletedPage(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
