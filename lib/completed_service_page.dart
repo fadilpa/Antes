@@ -8,8 +8,10 @@ import 'package:mentegoz_technologies/api.dart';
 import 'package:mentegoz_technologies/compledted_model.dart';
 import 'package:mentegoz_technologies/custom_button.dart';
 import 'package:mentegoz_technologies/get_user_name_number.dart';
+import 'package:mentegoz_technologies/pending_service_page.dart';
 import 'package:mentegoz_technologies/ticketpage.dart';
 import 'package:mentegoz_technologies/uploadedbill.dart';
+import 'package:mentegoz_technologies/util/styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CompletedServicePage extends StatefulWidget {
@@ -107,11 +109,8 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                         flexibleSpace: FlexibleSpaceBar(
                           centerTitle: true,
                           title: Text(
-                            "Services".toUpperCase(),
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 15.0,
-                            ),
+                            "Completed Services",
+                            style:mainTextStyleBlack.copyWith(fontWeight: FontWeight.w600,fontSize: 12)
                           ),
                         ),
                         leading: IconButton(
@@ -132,20 +131,12 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    name!.split(' ').first.toUpperCase() ?? "User Name",
-                                    style: TextStyle(
-                                      color: Colors.black54,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                    name!.split(' ').first ?? "User Name",
+                                    style:   mainTextStyleBlack.copyWith(fontSize: 12,fontWeight: FontWeight.bold)
                                   ),
                                   Text(
                                     number ?? "Emp_no",
-                                    style: TextStyle(
-                                      color: Colors.black54,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                    style:  mainTextStyleBlack.copyWith(fontSize: 12)
                                   ),
                                 ],
                               ),
@@ -166,26 +157,26 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                   body: SingleChildScrollView(
                     child: Column(
                       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
                           height: screenHeight / 25,
                         ),
-                        Text(
-                          widget.servicename.toUpperCase() ??
-                              "No Service Name".toUpperCase(),
-                          style: GoogleFonts.montserrat(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                            decoration: TextDecoration.underline,
+                        Padding(
+                            padding:
+                                   const EdgeInsets.only(left: 30),
+                          child: Text(
+                            captilaize(widget.servicename) ??
+                                "No Service Name".toUpperCase(),
+                            style:  mainTextStyleBlack.copyWith(fontWeight: FontWeight.w600,decoration: TextDecoration.underline)
                           ),
                         ),
                         SizedBox(
                           height: screenHeight / 25,
                         ),
                         Padding(
-                          padding:  EdgeInsets.only(left: screenWidth/8.5),
+                          padding:
+                                    const EdgeInsets.only(left: 30),
                           child: Column(
                             children:[
                           Row(
@@ -199,12 +190,9 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                               ),
                               Flexible(
                                 child: Text(
-                                  widget.clientName.toUpperCase() ??
+                                 captilaize(widget.clientName)  ??
                                       "No Client Name".toUpperCase(),
-                                  style: GoogleFonts.montserrat(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black),
+                                   style:mainTextStyleBlack.copyWith(fontSize: 16)
                                 ),
                               )
                             ],
@@ -223,12 +211,9 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                               ),
                               Flexible(
                                 child: Text(
-                                  widget.address.toUpperCase() ??
+                                  widget.address ??
                                       "Not Address Added".toUpperCase(),
-                                  style: GoogleFonts.montserrat(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black),
+                                  style: mainTextStyleBlack.copyWith(fontSize: 16)
                                 ),
                               )
                             ],
@@ -246,12 +231,9 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                                 width: screenWidth / 50,
                               ),
                               Text(
-                                widget.landmark.toUpperCase() ??
-                                    "No Categorised".toUpperCase(),
-                                style: GoogleFonts.montserrat(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.black),
+                                widget.landmark ??
+                                    "No Categorised",
+                                style: mainTextStyleBlack.copyWith(fontSize: 16)
                               )
                             ],
                           ),
@@ -261,7 +243,7 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                           Row(
                             children: [
                               const Icon(
-                                Icons.date_range,
+                                CupertinoIcons.clock_fill,
                                 color: Color.fromARGB(255, 60, 180, 229),
                               ),
                               SizedBox(
@@ -272,12 +254,9 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                                         ? "Date Not Defined".toUpperCase()
                                         : widget.startdate) +
                                     (widget.starttime != null
-                                        ? " (${widget.starttime})"
+                                        ? " ,${widget.starttime}"
                                         : "Time Not Defined".toUpperCase()),
-                                style: GoogleFonts.montserrat(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.black),
+                                style: mainTextStyleBlack.copyWith(fontSize: 16)
                               )
                             ],
                           ),
@@ -287,7 +266,7 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                           Row(
                             children: [
                               const Icon(
-                                Icons.date_range,
+                                CupertinoIcons.clock_fill,
                                 color: Color.fromARGB(255, 60, 180, 229),
                               ),
                               SizedBox(
@@ -295,15 +274,12 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                               ),
                               Text(
                                 (widget.enddate == null
-                                        ? "Date Not Defined".toUpperCase()
+                                        ? "Date Not Defined"
                                         : widget.enddate) +
                                     (widget.endtime != null
-                                        ? " (${widget.endtime})"
-                                        : "Time Not Defined".toUpperCase()),
-                                style: GoogleFonts.montserrat(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.black),
+                                        ? " , ${widget.endtime}"
+                                        : "Time Not Defined"),
+                                style: mainTextStyleBlack.copyWith(fontSize: 16)
                               )
                             ],
                           ),
@@ -318,7 +294,7 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                                   Row(
                                     children: [
                                       const Icon(
-                                        CupertinoIcons.plus_rectangle,
+                                        CupertinoIcons.arrow_up_circle_fill,
                                         color:
                                             Color.fromARGB(255, 60, 180, 229),
                                       ),
@@ -327,11 +303,8 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                                       ),
                                       Text(
                                         widget.priority ??
-                                            "No Priority".toUpperCase(),
-                                        style: GoogleFonts.montserrat(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.black),
+                                            "No Priority",
+                                        style: mainTextStyleBlack.copyWith(fontSize: 16)
                                       )
                                     ],
                                   ),
@@ -349,12 +322,9 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                                         width: screenWidth / 50,
                                       ),
                                       Text(
-                                        widget.phone.toUpperCase() ??
+                                        widget.phone??
                                             "No Landmark".toUpperCase(),
-                                        style: GoogleFonts.montserrat(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.black),
+                                        style: mainTextStyleBlack.copyWith(fontSize: 16)
                                       )
                                     ],
                                   ),
@@ -373,12 +343,9 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                                       ),
                                       Flexible(
                                         child: Text(
-                                          widget.email.toUpperCase() ??
+                                          widget.email??
                                               "No Email".toUpperCase(),
-                                          style: GoogleFonts.montserrat(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.black),
+                                          style: mainTextStyleBlack.copyWith(fontSize: 16),
                                         ),
                                       )
                                     ],
@@ -389,7 +356,7 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                                   Row(
                                     children: [
                                       const Icon(
-                                        CupertinoIcons.rectangle_fill_on_rectangle_angled_fill,
+                                       CupertinoIcons.tag_fill,
                                         color:
                                             Color.fromARGB(255, 60, 180, 229),
                                       ),
@@ -399,10 +366,7 @@ class _CompletedServicePageState extends State<CompletedServicePage> {
                                       Text(
                                         widget.refNo.toUpperCase() ??
                                             "No refno".toUpperCase(),
-                                        style: GoogleFonts.montserrat(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.black),
+                                        style:mainTextStyleBlack.copyWith(fontSize: 16),
                                       )
                                     ],
                                   ),

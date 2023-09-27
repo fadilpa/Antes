@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mentegoz_technologies/Modal/User_Model.dart';
 import 'package:mentegoz_technologies/logoutpage.dart';
 import 'package:mentegoz_technologies/pending_page.dart';
 import 'package:mentegoz_technologies/recordpage.dart';
+import 'package:mentegoz_technologies/util/styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'completed_page.dart';
 
@@ -66,7 +68,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 60, 180, 229),
+                color: Color.fromRGBO( 60, 180, 229,1),
               ),
               child: Center(
                 child: Text(
@@ -107,16 +109,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 floating: true,
                 expandedHeight: screenHeight * 0.13,
                 forceElevated: true,
-                elevation: 3,
+                elevation: 2,
                 backgroundColor: Colors.white,
                 flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
                   title: Text(
-                    "Services".toUpperCase(),
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 15.0,
-                    ),
+                    "Services",
+                    style: mainTextStyle.copyWith(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 15),
                   ),
                 ),
                 leading: IconButton(
@@ -178,14 +177,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           padding: EdgeInsets.all(screenWidth / 60),
                           child: Container(
                             child: TabBar(
+                              labelStyle:  mainTextStyle.copyWith(fontWeight: FontWeight.w600),
                               controller: _tabController,
+                              
                               indicator: BoxDecoration(
                                 color: Color.fromARGB(255, 60, 180, 229),
                                 borderRadius: BorderRadius.circular(30),
                               ),
                               labelColor: Colors.white,
                               unselectedLabelColor:
-                                  Color.fromARGB(255, 60, 180, 229),
+                                  Color.fromRGBO( 60, 180, 229,1),
                               tabs: const [
                                 Tab(text: "Pending"),
                                 Tab(text: "Completed"),

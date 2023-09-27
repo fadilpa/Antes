@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mentegoz_technologies/api.dart';
 import 'package:mentegoz_technologies/compledted_model.dart';
 import 'package:mentegoz_technologies/completed_service_page.dart';
@@ -107,7 +108,8 @@ class _CompletedPageState extends State<CompletedPage> {
                               height: screenHeight/70,
                             ),
                             Container(
-                              height: screenHeight / 6.1,
+                              // height: screenHeight / 6.1,
+                               height: 200,
                               width: screenWidth / 2.5,
                               decoration: BoxDecoration(
                                 color: Color.fromARGB(255, 60, 180, 229),
@@ -122,16 +124,16 @@ class _CompletedPageState extends State<CompletedPage> {
                                       CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      clientName.toUpperCase(),
-                                      style: TextStyle(color: Colors.white),
+                                      clientName,
+                                      style: GoogleFonts.montserrat(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w400),
                                     ),
                                     Text(
-                                      email.toLowerCase(),
-                                      style: TextStyle(color: Colors.white),
+                                      startDate,
+                                      style: GoogleFonts.montserrat(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w400),
                                     ),
                                     Text(
-                                      phone.toUpperCase(),
-                                      style: TextStyle(color: Colors.black),
+                                      priority,
+                                      style: GoogleFonts.montserrat(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w400),
                                     ),
                                   ],
                                  ),

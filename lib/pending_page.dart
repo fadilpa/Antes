@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mentegoz_technologies/api.dart';
 import 'package:mentegoz_technologies/pendin_model.dart';
 import 'package:mentegoz_technologies/pending_service_page.dart';
@@ -103,15 +104,15 @@ class _PendingPageState extends State<PendingPage> {
                             SizedBox(
                               height: screenHeight/70,
                             ),
-                            Text('Service ${index + 1}'.toUpperCase()),
+                            Text('Service ${index + 1}'.toUpperCase(),style: TextStyle(fontWeight: FontWeight.bold),),
                              SizedBox(
                               height: screenHeight/70,
                             ),
                             Container(
-                              height: screenHeight / 6.1,
+                              height: 200,
                               width: screenWidth / 2.5,
                               decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 60, 180, 229),
+                                color:  Color.fromRGBO( 60, 180, 229,1),
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: Padding(
@@ -122,17 +123,20 @@ class _PendingPageState extends State<PendingPage> {
                                   crossAxisAlignment:
                                       CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      clientName.toUpperCase(),
-                                      style: TextStyle(color: Colors.white),
+                                    Padding(
+                                      padding: const EdgeInsets.only(right:.0),
+                                      child: Text(
+                                        clientName,
+                                        style: GoogleFonts.montserrat(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w400),
+                                      ),
                                     ),
                                     Text(
                                       startDate,
-                                      style: TextStyle(color: Colors.white),
+                                      style: GoogleFonts.montserrat(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w400),
                                     ),
                                     Text(
-                                      priority.toUpperCase(),
-                                      style: TextStyle(color: Colors.black),
+                                      priority,
+                                      style: GoogleFonts.montserrat(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w400),
                                     ),
                                   ],
                                 ),

@@ -16,6 +16,7 @@ import 'package:mentegoz_technologies/pendin_model.dart';
 import 'package:mentegoz_technologies/start_api_journey.dart';
 import 'package:mentegoz_technologies/ticketpage.dart';
 import 'package:mentegoz_technologies/uploadedbill.dart';
+import 'package:mentegoz_technologies/util/styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 String? addressResult;
@@ -555,11 +556,9 @@ class _PendingServicePageState extends State<PendingServicePage> {
                         flexibleSpace: FlexibleSpaceBar(
                           centerTitle: true,
                           title: Text(
-                            "Services".toUpperCase(),
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 15.0,
-                            ),
+                           captilaize( widget.servicename)??
+                                    "No Service Name".toUpperCase(),
+                            style:mainTextStyle.copyWith(fontWeight: FontWeight.w600,color: Colors.black,fontSize: 15),
                           ),
                         ),
                         leading: IconButton(
@@ -580,13 +579,9 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    name!.split(' ').first.toUpperCase() ??
+                                    name!.split(' ').first ??
                                         "User Name",
-                                    style: TextStyle(
-                                      color: Colors.black54,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                    style: mainTextStyleBlack.copyWith(fontSize: 12,fontWeight: FontWeight.bold)
                                   ),
                                   Text(
                                     number ?? "Emp_no",
@@ -614,30 +609,31 @@ class _PendingServicePageState extends State<PendingServicePage> {
                   },
                   body: SingleChildScrollView(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          height: screenHeight / 25,
+                      height: 40,
                         ),
                         Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                widget.servicename.toUpperCase() ??
-                                    "No Service Name".toUpperCase(),
-                                style: GoogleFonts.montserrat(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black,
-                                  decoration: TextDecoration.underline,
+                              Padding(
+                                padding:
+                                    EdgeInsets.only(left: 30),
+                                child: Text(
+                                 captilaize( widget.servicename )??
+                                      "No Service Name",
+                                  style: mainTextStyleBlack.copyWith(fontWeight: FontWeight.w600,decoration: TextDecoration.underline),
                                 ),
                               ),
+                             
                               SizedBox(
                                 height: screenHeight / 25,
                               ),
                               Padding(
                                 padding:
-                                    EdgeInsets.only(left: screenWidth / 8.5),
+                                    const EdgeInsets.only(left: 30),
                                 child: Column(children: [
                                   Row(
                                     children: [
@@ -651,12 +647,9 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                       ),
                                       Flexible(
                                         child: Text(
-                                          widget.clientName.toUpperCase() ??
+                                          widget.clientName ??
                                               "No Client Name".toUpperCase(),
-                                          style: GoogleFonts.montserrat(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.black),
+                                          style:mainTextStyleBlack.copyWith(fontSize: 16)
                                         ),
                                       )
                                     ],
@@ -667,8 +660,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                   Row(
                                     children: [
                                       const Icon(
-                                        CupertinoIcons
-                                            .rectangle_fill_on_rectangle_angled_fill,
+                                        Icons.location_on,
                                         color:
                                             Color.fromARGB(255, 60, 180, 229),
                                       ),
@@ -677,12 +669,9 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                       ),
                                       Flexible(
                                         child: Text(
-                                          widget.Address.toUpperCase() ??
+                                          widget.Address ??
                                               "No Address added".toUpperCase(),
-                                          style: GoogleFonts.montserrat(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.black),
+                                          style: mainTextStyleBlack.copyWith(fontSize: 16)
                                         ),
                                       )
                                     ],
@@ -693,7 +682,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                   Row(
                                     children: [
                                       const Icon(
-                                        CupertinoIcons.square_favorites_fill,
+                                       Icons.landscape,
                                         color:
                                             Color.fromARGB(255, 60, 180, 229),
                                       ),
@@ -702,12 +691,9 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                       ),
                                       Flexible(
                                         child: Text(
-                                          widget.Phone.toUpperCase() ??
-                                              "No Categorised".toUpperCase(),
-                                          style: GoogleFonts.montserrat(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.black),
+                                          widget.Phone ??
+                                              "No Categorised",
+                                          style: mainTextStyleBlack.copyWith(fontSize: 16)
                                         ),
                                       )
                                     ],
@@ -718,7 +704,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                   Row(
                                     children: [
                                       const Icon(
-                                        Icons.date_range,
+                                        CupertinoIcons.clock_fill,
                                         color:
                                             Color.fromARGB(255, 60, 180, 229),
                                       ),
@@ -729,15 +715,12 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                         (widget.startdate == null
                                                 ? "Date Not Defined"
                                                     .toUpperCase()
-                                                : widget.startdate) +
+                                                : widget.startdate)+
                                             (widget.starttime != null
-                                                ? " (${widget.starttime})"
+                                                ? ", ${widget.starttime}"
                                                 : "Time Not Defined"
                                                     .toUpperCase()),
-                                        style: GoogleFonts.montserrat(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.black),
+                                        style: mainTextStyleBlack.copyWith(fontSize: 16)
                                       )
                                     ],
                                   ),
@@ -747,7 +730,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                   Row(
                                     children: [
                                       const Icon(
-                                        Icons.date_range,
+                                          CupertinoIcons.clock_fill,
                                         color:
                                             Color.fromARGB(255, 60, 180, 229),
                                       ),
@@ -760,13 +743,10 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                                     .toUpperCase()
                                                 : widget.enddate) +
                                             (widget.endtime != null
-                                                ? " (${widget.endtime})"
+                                                ? " ${widget.endtime}"
                                                 : "Time Not Defined"
                                                     .toUpperCase()),
-                                        style: GoogleFonts.montserrat(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400,
-                                            color: Colors.black),
+                                        style: mainTextStyleBlack.copyWith(fontSize: 16)
                                       ),
                                     ],
                                   ),
@@ -782,7 +762,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                           Row(
                                             children: [
                                               const Icon(
-                                                CupertinoIcons.person_solid,
+                                                Icons.category,
                                                 color: Color.fromARGB(
                                                     255, 60, 180, 229),
                                               ),
@@ -791,7 +771,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                               ),
                                               Text(
                                                 widget.Catgory ??
-                                                    "No Category".toUpperCase(),
+                                                    "No Category",
                                                 style: GoogleFonts.montserrat(
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.w400,
@@ -805,7 +785,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                           Row(
                                             children: [
                                               const Icon(
-                                                CupertinoIcons.person_solid,
+                                                Icons.location_city_rounded,
                                                 color: Color.fromARGB(
                                                     255, 60, 180, 229),
                                               ),
@@ -828,7 +808,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                           Row(
                                             children: [
                                               const Icon(
-                                                CupertinoIcons.person_solid,
+                                                CupertinoIcons.mail,
                                                 color: Color.fromARGB(
                                                     255, 60, 180, 229),
                                               ),
@@ -837,7 +817,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                               ),
                                               Flexible(
                                                 child: Text(
-                                                  widget.Email.toUpperCase() ??
+                                                  widget.Email ??
                                                       "No Email".toUpperCase(),
                                                   style: GoogleFonts.montserrat(
                                                       fontSize: 16,
@@ -853,7 +833,7 @@ class _PendingServicePageState extends State<PendingServicePage> {
                                           Row(
                                             children: [
                                               const Icon(
-                                                CupertinoIcons.person_solid,
+                                                CupertinoIcons.tag_fill,
                                                 color: Color.fromARGB(
                                                     255, 60, 180, 229),
                                               ),
@@ -989,3 +969,14 @@ class _PendingServicePageState extends State<PendingServicePage> {
         });
   }
 }
+captilaize(String a){
+ final RegExp pattern = RegExp(r'([a-zA-Z]+)([0-9]+)');
+  
+
+  String result = a.replaceAllMapped(pattern, (match) {
+    return '${match.group(1)} ${match.group(2)}';
+  });
+
+  return '${result[0].toUpperCase()}${result.substring(1)}';
+}
+//give a space between alphabtes and numver in fluter?
