@@ -5,6 +5,7 @@ import 'package:mentegoz_technologies/api.dart';
 import 'package:mentegoz_technologies/pendin_model.dart';
 import 'package:mentegoz_technologies/pending_service_page.dart';
 import 'package:mentegoz_technologies/providerclass.dart';
+import 'package:mentegoz_technologies/util/styles.dart';
 import 'package:provider/provider.dart';
 
 class PendingPage extends StatefulWidget {
@@ -127,16 +128,16 @@ class _PendingPageState extends State<PendingPage> {
                                       padding: const EdgeInsets.only(right:.0),
                                       child: Text(
                                         clientName,
-                                        style: GoogleFonts.montserrat(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w400),
+                                        style: mainTextStyle,
                                       ),
                                     ),
                                     Text(
                                       startDate,
-                                      style: GoogleFonts.montserrat(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w400),
+                                      style: mainTextStyle,
                                     ),
                                     Text(
                                       priority,
-                                      style: GoogleFonts.montserrat(color: Colors.white,fontSize: 20,fontWeight: FontWeight.w400),
+                                      style: mainTextStyle,
                                     ),
                                   ],
                                 ),
