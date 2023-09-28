@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mentegoz_technologies/controller/varibles.dart';
+
 
 class OpenCameraProvider extends ChangeNotifier {
+  final ImagePicker picker = ImagePicker();
+  File? image;
   Future<void> openImagePicker() async {
     final XFile? pickedImage =
         await picker.pickImage(source: ImageSource.camera);

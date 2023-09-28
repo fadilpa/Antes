@@ -2,10 +2,10 @@ import 'package:expand_widget/expand_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mentegoz_technologies/controller/api/journey_api.dart';
+import 'package:mentegoz_technologies/api/journey_api.dart';
 import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
 import 'package:mentegoz_technologies/controller/Provider/name_and_num_provider.dart';
-import 'package:mentegoz_technologies/controller/Provider/pending_provider.dart';
+import 'package:mentegoz_technologies/controller/Provider/pending_and_complete_provider.dart';
 import 'package:mentegoz_technologies/view/app_bars/sevice_app_bar.dart';
 import 'package:mentegoz_technologies/controller/custom_button.dart';
 import 'package:mentegoz_technologies/controller/dialog_boxes/end_dialog_box.dart';
@@ -21,6 +21,7 @@ class PendingServicePage extends StatelessWidget {
   PendingServicePage(
       {super.key,
       required this.index,
+      this.id,
       required this.clientName,
       this.refNo,
       this.category,
@@ -37,6 +38,7 @@ class PendingServicePage extends StatelessWidget {
 
   final int index;
   final clientName;
+  final id;
   final refNo;
   final category;
   final startdate;
@@ -50,10 +52,12 @@ class PendingServicePage extends StatelessWidget {
   final Address;
   final Phone;
 
-  // var serviceCount, filepath, Amount;
-
   @override
   Widget build(BuildContext context) {
+    // int count = 1;
+    Provider.of<LocationProvider>(context, listen: false).address;
+    String? currentTime = DateTime.now().toString();
+    final addressresult = context.read<LocationProvider>().address;
     var userProvider = Provider.of<UserNameAndNumber>(context);
     userProvider.get_user_name_and_number();
     // ignore: unused_local_variable
@@ -263,7 +267,8 @@ class PendingServicePage extends StatelessWidget {
                                               Row(
                                                 children: [
                                                   const Icon(
-                                                    CupertinoIcons.creditcard_fill,
+                                                    CupertinoIcons
+                                                        .creditcard_fill,
                                                     color: Color.fromARGB(
                                                         255, 60, 180, 229),
                                                   ),
@@ -347,7 +352,8 @@ class PendingServicePage extends StatelessWidget {
                                               Row(
                                                 children: [
                                                   const Icon(
-                                                    CupertinoIcons.rectangle_fill_on_rectangle_angled_fill,
+                                                    CupertinoIcons
+                                                        .rectangle_fill_on_rectangle_angled_fill,
                                                     color: Color.fromARGB(
                                                         255, 60, 180, 229),
                                                   ),
@@ -447,15 +453,22 @@ class PendingServicePage extends StatelessWidget {
                                             prefs.getString('Firebase_Id');
                                         value.getLocationAndAddress();
                                         // currentTime.toString();
-                                        endservicedata = {
-                                          "firebase_id": Firebase_Id,
-                                          "service_id": servicename!,
-                                          "geolocation": addressResult ?? "",
-                                          "date_time": currentTime,
-                                        };
+                                        // endservicedata = {
+                                        //   "firebase_id": Firebase_Id,
+                                        //   "service_id": servicename!,
+                                        //   "geolocation": addressresult ?? "",
+                                        //   "date_time": currentTime,
+                                        // };
                                         await PostData().PostEndService(
-                                          endservicedata,
-                                        );
+                                            context,
+                                            Firebase_Id,
+                                            Provider.of<LocationProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .currentService!
+                                                .id,
+                                            addressresult,
+                                            currentTime);
                                       },
                                     ),
                                   ),

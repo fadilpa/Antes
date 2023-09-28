@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
 import 'package:mentegoz_technologies/view/complete/completed_page.dart';
 import 'package:mentegoz_technologies/view/drawer.dart';
 import 'package:mentegoz_technologies/view/pending/pending_page.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
 class HomePage extends StatefulWidget {
-    final bool initialIsStartButtonTapped;
   const HomePage({
-    Key? key, required this.initialIsStartButtonTapped,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -32,6 +33,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    context.read<LocationProvider>().address;
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
     getusername_and_number();

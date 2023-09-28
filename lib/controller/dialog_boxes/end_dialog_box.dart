@@ -1,19 +1,32 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:mentegoz_technologies/api/journey_api.dart';
 import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
-import 'package:mentegoz_technologies/controller/api/journey_api.dart';
 import 'package:mentegoz_technologies/controller/image_picker.dart';
-import 'package:mentegoz_technologies/controller/varibles.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> endDialogBox(BuildContext context) async {
+  File? filepath;
+  // String? selectedTravelMode;
+
+  String? currentTime = DateTime.now().toString();
+  File? image;
+  final curretnService = Provider.of<LocationProvider>(context,listen: false).currentService;
+  TextEditingController AmountController = TextEditingController();
+  final amountcontroller = context.read<LocationProvider>().amountController;
+  // String amount = AmountController.text;
+  final addressresult = context.read<LocationProvider>().address;
+  final selectedTarvelMode =
+      context.read<LocationProvider>().selectedTravelMode;
   bool isButtonTapped = false; // Initially, assume the button is not tapped
   bool journeyStarted =
       Provider.of<LocationProvider>(context, listen: false).journeyStarted;
+
   if (journeyStarted) {
     await showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (context) {
         return Consumer<LocationProvider>(builder: (context, value, child) {
           return AlertDialog(
             title: Text("End Service"),
@@ -21,6 +34,11 @@ Future<void> endDialogBox(BuildContext context) async {
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextField(
+                  controller: AmountController,
+                  onChanged: (value) {
+                    Provider.of<LocationProvider>(context, listen: false)
+                        .setAmount(value);
+                  },
                   decoration: InputDecoration(
                     labelText: "Enter Amount",
                   ),
@@ -31,7 +49,7 @@ Future<void> endDialogBox(BuildContext context) async {
                     suffixIcon: IconButton(
                       icon: Icon(Icons.camera_alt),
                       onPressed: () async {
-                        Provider.of<OpenCameraProvider>(context)
+                        Provider.of<OpenCameraProvider>(context, listen: false)
                             .openImagePicker();
                       },
                     ),
@@ -53,21 +71,20 @@ Future<void> endDialogBox(BuildContext context) async {
                   String? Firebase_Id = prefs.getString('Firebase_Id');
                   await value.getLocationAndAddress();
                   value.updatejourneyStarted(false);
-                 
-                  enddata = {
-                    "firebase_id": Firebase_Id,
-                    "service_id": "Service ",
-                    "geolocation": addressResult,
-                    "travel_mode": 'selectedTravelMode',
-                    "date_time": 'currentTime',
-                  };
-                  
-                  await PostData().PostEndData(enddata);
-                  print(enddata);
+                  await PostData().PostEndData(
+                      context,
+                      Firebase_Id,
+                      curretnService,
+                      addressresult,
+                      selectedTarvelMode,
+                      currentTime,
+                      amountcontroller,
+                      filepath);
+                  // print(enddata);
                   Navigator.of(context).pop();
 
-                  isButtonTapped = true;
-                  await prefs.setBool('isButtonTapped', isButtonTapped);
+                  // isButtonTapped = true;
+                  // await prefs.setBool('isButtonTapped', isButtonTapped);
                 },
                 child: Text("End"),
               ),

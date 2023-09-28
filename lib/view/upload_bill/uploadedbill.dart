@@ -4,7 +4,10 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:mentegoz_technologies/api/upload_bill_api.dart';
+import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
 import 'package:mentegoz_technologies/controller/Provider/name_and_num_provider.dart';
+import 'package:mentegoz_technologies/controller/Provider/shared_pref_provider.dart';
 import 'package:mentegoz_technologies/controller/custom_button.dart';
 import 'package:mentegoz_technologies/controller/varibles.dart';
 import 'package:mentegoz_technologies/view/app_bars/upload_bill_app_bar.dart';
@@ -17,7 +20,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 Map<String, List<String>> categoryToOptions = {
   'Food': ['Breakfast', 'Lunch', 'Dinner'],
   'Travel': [],
-  
 };
 
 String dropdownValue = categoryToOptions.keys.first;
@@ -32,15 +34,34 @@ class UpLoadBill extends StatefulWidget {
 }
 
 class UpLoadBillState extends State<UpLoadBill> {
+  String? currentTime = DateTime.now().toString();
   // String dropdownValue = category_list.first;
   // String Option_value = option_list.first;
   TextEditingController Description_Controller = TextEditingController();
   TextEditingController Amount_Controller = TextEditingController();
-  File? _selectedImage;
+  File? filepath;
   String? name;
   String? number;
-  Future<void> pickImage(ImageSource source) async {
+  Future<void> pickImage(ImageSource source, context) async {
+    // final addressresult = context.read<LocationProvider>().address;
     final pickedImage = await ImagePicker().pickImage(source: source);
+    final addresSResult =
+        Provider.of<LocationProvider>(context, listen: false).address;
+    final selectedTarvelMode =
+        context.read<LocationProvider>().selectedTravelMode;
+    final amountcontroller =
+        Provider.of<LocationProvider>(context, listen: false).amountController;
+    // final descriptioncontroller =
+    //     Provider.of<LocationProvider>(context, listen: false)
+    //         .descriptionController;
+    final curretService =
+        Provider.of<LocationProvider>(context, listen: false).currentService;
+    final firebase_id =
+        Provider.of<FirebaseIdProvider>(context, listen: false).firebaseId;
+    // final categoryvalue =
+    //     Provider.of<LocationProvider>(context, listen: false).selectCategory;
+    // final optionValue =
+    //     Provider.of<LocationProvider>(context, listen: false).selectOptions;
 
     if (pickedImage == null) {
       // User canceled image selection
@@ -48,16 +69,16 @@ class UpLoadBillState extends State<UpLoadBill> {
     }
 
     setState(() {
-      _selectedImage = File(pickedImage.path);
+      filepath = File(pickedImage.path);
     });
     // Check the size of the selected image
-    final imageSizeInBytes = _selectedImage!.lengthSync();
+    final imageSizeInBytes = filepath!.lengthSync();
     final double imageSizeInMb = imageSizeInBytes / (1024 * 1024);
 
     if (imageSizeInBytes > 100) {
       // Compress the image if it's larger than 1 MB
       final compressedImage = await FlutterImageCompress.compressWithFile(
-        _selectedImage!.path,
+        filepath!.path,
         quality: 70, // Adjust the quality as needed (0-100)
       );
 
@@ -68,15 +89,19 @@ class UpLoadBillState extends State<UpLoadBill> {
           Uri.parse(
               'https://antes.meduco.in/api/upload_bill'), // Replace with your API endpoint
           body: {
-            "firebase_id": "syuxKE42GTXQaZaZBdoUBwgTAfi1",
-            "service_id": "1",
-            "geolocation": "",
-            "category": "",
-            "option": "",
-            "description": "",
-            "date_time": "",
-            "amount": "",
-            "image": ""
+            "firebase_id": firebase_id,
+            "service_id": curretService!.id,
+            "geolocation": addresSResult ?? "no address fetched",
+            "category": 'categoryvalue',
+            "option": 'optionValue',
+            "description": 'descriptioncontroller',
+            "date_time": currentTime,
+            "amount": amountcontroller,
+            "image": filepath != null
+                ? await MultipartFile.fromFile(
+                    filepath as String, //change this'filepath'
+                    filename: 'image')
+                : null,
             // base64Encode(compressedImage!), // Convert to base64 if needed
           },
         );
@@ -93,22 +118,21 @@ class UpLoadBillState extends State<UpLoadBill> {
       }
     } else {
       // Image is already below 1 MB, you can directly upload it.
-      // Send _selectedImage to your API.
+      // Send filepath to your API.
       try {
         final response = await http.post(
           Uri.parse(
               'https://antes.meduco.in/api/upload_bill'), // Replace with your API endpoint
           body: {
-            "firebase_id": "syuxKE42GTXQaZaZBdoUBwgTAfi1",
-            "service_id": 'Service 1',
-            "geolocation": addressResult,
-            "travel_mode": 'jvjjb',
+            "firebase_id": firebase_id,
+            "service_id": curretService!.id,
+            "geolocation": addresSResult ?? "no data",
+            "travel_mode": selectedTarvelMode,
             "date_time": currentTime,
-            'image': MultipartFile.fromFile(_selectedImage as String,
-                filename: 'image'),
-            // base64Encode(_selectedImage!
+            'image':
+                MultipartFile.fromFile(filename: 'image', filepath as String),
+            // base64Encode(filepath!
             //     .readAsBytesSync()),
-
             // Convert to base64 if needed
           },
         );
@@ -126,7 +150,6 @@ class UpLoadBillState extends State<UpLoadBill> {
     }
   }
 
-
   getusername_and_number() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -138,11 +161,34 @@ class UpLoadBillState extends State<UpLoadBill> {
   @override
   void initState() {
     super.initState();
+    Provider.of<LocationProvider>(context, listen: false)
+        .getLocationAndAddress();
     getusername_and_number();
   }
 
   @override
   Widget build(BuildContext context) {
+    final addresSResult =
+        Provider.of<LocationProvider>(context, listen: false).address;
+    final selectedTarvelMode =
+        context.read<LocationProvider>().selectedTravelMode;
+    final amountcontroller =
+        Provider.of<LocationProvider>(context, listen: false).uploadAmountController;
+    final descriptioncontroller =
+        Provider.of<LocationProvider>(context, listen: false)
+            .uploadDescriptionController;
+    final curretService =
+        Provider.of<LocationProvider>(context, listen: false).currentService;
+    final firebase_id =
+        Provider.of<FirebaseIdProvider>(context, listen: false).firebaseId;
+    final categoryvalue =
+        Provider.of<LocationProvider>(context, listen: false).category;
+    final optionValue =
+        Provider.of<LocationProvider>(context, listen: false).options;
+
+    // int count = 1;
+    // final addressresult =
+    //     Provider.of<LocationProvider>(context, listen: false).address;
     var userProvider = Provider.of<UserNameAndNumber>(context);
     userProvider.get_user_name_and_number();
     final screenHeight = MediaQuery.of(context).size.height;
@@ -150,26 +196,26 @@ class UpLoadBillState extends State<UpLoadBill> {
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
-          UploadBillAppBar(screenHeight: screenHeight, userProvider: userProvider, screenWidth: screenWidth),
+          UploadBillAppBar(
+              screenHeight: screenHeight,
+              userProvider: userProvider,
+              screenWidth: screenWidth),
           SliverList(
             delegate: SliverChildListDelegate(
               [
                 SizedBox(
                   height: screenHeight / 13,
                 ),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                     Text("Category    ".toUpperCase()),
+                    Text("Category    ".toUpperCase()),
                     Container(
                       width: screenWidth / 2,
                       height: screenHeight / 15,
                       padding: EdgeInsets.all(5),
                       decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey
-                        ),
+                        border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(5),
                         color: Colors.grey[200],
                       ),
@@ -182,8 +228,10 @@ class UpLoadBillState extends State<UpLoadBill> {
                                 dropdownValue = newValue!;
                                 optionList = categoryToOptions[dropdownValue]!;
                                 space();
-                                
                               });
+                              Provider.of<LocationProvider>(context,
+                                      listen: false)
+                                  .setCategory(newValue);
                             },
                             items: categoryToOptions.keys
                                 .map<DropdownMenuItem<String>>((String value) {
@@ -198,61 +246,60 @@ class UpLoadBillState extends State<UpLoadBill> {
                     ),
                   ],
                 ),
-
-                optionList.isNotEmpty?
-                
-                Padding(
-                  padding:  EdgeInsets.only(top:screenHeight/35),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text("Options     ".toUpperCase()),
-                      Center(
-                        child: Container(
-                          width: screenWidth / 2,
-                          height: screenHeight / 18,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.grey
-                            ),
-                            borderRadius: BorderRadius.circular(5),
-                            color: Colors.grey[200],
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // Text("Select"),
-                              DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
-                                  value: selectedOption,
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      // print(dropdownValue);
-                                      selectedOption = newValue!;
-                                    });
-                                  },
-                                  items: optionList
-                                      .map<DropdownMenuItem<String>>(
-                                          (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
+                optionList.isNotEmpty
+                    ? Padding(
+                        padding: EdgeInsets.only(top: screenHeight / 35),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text("Options     ".toUpperCase()),
+                            Center(
+                              child: Container(
+                                width: screenWidth / 2,
+                                height: screenHeight / 18,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.grey[200],
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    // Text("Select"),
+                                    DropdownButtonHideUnderline(
+                                      child: DropdownButton<String>(
+                                        value: selectedOption,
+                                        onChanged: (newValue) {
+                                          setState(() {
+                                            // print(dropdownValue);
+                                            selectedOption = newValue!;
+                                          });
+                                          Provider.of<LocationProvider>(context,
+                                                  listen: false)
+                                              .setOptions(newValue);
+                                        },
+                                        items: optionList
+                                            .map<DropdownMenuItem<String>>(
+                                                (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                )
-                :
-                const SizedBox(),
-                 SizedBox(height: screenHeight/35,),
+                      )
+                    : const SizedBox(),
+                SizedBox(
+                  height: screenHeight / 35,
+                ),
                 Center(
-                  
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -264,6 +311,11 @@ class UpLoadBillState extends State<UpLoadBill> {
                           color: Colors.grey[200],
                           child: TextField(
                               controller: Amount_Controller,
+                              onChanged: (value) {
+                                Provider.of<LocationProvider>(context,
+                                        listen: false)
+                                    .setUploadAmount(value);
+                              },
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 hintText: "Enter Amount",
@@ -274,7 +326,7 @@ class UpLoadBillState extends State<UpLoadBill> {
                   ),
                 ),
                 SizedBox(
-                  height: screenHeight/35,
+                  height: screenHeight / 35,
                 ),
                 Center(
                   child: Row(
@@ -289,6 +341,11 @@ class UpLoadBillState extends State<UpLoadBill> {
                           child: TextField(
                               maxLines: 4,
                               controller: Description_Controller,
+                              onChanged: (value) {
+                                Provider.of<LocationProvider>(context,
+                                        listen: false)
+                                    .setUploadDescription(value);
+                              },
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 hintText: "Enter Description",
@@ -309,7 +366,7 @@ class UpLoadBillState extends State<UpLoadBill> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            pickImage(ImageSource.camera);
+                            pickImage(ImageSource.camera, context);
                           },
                           child: Container(
                             height: screenHeight / 12,
@@ -330,7 +387,7 @@ class UpLoadBillState extends State<UpLoadBill> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            pickImage(ImageSource.gallery);
+                            pickImage(ImageSource.gallery, context);
                           },
                           child: Container(
                             height: screenHeight / 12,
@@ -353,8 +410,26 @@ class UpLoadBillState extends State<UpLoadBill> {
                     ),
                     CustmButton(
                         buttontext: 'Upload',
-                        buttonaction: () {
-                        
+                        buttonaction: () async {
+                          Provider.of<LocationProvider>(context, listen: false)
+                              .getLocationAndAddress();
+                          final prefs = await SharedPreferences.getInstance();
+// ignore: unused_local_variable
+                          String? Firebase_Id = prefs.getString('Firebase_Id');
+                          Upload(
+                              context,
+                              Firebase_Id,
+                              curretService!.id,
+                              addresSResult,
+                              categoryvalue,
+                              optionValue,
+                              descriptioncontroller,
+                              currentTime,
+                              amountcontroller,
+                              filepath);
+                          //function not assigned need function
+                          Amount_Controller.clear();
+                          Description_Controller.clear();
                         }),
                   ],
                 ),
@@ -367,12 +442,10 @@ class UpLoadBillState extends State<UpLoadBill> {
   }
 }
 
-space(){
-if(categoryToOptions[0]==0){
-  optionList.first;
-
-}else{
-  
-null;
-    }
+space() {
+  if (categoryToOptions[0] == 0) {
+    optionList.first;
+  } else {
+    null;
+  }
 }

@@ -2,8 +2,8 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:mentegoz_technologies/controller/api/shared_pref_provider.dart';
-import 'package:mentegoz_technologies/controller/Provider/pending_provider.dart';
+import 'package:mentegoz_technologies/controller/Provider/shared_pref_provider.dart';
+import 'package:mentegoz_technologies/controller/Provider/pending_and_complete_provider.dart';
 import 'package:mentegoz_technologies/model/completed_model.dart';
 import 'package:mentegoz_technologies/view/complete/completed_service_page.dart';
 import 'package:provider/provider.dart';

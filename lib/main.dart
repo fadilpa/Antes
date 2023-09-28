@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mentegoz_technologies/controller/api/shared_pref_provider.dart';
+import 'package:mentegoz_technologies/controller/Provider/shared_pref_provider.dart';
+
 import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
 import 'package:mentegoz_technologies/controller/Provider/name_and_num_provider.dart';
-import 'package:mentegoz_technologies/controller/Provider/pending_provider.dart';
+import 'package:mentegoz_technologies/controller/Provider/pending_and_complete_provider.dart';
 import 'package:mentegoz_technologies/controller/Provider/tab_provider.dart';
+import 'package:mentegoz_technologies/controller/image_picker.dart';
 import 'package:mentegoz_technologies/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mentegoz_technologies/view/login_page.dart';
@@ -13,7 +15,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
- final isButtonTapped = prefs.getBool('isButtonTapped') ?? false;
   runApp(
     MultiProvider(
       providers: [
@@ -24,10 +25,13 @@ void main() async {
         ChangeNotifierProvider(create: (context) => UserNameAndNumber()),
         ChangeNotifierProvider(create: (context) => ServiceProvider()),
         ChangeNotifierProvider(create: (context) => TabProvider()),
+        ChangeNotifierProvider(create: (context) => OpenCameraProvider()),
       ],
       child: MaterialApp(
         title: 'Antes',
-        home: isLoggedIn ? HomePage(initialIsStartButtonTapped: isButtonTapped,) : LoginPage(),
+        home: isLoggedIn
+            ? HomePage()
+            : LoginPage(),
       ),
     ),
   );

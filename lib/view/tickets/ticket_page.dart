@@ -1,10 +1,16 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
 import 'package:mentegoz_technologies/controller/varibles.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+String? name;
+String? number;
 
 class RaisedTicket extends StatefulWidget {
   const RaisedTicket({super.key});
@@ -14,7 +20,7 @@ class RaisedTicket extends StatefulWidget {
 }
 
 class _RaisedTicketState extends State<RaisedTicket> {
-  File? _image;
+  File? image;
   final _picker = ImagePicker();
   // Implementing the image picker
   Future<void> _openImagePicker() async {
@@ -23,7 +29,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
     if (pickedImage != null) {
       final imageBytes = await pickedImage.readAsBytes();
       setState(() {
-        _image = File(pickedImage.path);
+        image = File(pickedImage.path);
       });
     }
   }
@@ -34,28 +40,48 @@ class _RaisedTicketState extends State<RaisedTicket> {
   final dio = Dio();
 
   Future Upload(
-    description,
+    firbase_id,
+    id,
+    addressresult,
     subject,
+    description,
+    currentTime,
     filepath,
   ) async {
     // print(caption + title + filepath);
     print('aaaaaaaaaaaaaaaaaaaaa');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final firebaseId = prefs.getString('Firebase_Id');
+    final addresSResult =
+        Provider.of<LocationProvider>(context, listen: false).address;
+    final curretService =
+        Provider.of<LocationProvider>(context, listen: false).currentService;
+    final subjectcontroller =
+        Provider.of<LocationProvider>(context, listen: false)
+            .ticketSubjectController;
+    final descriptioncontroller =
+        Provider.of<LocationProvider>(context, listen: false)
+            .ticketDescriptionController;
+    String? currentTime = DateTime.now().toString();
     final formData = FormData.fromMap({
       "firebase_id": firebaseId,
-      "service_id": 'vrrlklnc',
-      "geolocation": addressResult,
-      "subject": subject,
-      "description": description,
-      "date_time": currentTime.toString(),
+      "service_id": curretService!.id,
+      "geolocation": addresSResult ?? "Address Not Found",
+      "subject": subjectcontroller,
+      "description": descriptioncontroller,
+      "date_time": currentTime,
       'image': await MultipartFile.fromFile(filepath, filename: 'image'),
     });
+    print(addresSResult);
+    print(subjectcontroller);
+    print(descriptioncontroller);
+    print(curretService.id);
     final response = await dio.post(
       'https://antes.meduco.in/api/ticket_submit',
       data: formData,
     );
     print(response.statusCode);
+    print(jsonEncode(response.data));
     if (response.statusCode == 200) {
       // Navigator.pop(context);
       ScaffoldMessenger.of(context)
@@ -135,6 +161,18 @@ class _RaisedTicketState extends State<RaisedTicket> {
 
   @override
   Widget build(BuildContext context) {
+    final addresSResult =
+        Provider.of<LocationProvider>(context, listen: false).address;
+
+    final subjectcontroller =
+        Provider.of<LocationProvider>(context, listen: false)
+            .ticketSubjectController;
+    final descriptioncontroller =
+        Provider.of<LocationProvider>(context, listen: false)
+            .ticketDescriptionController;
+    final curretService =
+        Provider.of<LocationProvider>(context, listen: false).currentService;
+    String? currentTime = DateTime.now().toString();
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     if (isTicketSubmitted) {
@@ -142,7 +180,66 @@ class _RaisedTicketState extends State<RaisedTicket> {
       return Scaffold(
         body: CustomScrollView(
           slivers: <Widget>[
-            RaiseTicketAppBar(screenWidth: screenWidth),
+            SliverAppBar(
+              pinned: true,
+              floating: true,
+              expandedHeight: 100,
+              forceElevated: true,
+              elevation: 3,
+              backgroundColor: Colors.white,
+              flexibleSpace: FlexibleSpaceBar(
+                centerTitle: true,
+                title: Text(
+                  "Raise a Ticket",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15.0,
+                  ),
+                ),
+              ),
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back_ios_outlined,
+                  color: Colors.black,
+                ),
+                tooltip: 'Back',
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              actions: <Widget>[
+                Row(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          name!.split(' ').first.toUpperCase() ?? "User Name",
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          number ?? "Emp_no",
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(width: screenWidth / screenWidth / 30),
+                    Padding(
+                      padding: EdgeInsets.only(right: screenWidth / 30),
+                      child: CircleAvatar(),
+                    ),
+                  ],
+                )
+              ],
+            ),
             SliverToBoxAdapter(
               child: Center(
                 child: Padding(
@@ -198,9 +295,6 @@ class _RaisedTicketState extends State<RaisedTicket> {
                                         ),
                                       ],
                                     ),
-                                    // const SizedBox(
-                                    //   height: 10,
-                                    // ),
                                     const Text(
                                       'Ticket Raised',
                                       style: TextStyle(
@@ -272,7 +366,66 @@ class _RaisedTicketState extends State<RaisedTicket> {
       return Scaffold(
         body: CustomScrollView(
           slivers: <Widget>[
-             RaiseTicketAppBar(screenWidth: screenWidth),
+            SliverAppBar(
+              pinned: true,
+              floating: true,
+              expandedHeight: 100,
+              forceElevated: true,
+              elevation: 3,
+              backgroundColor: Colors.white,
+              flexibleSpace: FlexibleSpaceBar(
+                centerTitle: true,
+                title: Text(
+                  "Raise a Ticket",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15.0,
+                  ),
+                ),
+              ),
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back_ios_outlined,
+                  color: Colors.black,
+                ),
+                tooltip: 'Back',
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              actions: <Widget>[
+                Row(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          name!.split(' ').first.toUpperCase() ?? "User Name",
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          number ?? "Emp_no",
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(width: screenWidth / screenWidth / 30),
+                    Padding(
+                      padding: EdgeInsets.only(right: screenWidth / 30),
+                      child: CircleAvatar(),
+                    ),
+                  ],
+                )
+              ],
+            ),
             SliverToBoxAdapter(
               child: Center(
                 child: Padding(
@@ -333,11 +486,21 @@ class _RaisedTicketState extends State<RaisedTicket> {
                             children: [
                               TextField(
                                 controller: SubjectController,
+                                onChanged: (value) {
+                                  Provider.of<LocationProvider>(context,
+                                          listen: false)
+                                      .setTicketSubject(value);
+                                },
                                 decoration:
                                     InputDecoration(hintText: '  Subject'),
                               ),
                               TextField(
                                 controller: DescriptionController,
+                                onChanged: (value) {
+                                  Provider.of<LocationProvider>(context,
+                                          listen: false)
+                                      .setTicketDescription(value);
+                                },
                                 decoration:
                                     InputDecoration(hintText: '  Description'),
                               ),
@@ -389,12 +552,20 @@ class _RaisedTicketState extends State<RaisedTicket> {
                                 height: screenHeight / 18, // Adjusted height
                                 width: screenWidth / 3.5, // Adjusted width
                                 child: ElevatedButton(
-                                  onPressed: () {
+                                  onPressed: () async {
+                                    final prefs =
+                                        await SharedPreferences.getInstance();
+// ignore: unused_local_variable
+                                    String? firebase_Id =
+                                        prefs.getString('Firebase_Id');
                                     Upload(
-                                        DescriptionController.text,
-                                        SubjectController.text,
-                                        // serviceCount,
-                                        _image!.path);
+                                        firebase_Id,
+                                        curretService,
+                                        addresSResult,
+                                        subjectcontroller,
+                                        descriptioncontroller,
+                                        currentTime,
+                                        image!.path);
                                     setState(() {
                                       isTicketSubmitted = true;
                                     });
@@ -428,75 +599,17 @@ class _RaisedTicketState extends State<RaisedTicket> {
   }
 }
 
-class RaiseTicketAppBar extends StatelessWidget {
-  const RaiseTicketAppBar({
-    super.key,
-    required this.screenWidth,
-  });
+// class RaiseTicketAppBar extends StatelessWidget {
+//    RaiseTicketAppBar({
+//     super.key,
+//     required this.screenWidth,
+//   });
 
-  final double screenWidth;
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverAppBar(
-      pinned: true,
-      floating: true,
-      expandedHeight: 100,
-      forceElevated: true,
-      elevation: 3,
-      backgroundColor: Colors.white,
-      flexibleSpace: FlexibleSpaceBar(
-        centerTitle: true,
-        title: Text(
-          "Raise a Ticket",
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 15.0,
-          ),
-        ),
-      ),
-      leading: IconButton(
-        icon: const Icon(
-          Icons.arrow_back_ios_outlined,
-          color: Colors.black,
-        ),
-        tooltip: 'Back',
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-      ),
-      actions: <Widget>[
-        Row(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  name!.split(' ').first.toUpperCase() ?? "User Name",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                  number ?? "Emp_no",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(width: screenWidth / screenWidth / 30),
-            Padding(
-              padding: EdgeInsets.only(right: screenWidth / 30),
-              child: CircleAvatar(),
-            ),
-          ],
-        )
-      ],
-    );
-  }
-}
+//   final double screenWidth;
+// // String? name;
+// // String? number;
+//   @override
+//   Widget build(BuildContext context) {
+//     return 
+//   }
+// }

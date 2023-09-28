@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:mentegoz_technologies/api/journey_api.dart';
 import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
-import 'package:mentegoz_technologies/controller/api/journey_api.dart';
-import 'package:mentegoz_technologies/controller/varibles.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> showStartDialog(BuildContext context) async {
-  bool isButtonTapped =
-      false; // Initially, assume the button is not tapped
+  // int count = 1;
+  String? currentTime = DateTime.now().toString();
+  // final selectedTarvelMode =
+  //     context.read<LocationProvider>().selectedTravelMode;
+final curretService = Provider.of<LocationProvider>(context,listen: false).currentService;
+  final addressresult = context.read<LocationProvider>().address;
+  bool isButtonTapped = false; // Initially, assume the button is not tapped
 
   bool journeyStarted =
       Provider.of<LocationProvider>(context, listen: false).journeyStarted;
@@ -58,7 +62,9 @@ Future<void> showStartDialog(BuildContext context) async {
                     );
                   }).toList(),
                   onChanged: (value) {
-                    // Handle dropdown value change if needed
+                    value;
+                    Provider.of<LocationProvider>(context, listen: false)
+                        .setTravelMode(value);
                   },
                 ),
               ],
@@ -75,22 +81,23 @@ Future<void> showStartDialog(BuildContext context) async {
                   final prefs = await SharedPreferences.getInstance();
 // ignore: unused_local_variable
                   String? Firebase_Id = prefs.getString('Firebase_Id');
+
                   value.getLocationAndAddress();
                   value.updatejourneyStarted(true);
-                  startdata = {
-                    "firebase_id": Firebase_Id,
-                    "service_id": "1",
-                    "geolocation": addressResult,
-                    "travel_mode": selectedTravelMode,
-                    "date_time": currentTime,
-                  };
-                  await PostData().PostStartData(startdata);
+
+                  await PostData().PostStartData(
+                      context,
+                      Firebase_Id,
+                      curretService,
+                      addressresult,
+                      Provider.of<LocationProvider>(context, listen: false)
+                          .selectedTravelMode,
+                      currentTime);
                   // print(startdata);
                   Navigator.of(context).pop();
-                  
-                  isButtonTapped = true;
-                  await prefs.setBool(
-                      'isButtonTapped', isButtonTapped);
+
+                  // isButtonTapped = true;
+                  // await prefs.setBool('isButtonTapped', isButtonTapped);
                 },
                 child: Text("Start"),
               ),

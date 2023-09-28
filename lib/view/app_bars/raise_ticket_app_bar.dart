@@ -7,7 +7,8 @@ class RaiseTicketAppBar extends StatelessWidget {
     super.key,
     required this.screenWidth,
   });
-
+String? name;
+String? number;
   final double screenWidth;
 
   @override

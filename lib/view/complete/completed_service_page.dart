@@ -2,7 +2,7 @@ import 'package:expand_widget/expand_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mentegoz_technologies/controller/Provider/pending_provider.dart';
+import 'package:mentegoz_technologies/controller/Provider/pending_and_complete_provider.dart';
 import 'package:mentegoz_technologies/model/completed_model.dart';
 import 'package:mentegoz_technologies/controller/custom_button.dart';
 import 'package:mentegoz_technologies/controller/Provider/name_and_num_provider.dart';

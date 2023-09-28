@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mentegoz_technologies/controller/api/shared_pref_provider.dart';
+import 'package:mentegoz_technologies/controller/Provider/shared_pref_provider.dart';
 import 'package:mentegoz_technologies/home_page.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,7 +37,7 @@ Future<void> login(BuildContext context) async {
           if (status == 'pending') {
             final firebaseId = data[0]["data"][0]["firebase_id"].toString();
             final userName = data[0]["data"][0]["name"].toString();
-            final mobileNumber = data[0]["data"][0]["emp_no"]??"Emp_no".toString();
+            final mobileNumber = data[0]["data"][0]["emp_no"]??"emp_no".toString();
             print(firebaseId);
             final firebaseIdProvider =
                 Provider.of<FirebaseIdProvider>(context, listen: false);
@@ -54,7 +54,7 @@ Future<void> login(BuildContext context) async {
             prefs.setString('Name', userName);
             prefs.setString('Mobile', mobileNumber);
             Navigator.of(context)
-                .pushReplacement(MaterialPageRoute(builder: (context) => HomePage(initialIsStartButtonTapped:false,)));
+                .pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
             emailController.clear();
             passwordController.clear();
             return;

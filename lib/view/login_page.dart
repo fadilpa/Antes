@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:mentegoz_technologies/controller/api/login_api.dart';
+import 'package:mentegoz_technologies/api/login_api.dart';
 import 'package:mentegoz_technologies/controller/request_location_permissions.dart';
 import 'dart:math' as math;
 

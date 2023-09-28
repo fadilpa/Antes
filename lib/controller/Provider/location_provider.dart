@@ -1,22 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:geocode/geocode.dart';
 import 'package:location/location.dart';
-import 'package:mentegoz_technologies/controller/varibles.dart';
+import 'package:mentegoz_technologies/model/pending_model.dart';
 
 class LocationProvider extends ChangeNotifier {
+  Data? currentService;
   bool journeyStarted = false;
+
   updatejourneyStarted(bool value) {
     journeyStarted = value;
     notifyListeners();
   }
 
-  // LocationData? currentLocation;
-  // String address = "";
+  LocationData? currentLocation;
+  String? address;
 
+  String? selectedTravelMode;
+  setTravelMode(String? travel_mode) {
+    selectedTravelMode = travel_mode;
+  }
+
+  String? amountController;
+  setAmount(String? amount_data) {
+    amountController = amount_data;
+  }
+
+  setCurrentService(Data? currentServices) {
+    currentService = currentServices;
+  }
+
+  String? category;
+  setCategory(String? category_value) {
+    category = category_value;
+  }
+
+  String? options;
+  setOptions(String? options_value) {
+    options = options_value;
+  }
+   
+   String? uploadDescriptionController;
+  setUploadDescription(String? upload_description) {
+    uploadDescriptionController = upload_description;
+  }
+
+  String? uploadAmountController;
+  setUploadAmount(String? upload_amount) {
+    uploadAmountController = upload_amount;
+  }
+   String? ticketDescriptionController;
+  setTicketDescription(String? ticket_description) {
+    ticketDescriptionController = ticket_description;
+  }
+   String? ticketSubjectController;
+  setTicketSubject(String? ticket_subject) {
+    ticketSubjectController = ticket_subject;
+  }
   Future<void> getLocationAndAddress() async {
-    // Location location = Location();
+    Location location = Location();
     LocationData? locationData;
-    // String? addressResult;
+    String? addressResult;
 
     // Check if location service is enabled.
     bool serviceEnabled = await location.serviceEnabled();
@@ -51,7 +94,7 @@ class LocationProvider extends ChangeNotifier {
       );
       addressResult =
           "${result.streetAddress}, ${result.city}, ${result.countryName}, ${result.postal}";
-      print(addressResult);
+      // print(addressResult);
     }
 
     // Update the current location and address.

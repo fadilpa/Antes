@@ -2,8 +2,9 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:mentegoz_technologies/controller/api/shared_pref_provider.dart';
-import 'package:mentegoz_technologies/controller/Provider/pending_provider.dart';
+import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
+import 'package:mentegoz_technologies/controller/Provider/shared_pref_provider.dart';
+import 'package:mentegoz_technologies/controller/Provider/pending_and_complete_provider.dart';
 import 'package:mentegoz_technologies/model/pending_model.dart';
 import 'package:mentegoz_technologies/view/pending/pending_service_page.dart';
 import 'package:provider/provider.dart';
@@ -54,6 +55,7 @@ class PendingPage extends StatelessWidget {
                           crossAxisSpacing: 5),
                   itemCount: dataList.length,
                   itemBuilder: (context, index) {
+                    var id = dataList[index].id;
                     var servicename = dataList[index].serviceName;
                     var clientName = dataList[index].clientName!;
                     var refNo = dataList[index].refNo!;
@@ -70,11 +72,13 @@ class PendingPage extends StatelessWidget {
 
                     return GestureDetector(
                         onTap: () {
+                          Provider.of<LocationProvider>(context,listen: false).setCurrentService(dataList[index]);
                           // Navigate to the other page when an item is tapped.
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => PendingServicePage(
                                 index: index, 
+                                id: id,
                                 clientName: clientName,
                                 servicename: servicename,
                                 refNo: refNo,
