@@ -6,6 +6,9 @@ import 'package:mentegoz_technologies/api/journey_api.dart';
 import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
 import 'package:mentegoz_technologies/controller/Provider/name_and_num_provider.dart';
 import 'package:mentegoz_technologies/controller/Provider/pending_and_complete_provider.dart';
+import 'package:mentegoz_technologies/controller/capitalize.dart';
+import 'package:mentegoz_technologies/controller/styles.dart';
+import 'package:mentegoz_technologies/view/app_bars/pending_page_app_bar.dart';
 import 'package:mentegoz_technologies/view/app_bars/sevice_app_bar.dart';
 import 'package:mentegoz_technologies/controller/custom_button.dart';
 import 'package:mentegoz_technologies/controller/dialog_boxes/end_dialog_box.dart';
@@ -55,6 +58,7 @@ class PendingServicePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // int count = 1;
+   final addresSResult = context.read<LocationProvider>().address;
     Provider.of<LocationProvider>(context, listen: false).address;
     String? currentTime = DateTime.now().toString();
     final addressresult = context.read<LocationProvider>().address;
@@ -87,7 +91,7 @@ class PendingServicePage extends StatelessWidget {
                       headerSliverBuilder:
                           (BuildContext context, bool innerBoxIsScrolled) {
                         return <Widget>[
-                          ServiceAppBar(
+                          PendingAppBar(
                               screenHeight: screenHeight,
                               userProvider: userProvider,
                               screenWidth: screenWidth),
@@ -95,30 +99,38 @@ class PendingServicePage extends StatelessWidget {
                       },
                       body: SingleChildScrollView(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
                               height: screenHeight / 25,
                             ),
                             Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    servicename.toUpperCase() ??
-                                        "No Service Name".toUpperCase(),
-                                    style: GoogleFonts.montserrat(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black,
-                                      decoration: TextDecoration.underline,
-                                    ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 30),
+                                    child: Text(
+                                        captilaize(servicename) ??
+                                            "No Service Name",
+                                        style: mainTextStyleBlack.copyWith(
+                                            fontWeight: FontWeight.w600,
+                                            decoration:
+                                                TextDecoration.underline)
+                                        // servicename ??
+                                        //     "No Service Name",
+                                        // style: GoogleFonts.montserrat(
+                                        //   fontSize: 20,
+                                        //   fontWeight: FontWeight.w600,
+                                        //   color: Colors.black,
+                                        //   decoration: TextDecoration.underline,
+                                        // ),
+                                        ),
                                   ),
                                   SizedBox(
                                     height: screenHeight / 25,
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(
-                                        left: screenWidth / 8.5),
+                                    padding: EdgeInsets.only(left: 30),
                                     child: Column(children: [
                                       Row(
                                         children: [
@@ -132,14 +144,10 @@ class PendingServicePage extends StatelessWidget {
                                           ),
                                           Flexible(
                                             child: Text(
-                                              clientName.toUpperCase() ??
-                                                  "No Client Name"
-                                                      .toUpperCase(),
-                                              style: GoogleFonts.montserrat(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Colors.black),
-                                            ),
+                                                captilaize(clientName) ??
+                                                    "No Service Name",
+                                                style: mainTextStyleBlack
+                                                    .copyWith(fontSize: 16)),
                                           )
                                         ],
                                       ),
@@ -149,8 +157,7 @@ class PendingServicePage extends StatelessWidget {
                                       Row(
                                         children: [
                                           const Icon(
-                                            CupertinoIcons
-                                                .rectangle_fill_on_rectangle_angled_fill,
+                                            Icons.location_on,
                                             color: Color.fromARGB(
                                                 255, 60, 180, 229),
                                           ),
@@ -159,14 +166,9 @@ class PendingServicePage extends StatelessWidget {
                                           ),
                                           Flexible(
                                             child: Text(
-                                              Address.toUpperCase() ??
-                                                  "No Address added"
-                                                      .toUpperCase(),
-                                              style: GoogleFonts.montserrat(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Colors.black),
-                                            ),
+                                                Address ?? "No Address added",
+                                                style: mainTextStyleBlack
+                                                    .copyWith(fontSize: 16)),
                                           )
                                         ],
                                       ),
@@ -176,8 +178,7 @@ class PendingServicePage extends StatelessWidget {
                                       Row(
                                         children: [
                                           const Icon(
-                                            CupertinoIcons
-                                                .square_favorites_fill,
+                                            Icons.phone,
                                             color: Color.fromARGB(
                                                 255, 60, 180, 229),
                                           ),
@@ -186,14 +187,9 @@ class PendingServicePage extends StatelessWidget {
                                           ),
                                           Flexible(
                                             child: Text(
-                                              Phone.toUpperCase() ??
-                                                  "No Categorised"
-                                                      .toUpperCase(),
-                                              style: GoogleFonts.montserrat(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Colors.black),
-                                            ),
+                                                Phone ?? "No Mobile Number",
+                                                style: mainTextStyleBlack
+                                                    .copyWith(fontSize: 16)),
                                           )
                                         ],
                                       ),
@@ -203,7 +199,7 @@ class PendingServicePage extends StatelessWidget {
                                       Row(
                                         children: [
                                           const Icon(
-                                            Icons.date_range,
+                                            CupertinoIcons.clock_fill,
                                             color: Color.fromARGB(
                                                 255, 60, 180, 229),
                                           ),
@@ -211,19 +207,14 @@ class PendingServicePage extends StatelessWidget {
                                             width: screenWidth / 50,
                                           ),
                                           Text(
-                                            (startdate == null
-                                                    ? "Date Not Defined"
-                                                        .toUpperCase()
-                                                    : startdate) +
-                                                (starttime != null
-                                                    ? " ($starttime)"
-                                                    : "Time Not Defined"
-                                                        .toUpperCase()),
-                                            style: GoogleFonts.montserrat(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400,
-                                                color: Colors.black),
-                                          )
+                                              (startdate == null
+                                                      ? "Date Not Defined"
+                                                      : startdate) +
+                                                  (starttime != null
+                                                      ? " ($starttime)"
+                                                      : "Time Not Defined"),
+                                              style: mainTextStyleBlack
+                                                  .copyWith(fontSize: 16))
                                         ],
                                       ),
                                       SizedBox(
@@ -232,7 +223,7 @@ class PendingServicePage extends StatelessWidget {
                                       Row(
                                         children: [
                                           const Icon(
-                                            Icons.date_range,
+                                            CupertinoIcons.clock_fill,
                                             color: Color.fromARGB(
                                                 255, 60, 180, 229),
                                           ),
@@ -240,19 +231,14 @@ class PendingServicePage extends StatelessWidget {
                                             width: screenWidth / 50,
                                           ),
                                           Text(
-                                            (enddate == null
-                                                    ? "Date Not Defined"
-                                                        .toUpperCase()
-                                                    : enddate) +
-                                                (endtime != null
-                                                    ? " ($endtime)"
-                                                    : "Time Not Defined"
-                                                        .toUpperCase()),
-                                            style: GoogleFonts.montserrat(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400,
-                                                color: Colors.black),
-                                          ),
+                                              (enddate == null
+                                                      ? "Date Not Defined"
+                                                      : enddate) +
+                                                  (endtime != null
+                                                      ? " ($endtime)"
+                                                      : "Time Not Defined"),
+                                              style: mainTextStyleBlack
+                                                  .copyWith(fontSize: 16)),
                                         ],
                                       ),
                                       SizedBox(
@@ -267,26 +253,17 @@ class PendingServicePage extends StatelessWidget {
                                               Row(
                                                 children: [
                                                   const Icon(
-                                                    CupertinoIcons
-                                                        .creditcard_fill,
+                                                    Icons.category,
                                                     color: Color.fromARGB(
                                                         255, 60, 180, 229),
                                                   ),
                                                   SizedBox(
                                                     width: screenWidth / 50,
                                                   ),
-                                                  Text(
-                                                    Catgory ??
-                                                        "No Category"
-                                                            .toUpperCase(),
-                                                    style:
-                                                        GoogleFonts.montserrat(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            color:
-                                                                Colors.black),
-                                                  )
+                                                  Text(Catgory ?? "No Category",
+                                                      style: mainTextStyleBlack
+                                                          .copyWith(
+                                                              fontSize: 16))
                                                 ],
                                               ),
                                               SizedBox(
@@ -295,7 +272,7 @@ class PendingServicePage extends StatelessWidget {
                                               Row(
                                                 children: [
                                                   const Icon(
-                                                    Icons.landscape,
+                                                    Icons.location_city_rounded,
                                                     color: Color.fromARGB(
                                                         255, 60, 180, 229),
                                                   ),
@@ -303,17 +280,10 @@ class PendingServicePage extends StatelessWidget {
                                                     width: screenWidth / 50,
                                                   ),
                                                   Text(
-                                                    Landmark.toUpperCase() ??
-                                                        "No Landmark"
-                                                            .toUpperCase(),
-                                                    style:
-                                                        GoogleFonts.montserrat(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            color:
-                                                                Colors.black),
-                                                  )
+                                                      Landmark ?? "No Landmark",
+                                                      style: mainTextStyleBlack
+                                                          .copyWith(
+                                                              fontSize: 16))
                                                 ],
                                               ),
                                               SizedBox(
@@ -322,7 +292,7 @@ class PendingServicePage extends StatelessWidget {
                                               Row(
                                                 children: [
                                                   const Icon(
-                                                    CupertinoIcons.mail_solid,
+                                                    CupertinoIcons.mail,
                                                     color: Color.fromARGB(
                                                         255, 60, 180, 229),
                                                   ),
@@ -331,18 +301,12 @@ class PendingServicePage extends StatelessWidget {
                                                   ),
                                                   Flexible(
                                                     child: Text(
-                                                      Email.toUpperCase() ??
-                                                          "No Email"
-                                                              .toUpperCase(),
-                                                      style: GoogleFonts
-                                                          .montserrat(
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                              color:
-                                                                  Colors.black),
-                                                    ),
+                                                        Email ?? "No Email",
+                                                        style:
+                                                            mainTextStyleBlack
+                                                                .copyWith(
+                                                                    fontSize:
+                                                                        16)),
                                                   )
                                                 ],
                                               ),
@@ -352,26 +316,17 @@ class PendingServicePage extends StatelessWidget {
                                               Row(
                                                 children: [
                                                   const Icon(
-                                                    CupertinoIcons
-                                                        .rectangle_fill_on_rectangle_angled_fill,
+                                                    CupertinoIcons.tag_fill,
                                                     color: Color.fromARGB(
                                                         255, 60, 180, 229),
                                                   ),
                                                   SizedBox(
                                                     width: screenWidth / 50,
                                                   ),
-                                                  Text(
-                                                    refNo.toUpperCase() ??
-                                                        "No refno"
-                                                            .toUpperCase(),
-                                                    style:
-                                                        GoogleFonts.montserrat(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            color:
-                                                                Colors.black),
-                                                  )
+                                                  Text(refNo ?? "No refno",
+                                                      style: mainTextStyleBlack
+                                                          .copyWith(
+                                                              fontSize: 16))
                                                 ],
                                               ),
                                             ],
@@ -388,6 +343,7 @@ class PendingServicePage extends StatelessWidget {
                                   CustmButton(
                                       buttontext: 'Start Journey',
                                       buttonaction: () {
+                                        value.getLocationAndAddress();
                                         showStartDialog(context);
                                       }),
                                   SizedBox(
@@ -396,6 +352,7 @@ class PendingServicePage extends StatelessWidget {
                                   CustmButton(
                                       buttontext: 'End Journey',
                                       buttonaction: () {
+                                        value.getLocationAndAddress();
                                         endDialogBox(context);
                                       })
                                 ],
@@ -443,8 +400,12 @@ class PendingServicePage extends StatelessWidget {
                                                   BorderRadius.circular(32.0)),
                                           backgroundColor:
                                               (const Color.fromARGB(
-                                                  255, 60, 180, 229))),
-                                      child: Text('End Service'),
+                                                  255, 60, 180, 200))),
+                                      child: Text(
+                                        'End Service',
+                                        style: mainTextStyleBlack.copyWith(
+                                            color: Colors.white, fontSize: 12),
+                                      ),
                                       onPressed: () async {
                                         final prefs = await SharedPreferences
                                             .getInstance();

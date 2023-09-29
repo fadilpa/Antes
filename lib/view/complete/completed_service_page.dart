@@ -3,9 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mentegoz_technologies/controller/Provider/pending_and_complete_provider.dart';
+import 'package:mentegoz_technologies/controller/capitalize.dart';
+import 'package:mentegoz_technologies/controller/styles.dart';
 import 'package:mentegoz_technologies/model/completed_model.dart';
 import 'package:mentegoz_technologies/controller/custom_button.dart';
 import 'package:mentegoz_technologies/controller/Provider/name_and_num_provider.dart';
+import 'package:mentegoz_technologies/view/app_bars/complete_page_app_bar.dart';
 import 'package:mentegoz_technologies/view/app_bars/sevice_app_bar.dart';
 import 'package:mentegoz_technologies/view/tickets/ticket_page.dart';
 import 'package:provider/provider.dart';
@@ -73,54 +76,47 @@ class CompletedServicePage extends StatelessWidget {
                   headerSliverBuilder:
                       (BuildContext context, bool innerBoxIsScrolled) {
                     return <Widget>[
-                      ServiceAppBar(
+                      CompleteAppBar(
                           screenHeight: screenHeight,
                           userProvider: userProvider,
                           screenWidth: screenWidth),
-                       ];
-                         },
-                       body: SingleChildScrollView(
-                      child: Column(
+                    ];
+                  },
+                  body: SingleChildScrollView(
+                    child: Column(
                       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
                           height: screenHeight / 25,
                         ),
-                        Text(
-                          servicename.toUpperCase() ??
-                              "No Service Name".toUpperCase(),
-                          style: GoogleFonts.montserrat(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black,
-                            decoration: TextDecoration.underline,
-                          ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: Text(
+                              captilaize(servicename) ?? "No Service Name",
+                              style: mainTextStyleBlack.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  decoration: TextDecoration.underline)),
                         ),
                         SizedBox(
                           height: screenHeight / 25,
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: screenWidth / 8.5),
+                          padding: EdgeInsets.only(left: 30),
                           child: Column(children: [
                             Row(
                               children: [
                                 const Icon(
                                   CupertinoIcons.person_solid,
-                                  color: Color.fromARGB(255, 60, 180, 229),
+                                  color: Color.fromARGB(255, 60, 180, 200),
                                 ),
                                 SizedBox(
                                   width: screenWidth / 50,
                                 ),
                                 Flexible(
-                                  child: Text(
-                                    clientName.toUpperCase() ??
-                                        "No Client Name".toUpperCase(),
-                                    style: GoogleFonts.montserrat(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.black),
-                                  ),
+                                  child: Text(clientName ?? "No Client Name",
+                                      style: mainTextStyleBlack.copyWith(
+                                          fontSize: 16)),
                                 )
                               ],
                             ),
@@ -131,20 +127,15 @@ class CompletedServicePage extends StatelessWidget {
                               children: [
                                 const Icon(
                                   CupertinoIcons.location_solid,
-                                  color: Color.fromARGB(255, 60, 180, 229),
+                                  color: Color.fromARGB(255, 60, 180, 200),
                                 ),
                                 SizedBox(
                                   width: screenWidth / 50,
                                 ),
                                 Flexible(
-                                  child: Text(
-                                    address.toUpperCase() ??
-                                        "Not Address Added".toUpperCase(),
-                                    style: GoogleFonts.montserrat(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.black),
-                                  ),
+                                  child: Text(address ?? "Not Address Added",
+                                      style: mainTextStyleBlack.copyWith(
+                                          fontSize: 16)),
                                 )
                               ],
                             ),
@@ -155,19 +146,14 @@ class CompletedServicePage extends StatelessWidget {
                               children: [
                                 const Icon(
                                   Icons.landscape,
-                                  color: Color.fromARGB(255, 60, 180, 229),
+                                  color: Color.fromARGB(255, 60, 180, 200),
                                 ),
                                 SizedBox(
                                   width: screenWidth / 50,
                                 ),
-                                Text(
-                                  landmark.toUpperCase() ??
-                                      "No Categorised".toUpperCase(),
-                                  style: GoogleFonts.montserrat(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black),
-                                )
+                                Text(landmark ?? "No Categorised",
+                                    style: mainTextStyleBlack.copyWith(
+                                        fontSize: 16))
                               ],
                             ),
                             SizedBox(
@@ -176,24 +162,20 @@ class CompletedServicePage extends StatelessWidget {
                             Row(
                               children: [
                                 const Icon(
-                                  Icons.date_range,
-                                  color: Color.fromARGB(255, 60, 180, 229),
+                                  CupertinoIcons.clock_fill,
                                 ),
                                 SizedBox(
                                   width: screenWidth / 50,
                                 ),
                                 Text(
-                                  (startdate == null
-                                          ? "Date Not Defined".toUpperCase()
-                                          : startdate) +
-                                      (starttime != null
-                                          ? " ($starttime)"
-                                          : "Time Not Defined".toUpperCase()),
-                                  style: GoogleFonts.montserrat(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black),
-                                )
+                                    (startdate == null
+                                            ? "Date Not Defined"
+                                            : startdate) +
+                                        (starttime != null
+                                            ? " ($starttime)"
+                                            : "Time Not Defined"),
+                                    style: mainTextStyleBlack.copyWith(
+                                        fontSize: 16))
                               ],
                             ),
                             SizedBox(
@@ -202,24 +184,38 @@ class CompletedServicePage extends StatelessWidget {
                             Row(
                               children: [
                                 const Icon(
-                                  Icons.date_range,
-                                  color: Color.fromARGB(255, 60, 180, 229),
+                                  CupertinoIcons.clock_fill,
+                                  color: Color.fromARGB(255, 60, 180, 200),
                                 ),
                                 SizedBox(
                                   width: screenWidth / 50,
                                 ),
                                 Text(
-                                  (enddate == null
-                                          ? "Date Not Defined".toUpperCase()
-                                          : enddate) +
-                                      (endtime != null
-                                          ? " ($endtime)"
-                                          : "Time Not Defined".toUpperCase()),
-                                  style: GoogleFonts.montserrat(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black),
-                                )
+                                    (enddate == null
+                                            ? "Date Not Defined"
+                                            : enddate) +
+                                        (endtime != null
+                                            ? " ($endtime)"
+                                            : "Time Not Defined"),
+                                    style: mainTextStyleBlack.copyWith(
+                                        fontSize: 16))
+                              ],
+                            ),
+                            SizedBox(
+                              height: screenHeight / 25,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  CupertinoIcons.arrow_up_circle_fill,
+                                  color: Color.fromARGB(255, 60, 180, 200),
+                                ),
+                                SizedBox(
+                                  width: screenWidth / 50,
+                                ),
+                                Text(priority ?? "No Priority",
+                                    style: mainTextStyleBlack.copyWith(
+                                        fontSize: 16))
                               ],
                             ),
                             SizedBox(
@@ -228,102 +224,62 @@ class CompletedServicePage extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(right: 40),
                               child: ExpandChild(
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          CupertinoIcons.plus_rectangle,
-                                          color:
-                                              Color.fromARGB(255, 60, 180, 229),
-                                        ),
-                                        SizedBox(
-                                          width: screenWidth / 50,
-                                        ),
-                                        Text(
-                                          priority ??
-                                              "No Priority".toUpperCase(),
-                                          style: GoogleFonts.montserrat(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.black),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: screenHeight / 25,
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.phone,
-                                          color:
-                                              Color.fromARGB(255, 60, 180, 229),
-                                        ),
-                                        SizedBox(
-                                          width: screenWidth / 50,
-                                        ),
-                                        Text(
-                                          phone.toUpperCase() ??
-                                              "No Landmark".toUpperCase(),
-                                          style: GoogleFonts.montserrat(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.black),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: screenHeight / 25,
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          CupertinoIcons.mail,
-                                          color:
-                                              Color.fromARGB(255, 60, 180, 229),
-                                        ),
-                                        SizedBox(
-                                          width: screenWidth / 50,
-                                        ),
-                                        Flexible(
-                                          child: Text(
-                                            email.toUpperCase() ??
-                                                "No Email".toUpperCase(),
-                                            style: GoogleFonts.montserrat(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400,
-                                                color: Colors.black),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: screenHeight / 25,
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          CupertinoIcons
-                                              .rectangle_fill_on_rectangle_angled_fill,
-                                          color:
-                                              Color.fromARGB(255, 60, 180, 229),
-                                        ),
-                                        SizedBox(
-                                          width: screenWidth / 50,
-                                        ),
-                                        Text(
-                                          refNo.toUpperCase() ??
-                                              "No refno".toUpperCase(),
-                                          style: GoogleFonts.montserrat(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.black),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                                child: Column(children: [
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.phone,
+                                        color: Color.fromARGB(255, 60, 180, 200),
+                                      ),
+                                      SizedBox(
+                                        width: screenWidth / 50,
+                                      ),
+                                      Text(
+                                        phone ?? "No Phone",
+                                        style: GoogleFonts.montserrat(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: screenHeight / 25,
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        CupertinoIcons.mail,
+                                        color: Color.fromARGB(255, 60, 180, 200),
+                                      ),
+                                      SizedBox(
+                                        width: screenWidth / 50,
+                                      ),
+                                      Flexible(
+                                        child: Text(email ?? "No Email",
+                                            style: mainTextStyleBlack.copyWith(
+                                                fontSize: 16)),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: screenHeight / 25,
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        CupertinoIcons.tag_fill,
+                                        color: Color.fromARGB(255, 60, 180, 200),
+                                      ),
+                                      SizedBox(
+                                        width: screenWidth / 50,
+                                      ),
+                                      Text(refNo ?? "No refno",
+                                          style: mainTextStyleBlack.copyWith(
+                                              fontSize: 16))
+                                    ],
+                                  ),
+                                ]),
                               ),
                             ),
                           ]),
@@ -353,7 +309,7 @@ class CompletedServicePage extends StatelessWidget {
                           height: screenHeight / 20,
                         ),
                       ],
-                     ),
+                    ),
                   ),
                 ),
               ),

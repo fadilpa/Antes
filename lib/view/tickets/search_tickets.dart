@@ -46,7 +46,7 @@ String? number;
                         cursorColor: Colors.black,
                         decoration: InputDecoration(
                           filled: true,
-                          fillColor: Colors.white,
+                          fillColor: Colors.white70,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
@@ -73,7 +73,7 @@ String? number;
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                color: Colors.white,
+                                color: Colors.white70,
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Column(

@@ -1,19 +1,19 @@
-
-
 import 'dart:convert';
 
-List<CompletedServicesModel> CompletedServicesfromjson(String str) => List<CompletedServicesModel>.from(json.decode(str).map((x) => CompletedServicesModel.fromJson(x)));
+List<CompletedServicesModel> CompletedServicesfromjson(String str) =>
+    List<CompletedServicesModel>.from(
+        json.decode(str).map((x) => CompletedServicesModel.fromJson(x)));
 
 class CompletedServicesModel {
-  List<Data>? data;
+  List<CompleteDataModel>? data;
 
   CompletedServicesModel({this.data});
 
   CompletedServicesModel.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <CompleteDataModel>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new CompleteDataModel.fromJson(v));
       });
     }
   }
@@ -27,7 +27,7 @@ class CompletedServicesModel {
   }
 }
 
-class Data {
+class CompleteDataModel {
   int? id;
   String? serviceName;
   String? refNo;
@@ -44,7 +44,7 @@ class Data {
   String? landmark;
   String? category;
 
-  Data(
+  CompleteDataModel(
       {this.id,
       this.serviceName,
       this.refNo,
@@ -61,22 +61,22 @@ class Data {
       this.landmark,
       this.category});
 
-  Data.fromJson(Map<String, dynamic> json) {
-    id = json['id']??"";
-    serviceName = json['service_name']??"";
-    refNo = json['ref_no']??"";
-    startDate = json['start_date']??"";
-    startTime = json['start_time']??"";
-    endDate = json['end_date']??"";
-    endTime = json['end_time']??"";
-    priority = json['priority']??"";
-    status = json['status']??"";
-    clientName = json['client_name']??"";
-    phone = json['phone']??"";
-    email = json['email']??"";
-    address = json['address']??"";
-    landmark = json['landmark']??"";
-    category = json['category']??"";
+  CompleteDataModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'] ?? "";
+    serviceName = json['service_name'] ?? "";
+    refNo = json['ref_no'] ?? "";
+    startDate = json['start_date'] ?? "";
+    startTime = json['start_time'] ?? "";
+    endDate = json['end_date'] ?? "";
+    endTime = json['end_time'] ?? "";
+    priority = json['priority'] ?? "";
+    status = json['status'] ?? "";
+    clientName = json['client_name'] ?? "";
+    phone = json['phone'] ?? "";
+    email = json['email'] ?? "";
+    address = json['address'] ?? "";
+    landmark = json['landmark'] ?? "";
+    category = json['category'] ?? "";
   }
 
   Map<String, dynamic> toJson() {

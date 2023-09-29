@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mentegoz_technologies/controller/styles.dart';
 
 class CustmButton extends StatelessWidget {
   const CustmButton(
@@ -21,12 +22,12 @@ class CustmButton extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32.0)),
               
-              backgroundColor: (const Color.fromARGB(255, 60, 180, 229))),
+              backgroundColor: (const Color.fromARGB(255, 60, 180, 200))),
           onPressed: buttonaction,
           child: Text(
             buttontext,
-            style: GoogleFonts.montserrat(
-                fontSize: 15, fontWeight: FontWeight.w400, color: Colors.white),
+           style: mainTextStyleBlack.copyWith(color: Colors.white,
+                        fontSize: 12)
           )),
     );
   }

@@ -9,6 +9,7 @@ import 'package:mentegoz_technologies/controller/Provider/location_provider.dart
 import 'package:mentegoz_technologies/controller/Provider/name_and_num_provider.dart';
 import 'package:mentegoz_technologies/controller/Provider/shared_pref_provider.dart';
 import 'package:mentegoz_technologies/controller/custom_button.dart';
+import 'package:mentegoz_technologies/controller/styles.dart';
 import 'package:mentegoz_technologies/controller/varibles.dart';
 import 'package:mentegoz_technologies/view/app_bars/upload_bill_app_bar.dart';
 import 'package:provider/provider.dart';
@@ -51,17 +52,17 @@ class UpLoadBillState extends State<UpLoadBill> {
         context.read<LocationProvider>().selectedTravelMode;
     final amountcontroller =
         Provider.of<LocationProvider>(context, listen: false).amountController;
-    // final descriptioncontroller =
-    //     Provider.of<LocationProvider>(context, listen: false)
-    //         .descriptionController;
+    final descriptioncontroller =
+        Provider.of<LocationProvider>(context, listen: false)
+            .uploadDescriptionController;
     final curretService =
         Provider.of<LocationProvider>(context, listen: false).currentService;
     final firebase_id =
         Provider.of<FirebaseIdProvider>(context, listen: false).firebaseId;
-    // final categoryvalue =
-    //     Provider.of<LocationProvider>(context, listen: false).selectCategory;
-    // final optionValue =
-    //     Provider.of<LocationProvider>(context, listen: false).selectOptions;
+    final categoryvalue =
+        Provider.of<LocationProvider>(context, listen: false).category;
+    final optionValue =
+        Provider.of<LocationProvider>(context, listen: false).options;
 
     if (pickedImage == null) {
       // User canceled image selection
@@ -92,9 +93,9 @@ class UpLoadBillState extends State<UpLoadBill> {
             "firebase_id": firebase_id,
             "service_id": curretService!.id,
             "geolocation": addresSResult ?? "no address fetched",
-            "category": 'categoryvalue',
-            "option": 'optionValue',
-            "description": 'descriptioncontroller',
+            "category": categoryvalue,
+            "option": optionValue,
+            "description": descriptioncontroller,
             "date_time": currentTime,
             "amount": amountcontroller,
             "image": filepath != null
@@ -209,7 +210,8 @@ class UpLoadBillState extends State<UpLoadBill> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text("Category    ".toUpperCase()),
+                    Text("Category    ",style: mainTextStyleBlack.copyWith(
+                        fontSize: 12),),
                     Container(
                       width: screenWidth / 2,
                       height: screenHeight / 15,
@@ -222,7 +224,8 @@ class UpLoadBillState extends State<UpLoadBill> {
                       child: Center(
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
-                            value: dropdownValue,
+                            value: dropdownValue,style: mainTextStyleBlack.copyWith(
+                        fontSize: 12),
                             onChanged: (String? newValue) {
                               setState(() {
                                 dropdownValue = newValue!;
@@ -252,7 +255,8 @@ class UpLoadBillState extends State<UpLoadBill> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text("Options     ".toUpperCase()),
+                            Text("Options     ",style: mainTextStyleBlack.copyWith(
+                        fontSize: 12),),
                             Center(
                               child: Container(
                                 width: screenWidth / 2,
@@ -268,7 +272,8 @@ class UpLoadBillState extends State<UpLoadBill> {
                                     // Text("Select"),
                                     DropdownButtonHideUnderline(
                                       child: DropdownButton<String>(
-                                        value: selectedOption,
+                                        value: selectedOption,style: mainTextStyleBlack.copyWith(
+                        fontSize: 12),
                                         onChanged: (newValue) {
                                           setState(() {
                                             // print(dropdownValue);
@@ -303,7 +308,8 @@ class UpLoadBillState extends State<UpLoadBill> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text("Amount      ".toUpperCase()),
+                      Text("Amount      ",style: mainTextStyleBlack.copyWith(
+                        fontSize: 12),),
                       SizedBox(
                         height: 50,
                         width: screenWidth / 2,
@@ -319,6 +325,8 @@ class UpLoadBillState extends State<UpLoadBill> {
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 hintText: "Enter Amount",
+                                hintStyle: mainTextStyleBlack.copyWith(
+                        fontSize: 12)
                               )),
                         ),
                       ),
@@ -332,7 +340,8 @@ class UpLoadBillState extends State<UpLoadBill> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text("Description".toUpperCase()),
+                      Text("Description",style: mainTextStyleBlack.copyWith(
+                        fontSize: 12),),
                       SizedBox(
                         // height: screenHeight/6,
                         width: screenWidth / 2,
@@ -348,7 +357,8 @@ class UpLoadBillState extends State<UpLoadBill> {
                               },
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
-                                hintText: "Enter Description",
+                                hintText: "Enter Description",hintStyle: mainTextStyleBlack.copyWith(
+                        fontSize: 12)
                               )),
                         ),
                       ),
@@ -373,12 +383,12 @@ class UpLoadBillState extends State<UpLoadBill> {
                             width: screenWidth / 5.5,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Color.fromARGB(255, 60, 180, 229),
+                              color: Color.fromARGB(255, 60, 180, 200),
                             ),
                             child: const Icon(
                               Icons.camera_alt,
                               size: 50,
-                              color: Colors.white,
+                              color: Colors.white70,
                             ),
                           ),
                         ),
@@ -394,12 +404,12 @@ class UpLoadBillState extends State<UpLoadBill> {
                             width: screenWidth / 5.5,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Color.fromARGB(255, 60, 180, 229),
+                              color: Color.fromARGB(255, 60, 180, 200),
                             ),
                             child: const Icon(
                               Icons.photo,
                               size: 50,
-                              color: Colors.white,
+                              color: Colors.white70,
                             ),
                           ),
                         ),

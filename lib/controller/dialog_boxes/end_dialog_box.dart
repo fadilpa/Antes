@@ -12,16 +12,20 @@ Future<void> endDialogBox(BuildContext context) async {
 
   String? currentTime = DateTime.now().toString();
   File? image;
-  final curretnService = Provider.of<LocationProvider>(context,listen: false).currentService;
+  final curretnService =
+      Provider.of<LocationProvider>(context, listen: false).currentService;
   TextEditingController AmountController = TextEditingController();
   final amountcontroller = context.read<LocationProvider>().amountController;
   // String amount = AmountController.text;
   final addressresult = context.read<LocationProvider>().address;
   final selectedTarvelMode =
       context.read<LocationProvider>().selectedTravelMode;
+  bool journeyStatus = curretnService?.journeyStarted ?? false;
   bool isButtonTapped = false; // Initially, assume the button is not tapped
   bool journeyStarted =
       Provider.of<LocationProvider>(context, listen: false).journeyStarted;
+      bool isLoading =
+      Provider.of<LocationProvider>(context, listen: false).loaderStarted;
 
   if (journeyStarted) {
     await showDialog(
@@ -66,11 +70,16 @@ Future<void> endDialogBox(BuildContext context) async {
               ),
               TextButton(
                 onPressed: () async {
+                  value.updateLoader(true);
                   final prefs = await SharedPreferences.getInstance();
 // ignore: unused_local_variable
                   String? Firebase_Id = prefs.getString('Firebase_Id');
-                  await value.getLocationAndAddress();
-                  value.updatejourneyStarted(false);
+                  // if (curretnService != null) {
+                  //   curretnService.journeyStarted = false;
+                  // }
+                  print(journeyStatus);
+
+                  value.updatejourneyStarted(false,context);
                   await PostData().PostEndData(
                       context,
                       Firebase_Id,
@@ -85,8 +94,17 @@ Future<void> endDialogBox(BuildContext context) async {
 
                   // isButtonTapped = true;
                   // await prefs.setBool('isButtonTapped', isButtonTapped);
+                  print(journeyStatus);
+                  print(journeyStarted);
+                  value.updateLoader(false);
                 },
-                child: Text("End"),
+                child: Consumer<LocationProvider>(
+                  builder: (context, state, child) {
+                    return state.loaderStarted
+                        ? CircularProgressIndicator()
+                        : Text("End");
+                  },
+                ),
               ),
             ],
           );

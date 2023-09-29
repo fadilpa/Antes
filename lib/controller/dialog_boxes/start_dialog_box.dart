@@ -9,12 +9,15 @@ Future<void> showStartDialog(BuildContext context) async {
   String? currentTime = DateTime.now().toString();
   // final selectedTarvelMode =
   //     context.read<LocationProvider>().selectedTravelMode;
-final curretService = Provider.of<LocationProvider>(context,listen: false).currentService;
-  final addressresult = context.read<LocationProvider>().address;
+  final curretService =
+      Provider.of<LocationProvider>(context, listen: false).currentService;
+  final addresSResult = context.read<LocationProvider>().address;
+  bool journeyStatus = curretService?.journeyStarted ?? false;
   bool isButtonTapped = false; // Initially, assume the button is not tapped
-
   bool journeyStarted =
       Provider.of<LocationProvider>(context, listen: false).journeyStarted;
+  final isLoading =
+      Provider.of<LocationProvider>(context, listen: false).loaderStarted;
   print(journeyStarted);
   if (journeyStarted) {
     // Show a dialog indicating that an ongoing journey is not ended.
@@ -50,6 +53,8 @@ final curretService = Provider.of<LocationProvider>(context,listen: false).curre
                 Text("Select your travel mode:"),
                 SizedBox(height: 8),
                 DropdownButtonFormField(
+                  // decoration:
+
                   items: <String>[
                     "Train",
                     "Bus",
@@ -78,28 +83,39 @@ final curretService = Provider.of<LocationProvider>(context,listen: false).curre
               ),
               TextButton(
                 onPressed: () async {
+                  value.updateLoader(true);
                   final prefs = await SharedPreferences.getInstance();
 // ignore: unused_local_variable
                   String? Firebase_Id = prefs.getString('Firebase_Id');
-
                   value.getLocationAndAddress();
-                  value.updatejourneyStarted(true);
-
+                  value.updatejourneyStarted(true,context);
+                  // if (curretService != null) {
+                  //   curretService.journeyStarted = true;
+                  // }
+                  print(journeyStatus);
                   await PostData().PostStartData(
                       context,
                       Firebase_Id,
                       curretService,
-                      addressresult,
+                      addresSResult,
                       Provider.of<LocationProvider>(context, listen: false)
                           .selectedTravelMode,
                       currentTime);
                   // print(startdata);
                   Navigator.of(context).pop();
-
+                  print(journeyStatus);
+                  print(journeyStarted);
                   // isButtonTapped = true;
                   // await prefs.setBool('isButtonTapped', isButtonTapped);
+                  value.updateLoader(false);
                 },
-                child: Text("Start"),
+                child: Consumer<LocationProvider>(
+                  builder: (context, state, child) {
+                    return state.loaderStarted
+                        ? CircularProgressIndicator()
+                        : Text("Start");
+                  },
+                ),
               ),
             ],
           );

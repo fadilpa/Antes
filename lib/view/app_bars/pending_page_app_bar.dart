@@ -1,34 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:mentegoz_technologies/controller/Provider/name_and_num_provider.dart';
 import 'package:mentegoz_technologies/controller/styles.dart';
 
-class TicketAppBar extends StatelessWidget {
-  const TicketAppBar({
+class PendingAppBar extends StatelessWidget {
+  const PendingAppBar({
     super.key,
-    required this.name,
-    required this.number,
+    required this.screenHeight,
+    required this.userProvider,
     required this.screenWidth,
   });
 
-  final String? name;
-  final String? number;
+  final double screenHeight;
+  final UserNameAndNumber userProvider;
   final double screenWidth;
 
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
       pinned: true,
-      expandedHeight: 100,
+      floating: true,
+      expandedHeight: screenHeight * 0.13,
       forceElevated: true,
       elevation: 3,
       backgroundColor: Colors.white70,
-      flexibleSpace: const FlexibleSpaceBar(
+      flexibleSpace: FlexibleSpaceBar(
         centerTitle: true,
         title: Text(
-          "Tickets",
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 15.0,
-          ),
+          "Pending Services",
+           style: mainTextStyleBlack.copyWith(
+                fontWeight: FontWeight.bold, fontSize: 12)
         ),
       ),
       leading: IconButton(
@@ -43,19 +43,20 @@ class TicketAppBar extends StatelessWidget {
       ),
       actions: <Widget>[
         Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(name!.split(' ').first ?? "User Name",
+                Text(userProvider.name!.split(' ').first ?? "User Name",
                     style: mainTextStyleBlack.copyWith(
                         fontSize: 12, fontWeight: FontWeight.bold)),
-                Text(number ?? "Emp_no",
+                Text(userProvider.number ?? "Emp_no",
                     style: mainTextStyleBlack.copyWith(fontSize: 12)),
               ],
             ),
             SizedBox(
-              width: screenWidth / 30,
+              width: MediaQuery.of(context).size.width / 30,
             ),
             Padding(
               padding: EdgeInsets.only(right: screenWidth / 30),
@@ -64,7 +65,7 @@ class TicketAppBar extends StatelessWidget {
                         ),
             ),
           ],
-        ),
+        )
       ],
     );
   }

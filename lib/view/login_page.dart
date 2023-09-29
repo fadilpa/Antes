@@ -4,6 +4,8 @@ import 'package:mentegoz_technologies/api/login_api.dart';
 import 'package:mentegoz_technologies/controller/request_location_permissions.dart';
 import 'dart:math' as math;
 
+import 'package:mentegoz_technologies/controller/styles.dart';
+
 // ignore: must_be_immutable
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -12,14 +14,14 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> { 
+class _LoginPageState extends State<LoginPage> {
   ReqLocation reqlocation = ReqLocation();
   LocationPermission? permission;
 
   @override
   void initState() {
     super.initState();
-   reqlocation.requestLocationPermission();
+    reqlocation.requestLocationPermission();
   }
 
   @override
@@ -45,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
                 ),
-                color: Color.fromARGB(255, 61, 169, 231),
+                color: Color.fromARGB(255, 60, 180, 200),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -57,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                     radius: headerHeight / 8.5,
                     backgroundColor: Colors.white,
                     child: CircleAvatar(
-                      backgroundColor: Color.fromARGB(255, 61, 169, 231),
+                      backgroundColor: Color.fromARGB(255, 60, 180, 200),
                       radius: containerHeight / 8.5,
                       child: Icon(
                         Icons.emoji_people_rounded,
@@ -69,14 +71,11 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     height: containerHeight / 20,
                   ),
-                  Text(
-                    'WELCOME!!',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),
-                  ),
+                  Text('WELCOME!!',
+                      style: mainTextStyleBlack.copyWith(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 34,
+                          color: Colors.white)),
                 ],
               ),
             ),
@@ -109,74 +108,64 @@ class _LoginPageState extends State<LoginPage> {
                     height: headerHeight / 8,
                   ),
                   TextFormField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter the email';
-                      }
-                      return null;
-                    },
-                    keyboardType: TextInputType.emailAddress,
-                    cursorColor: Colors.black,
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Color.fromARGB(255, 233, 233, 233),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide.none),
-                      prefixIcon: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.email_outlined),
-                        color: Colors.grey,
-                      ),
-                      hintText: 'Username/Email',
-                      hintStyle: const TextStyle(color: Colors.grey),
-                    ),
-                    style: const TextStyle(color: Colors.black),
-                  ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the email';
+                        }
+                        return null;
+                      },
+                      keyboardType: TextInputType.emailAddress,
+                      cursorColor: Colors.black,
+                      controller: emailController,
+                      decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Color.fromARGB(255, 233, 233, 233),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide.none),
+                          prefixIcon: IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.email_outlined),
+                            color: Colors.grey,
+                          ),
+                          hintText: 'Username/Email',
+                          hintStyle: mainTextStyleBlack.copyWith(fontSize: 12)),
+                      style: mainTextStyleBlack.copyWith(fontSize: 12)),
                   SizedBox(
                     height: headerHeight / 15,
                   ),
                   TextFormField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter the password';
-                      }
-                      return null;
-                    },
-                    obscureText: true,
-                    keyboardType: TextInputType.text,
-                    cursorColor: Colors.black,
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Color.fromARGB(255, 233, 233, 233),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide.none),
-                      prefixIcon: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.key_rounded),
-                        color: Colors.grey,
-                      ),
-                      hintText: 'Passsword',
-                      hintStyle: const TextStyle(color: Colors.grey),
-                    ),
-                    style: const TextStyle(color: Colors.black),
-                  ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the password';
+                        }
+                        return null;
+                      },
+                      obscureText: true,
+                      keyboardType: TextInputType.text,
+                      cursorColor: Colors.black,
+                      controller: passwordController,
+                      decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Color.fromARGB(255, 233, 233, 233),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide.none),
+                          prefixIcon: IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.key_rounded),
+                            color: Colors.grey,
+                          ),
+                          hintText: 'Passsword',
+                          hintStyle: mainTextStyleBlack.copyWith(fontSize: 12)),
+                      style: mainTextStyleBlack.copyWith(fontSize: 12)),
                   SizedBox(
                     height: headerHeight / 15,
                   ),
                   Align(
                     alignment: AlignmentDirectional.center,
-                    child: Text(
-                      "Forgot password?",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.grey,
-                      ),
-                    ),
+                    child: Text("Forgot password?",
+                        style: mainTextStyleBlack.copyWith(fontSize: 12)),
                   ),
                   SizedBox(
                     height: headerHeight / 10,
@@ -191,18 +180,20 @@ class _LoginPageState extends State<LoginPage> {
                             width: 200,
                             child: ElevatedButton(
                               onPressed: () {
-                               login(context);
+                                login(context);
                               },
                               style: ElevatedButton.styleFrom(
                                 elevation: 10,
                                 backgroundColor:
-                                    Color.fromARGB(255, 60, 180, 229),
+                                    Color.fromARGB(255, 60, 180, 200),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),
                               ),
                               child: Text(
                                 ' Login'.toUpperCase(),
+                                style: mainTextStyle.copyWith(
+                                    fontWeight: FontWeight.bold, fontSize: 13),
                               ),
                             ),
                           ),

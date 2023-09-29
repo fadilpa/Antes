@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mentegoz_technologies/controller/Provider/name_and_num_provider.dart';
+import 'package:mentegoz_technologies/controller/styles.dart';
 
 class UploadBillAppBar extends StatelessWidget {
   const UploadBillAppBar({
@@ -21,15 +22,13 @@ class UploadBillAppBar extends StatelessWidget {
       expandedHeight: screenHeight * 0.13,
       forceElevated: true,
       elevation: 3,
-      backgroundColor: Colors.white,
-      flexibleSpace:  FlexibleSpaceBar(
+      backgroundColor: Colors.white70,
+      flexibleSpace: FlexibleSpaceBar(
         centerTitle: true,
         title: Text(
-          "Upload Bill".toUpperCase(),
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 15.0,
-          ),
+          "Upload Bill",
+         style: mainTextStyleBlack.copyWith(
+                        fontSize: 12, fontWeight: FontWeight.bold)
         ),
       ),
       leading: IconButton(
@@ -48,22 +47,11 @@ class UploadBillAppBar extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  userProvider.name!.split(' ').first.toUpperCase() ?? "User Name",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                 userProvider.number ?? "Emp_no",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+                Text(userProvider.name!.split(' ').first ?? "User Name",
+                    style: mainTextStyleBlack.copyWith(
+                        fontSize: 12, fontWeight: FontWeight.bold)),
+                Text(userProvider.number ?? "Emp_no",
+                    style: mainTextStyleBlack.copyWith(fontSize: 12)),
               ],
             ),
             SizedBox(
@@ -71,7 +59,9 @@ class UploadBillAppBar extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.only(right: screenWidth / 30),
-              child: CircleAvatar(),
+              child:  CircleAvatar(
+                          backgroundColor: Color.fromARGB(255, 60, 180, 200),
+                        ),
             ),
           ],
         )

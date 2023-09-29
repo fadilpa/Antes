@@ -1,13 +1,37 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:geocode/geocode.dart';
 import 'package:location/location.dart';
+import 'package:mentegoz_technologies/controller/Provider/pending_and_complete_provider.dart';
 import 'package:mentegoz_technologies/model/pending_model.dart';
+import 'package:provider/provider.dart';
+
+// class JourneyStartedData {
+//   int? id;
+//   bool journeyStarted;
+
+//   JourneyStartedData(this.id, this.journeyStarted);
+// }
 
 class LocationProvider extends ChangeNotifier {
-  Data? currentService;
+  PendingDataModel? currentService;
   bool journeyStarted = false;
+  bool loaderStarted = false;
+//  final Map<bool, JourneyStartedData> _journeyStartedData = {};
 
-  updatejourneyStarted(bool value) {
+  // updateJourneyStarted(int? id, bool journeyStarted) {
+  //   _journeyStartedData[id]?.journeyStarted = journeyStarted;
+  //   notifyListeners();
+  // }
+
+  updateLoader(bool value) {
+    loaderStarted = value;
+    notifyListeners();
+  }
+
+  updatejourneyStarted(bool value,context) {
+    Provider.of<ServiceProvider>(context,listen: false).pendingData!;
     journeyStarted = value;
     notifyListeners();
   }
@@ -25,7 +49,7 @@ class LocationProvider extends ChangeNotifier {
     amountController = amount_data;
   }
 
-  setCurrentService(Data? currentServices) {
+  setCurrentService(PendingDataModel? currentServices) {
     currentService = currentServices;
   }
 
@@ -38,8 +62,8 @@ class LocationProvider extends ChangeNotifier {
   setOptions(String? options_value) {
     options = options_value;
   }
-   
-   String? uploadDescriptionController;
+
+  String? uploadDescriptionController;
   setUploadDescription(String? upload_description) {
     uploadDescriptionController = upload_description;
   }
@@ -48,14 +72,17 @@ class LocationProvider extends ChangeNotifier {
   setUploadAmount(String? upload_amount) {
     uploadAmountController = upload_amount;
   }
-   String? ticketDescriptionController;
+
+  String? ticketDescriptionController;
   setTicketDescription(String? ticket_description) {
     ticketDescriptionController = ticket_description;
   }
-   String? ticketSubjectController;
+
+  String? ticketSubjectController;
   setTicketSubject(String? ticket_subject) {
     ticketSubjectController = ticket_subject;
   }
+
   Future<void> getLocationAndAddress() async {
     Location location = Location();
     LocationData? locationData;

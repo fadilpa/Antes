@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
+import 'package:mentegoz_technologies/controller/styles.dart';
 import 'package:mentegoz_technologies/view/complete/completed_page.dart';
 import 'package:mentegoz_technologies/view/drawer.dart';
 import 'package:mentegoz_technologies/view/pending/pending_page.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -33,6 +33,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    WidgetsFlutterBinding.ensureInitialized();
     context.read<LocationProvider>().address;
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
@@ -54,7 +55,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      drawer:MenuDrawer(),
+      drawer: MenuDrawer(),
       body: DefaultTabController(
         length: 2,
         child: NestedScrollView(
@@ -66,16 +67,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 expandedHeight: screenHeight * 0.13,
                 forceElevated: true,
                 elevation: 3,
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.white70,
                 flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
-                  title: Text(
-                    "Services".toUpperCase(),
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 15.0,
-                    ),
-                  ),
+                  title: Text("Services",
+                      style: mainTextStyle.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black,
+                          fontSize: 14)),
                 ),
                 leading: IconButton(
                   icon: Icon(
@@ -94,28 +93,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                           name?.split(' ').first.toUpperCase() ?? "User Name",
-                            style: TextStyle(
-                              color: Colors.black54,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Text(
-                           number ?? "Mobile Number",
-                            style: TextStyle(
-                              color: Colors.black54,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
+                          Text(name!.split(' ').first ?? "User Name",
+                              style: mainTextStyleBlack.copyWith(
+                                  fontSize: 12, fontWeight: FontWeight.bold)),
+                          Text(number ?? "emp_no",
+                              style: mainTextStyleBlack.copyWith(fontSize: 12)),
                         ],
                       ),
                       SizedBox(width: screenWidth / 30),
                       Padding(
                         padding: EdgeInsets.only(right: screenWidth / 30),
-                        child: CircleAvatar(),
+                        child: CircleAvatar(
+                          backgroundColor: Color.fromARGB(255, 60, 180, 200),
+                        ),
                       ),
                     ],
                   ),
@@ -138,12 +128,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             child: TabBar(
                               controller: _tabController,
                               indicator: BoxDecoration(
-                                color: Color.fromARGB(255, 60, 180, 229),
+                                color: Color.fromARGB(255, 60, 180, 200),
                                 borderRadius: BorderRadius.circular(30),
                               ),
                               labelColor: Colors.white,
+                              labelStyle:
+                                  mainTextStyleBlack.copyWith(fontSize: 13),
                               unselectedLabelColor:
-                                  Color.fromARGB(255, 60, 180, 229),
+                                  Color.fromARGB(255, 60, 180, 200),
                               tabs: const [
                                 Tab(text: "Pending"),
                                 Tab(text: "Completed"),

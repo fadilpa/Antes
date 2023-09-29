@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mentegoz_technologies/controller/styles.dart';
 import 'package:mentegoz_technologies/controller/varibles.dart';
 
 
@@ -19,15 +20,13 @@ String? number;
       expandedHeight: 100,
       forceElevated: true,
       elevation: 3,
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.white70,
       flexibleSpace: FlexibleSpaceBar(
         centerTitle: true,
         title: Text(
           "Raise a Ticket",
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 15.0,
-          ),
+           style: mainTextStyleBlack.copyWith(
+                fontWeight: FontWeight.bold, fontSize: 12)
         ),
       ),
       leading: IconButton(
@@ -46,28 +45,22 @@ String? number;
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  name!.split(' ').first.toUpperCase() ?? "User Name",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                Text(
-                  number ?? "Emp_no",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+               Text(
+                    name!.split(' ').first??
+                        "User Name",
+                    style: mainTextStyleBlack.copyWith(
+                        fontSize: 12, fontWeight: FontWeight.bold)),
+                Text(number ?? "Emp_no",
+                    style: mainTextStyleBlack.copyWith(
+                        fontSize: 12)),
               ],
             ),
             SizedBox(width: screenWidth / screenWidth / 30),
             Padding(
               padding: EdgeInsets.only(right: screenWidth / 30),
-              child: CircleAvatar(),
+              child:  CircleAvatar(
+                          backgroundColor: Color.fromARGB(255, 60, 180, 200),
+                        ),
             ),
           ],
         )
