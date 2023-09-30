@@ -96,7 +96,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           Text(name!.split(' ').first ?? "User Name",
                               style: mainTextStyleBlack.copyWith(
                                   fontSize: 12, fontWeight: FontWeight.bold)),
-                          Text(number ?? "emp_no",
+                          Text(number ?? "",
                               style: mainTextStyleBlack.copyWith(fontSize: 12)),
                         ],
                       ),
@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       Padding(
                         padding: EdgeInsets.only(right: screenWidth / 30),
                         child: CircleAvatar(
-                          backgroundColor: Color.fromARGB(255, 60, 180, 200),
+                          backgroundColor:mainThemeColor,
                         ),
                       ),
                     ],
@@ -128,14 +128,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             child: TabBar(
                               controller: _tabController,
                               indicator: BoxDecoration(
-                                color: Color.fromARGB(255, 60, 180, 200),
+                                color: mainThemeColor,
                                 borderRadius: BorderRadius.circular(30),
                               ),
                               labelColor: Colors.white,
                               labelStyle:
-                                  mainTextStyleBlack.copyWith(fontSize: 13),
+                                  mainTextStyleBlack.copyWith(fontWeight: FontWeight.bold),
                               unselectedLabelColor:
-                                  Color.fromARGB(255, 60, 180, 200),
+                                  mainThemeColor,
                               tabs: const [
                                 Tab(text: "Pending"),
                                 Tab(text: "Completed"),

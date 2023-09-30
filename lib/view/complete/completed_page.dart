@@ -103,7 +103,7 @@ class CompletedPage extends StatelessWidget {
                                 SizedBox(
                                   height: screenHeight / 70,
                                 ),
-                                Text('Service : $id'.toUpperCase()),
+                                Text('Service : $id',style: mainTextStyleBlack,),
                                 SizedBox(
                                   height: screenHeight / 70,
                                 ),
@@ -111,8 +111,8 @@ class CompletedPage extends StatelessWidget {
                                   height: 200,
                                   width: screenWidth / 2.5,
                                   decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 60, 180, 200),
-                                    borderRadius: BorderRadius.circular(5),
+                                    color: mainThemeColor,
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 10),
@@ -123,13 +123,13 @@ class CompletedPage extends StatelessWidget {
                                       children: [
                                         Text(clientName,
                                             style: mainTextStyleBlack.copyWith(
-                                                color: Colors.white, fontSize: 12)),
+                                                color: Colors.white)),
                                         Text(email,
                                             style: mainTextStyleBlack.copyWith(
-                                                color: Colors.white, fontSize: 12)),
+                                                color: Colors.white)),
                                         Text(phone,
                                             style: mainTextStyleBlack.copyWith(
-                                                fontSize: 12)),
+                                                )),
                                       ],
                                     ),
                                   ),

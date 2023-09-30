@@ -59,7 +59,7 @@ class CompleteAppBar extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(right: screenWidth / 30),
               child:  CircleAvatar(
-                          backgroundColor: Color.fromARGB(255, 60, 180, 200),
+                          backgroundColor:mainThemeColor,
                         ),
             ),
           ],

@@ -45,103 +45,105 @@ class PendingPage extends StatelessWidget {
                   return Text('No Data');
                 }
                // SizedBox();
-                return SizedBox(
-                  height: screenHeight,
-                  width: screenWidth,
-                  child: GridView.builder(
-                    shrinkWrap: true,
-                    gridDelegate :  SliverGridDelegateWithMaxCrossAxisExtent(
-                  mainAxisExtent: screenHeight,
-                  maxCrossAxisExtent: 200,
-                  //     maxCrossAxisExtent:200,
-                  
-                   crossAxisSpacing: 2
-                  ),
-                  itemCount:dataList.length ,
-                   itemBuilder: (context, index) {
-                      var id = dataList[index].id;
-                        var servicename = dataList[index].serviceName;
-                        var clientName = dataList[index].clientName!;
-                        var refNo = dataList[index].refNo!;
-                        var category = dataList[index].category!;
-                        var startDate = dataList[index].startDate!;
-                        var endDate = dataList[index].endDate!;
-                        var priority = dataList[index].priority!;
-                        var endtime = dataList[index].endTime!;
-                        var startTime = dataList[index].startTime!;
-                        var address = dataList[index].address!;
-                        var email = dataList[index].email!;
-                        var phone = dataList[index].phone!;
-                        var landmark = dataList[index].landmark!;
-                        return Column(
-                          children: [
-                          Text('Service : $id'.toUpperCase()),
-                                SizedBox(height: screenHeight / 80),
-                                GestureDetector(
-                                  onTap:(){
-                                      Provider.of<LocationProvider>(context,
-                                      listen: false)
-                                  .setCurrentService(dataList[index]);
-                              // Navigate to the other page when an item is tapped.
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => PendingServicePage(
-                                    index: index,
-                                    id: id,
-                                    clientName: clientName,
-                                    servicename: servicename,
-                                    refNo: refNo,
-                                    category: category,
-                                    enddate: endDate,
-                                    startdate: startDate,
-                                    endtime: endtime,
-                                    starttime: startTime,
-                                    Address: address,
-                                    Email: email,
-                                    Phone: phone,
-                                    Landmark: landmark,
-                                  ),
-                                  // Replace with the actual page you want to navigate to.
+                return Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: GestureDetector(
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                        gridDelegate:  SliverGridDelegateWithMaxCrossAxisExtent(
+                    mainAxisExtent: screenHeight,
+                    maxCrossAxisExtent: 200,            
+                     crossAxisSpacing: 2
+                    ),
+                itemCount:dataList.length ,
+                 itemBuilder: (context, index) {
+                    var id = dataList[index].id;
+                      var servicename = dataList[index].serviceName;
+                      var clientName = dataList[index].clientName!;
+                      var refNo = dataList[index].refNo!;
+                      var category = dataList[index].category!;
+                      var startDate = dataList[index].startDate!;
+                      var endDate = dataList[index].endDate!;
+                      var priority = dataList[index].priority!;
+                      var endtime = dataList[index].endTime!;
+                      var startTime = dataList[index].startTime!;
+                      var address = dataList[index].address!;
+                      var email = dataList[index].email!;
+                      var phone = dataList[index].phone!;
+                      var landmark = dataList[index].landmark!;
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left:20.0),
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Text('Service : $id',style: mainTextStyleBlack,)),
+                        ),
+                              SizedBox(height: screenHeight / 80),
+                              GestureDetector(
+                                onTap:(){
+                                    Provider.of<LocationProvider>(context,
+                                    listen: false)
+                                .setCurrentService(dataList[index]);
+                            // Navigate to the other page when an item is tapped.
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => PendingServicePage(
+                                  index: index,
+                                  id: id,
+                                  clientName: clientName,
+                                  servicename: servicename,
+                                  refNo: refNo,
+                                  category: category,
+                                  enddate: endDate,
+                                  startdate: startDate,
+                                  endtime: endtime,
+                                  starttime: startTime,
+                                  Address: address,
+                                  Email: email,
+                                  Phone: phone,
+                                  Landmark: landmark,
                                 ),
-                              );
-                                  } ,
-                                  child: Container(
-                                    height: 200,
-                                    width: screenWidth / 2.5,
-                                    decoration: BoxDecoration(
-                                      color: Color.fromARGB(255, 60, 180, 200),
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          // SizedBox(),
-                                          Text(clientName,
-                                              style: mainTextStyleBlack.copyWith(
-                                                  color: Colors.white,
-                                                  fontSize: 12)),
-                                          Text(startDate,
-                                              style: mainTextStyleBlack.copyWith(
-                                                  color: Colors.white,
-                                                  fontSize: 12)),
-                                          Text(priority,
-                                              style: mainTextStyleBlack.copyWith(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 12)),
-                                        ],
-                                      ),
+                                // Replace with the actual page you want to navigate to.
+                              ),
+                            );
+                                } ,
+                                child: Container(
+                                  height: 200,
+                                  width: screenWidth / 2.5,
+                                  decoration: BoxDecoration(
+                                    color: mainThemeColor,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // SizedBox(),
+                                        Text(clientName,
+                                            style: mainTextStyleBlack.copyWith(
+                                                color: Colors.white)),
+                                        Text(startDate,
+                                            style: mainTextStyleBlack.copyWith(
+                                                color: Colors.white,
+                                                )),
+                                        Text(priority,
+                                            style: mainTextStyleBlack.copyWith(
+                                                fontWeight: FontWeight.w500,
+                                                )),
+                                      ],
                                     ),
                                   ),
                                 ),
-                          ],
-                        );
-                   }),
-                );
+                              ),
+                        ],
+                      );
+                 })));
               
                 // return Padding(
                 //   padding: const EdgeInsets.only(left: 10, right: 10),

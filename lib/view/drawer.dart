@@ -16,7 +16,7 @@ class MenuDrawer extends StatelessWidget {
         children: <Widget>[
           DrawerHeader(
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 60, 180, 200),
+              color: mainThemeColor,
             ),
             child: Center(
               child: Text(
