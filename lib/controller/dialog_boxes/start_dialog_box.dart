@@ -4,7 +4,7 @@ import 'package:mentegoz_technologies/controller/Provider/location_provider.dart
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<void> showStartDialog(BuildContext context) async {
+Future<void> showStartDialog(BuildContext context,bool journeyStarted) async {
   // int count = 1;
   String? currentTime = DateTime.now().toString();
   // final selectedTarvelMode =
@@ -12,14 +12,16 @@ Future<void> showStartDialog(BuildContext context) async {
   final curretService =
       Provider.of<LocationProvider>(context, listen: false).currentService;
   final addresSResult = context.read<LocationProvider>().address;
-  bool journeyStatus = curretService?.journeyStarted ?? false;
+  
+  // bool journeyStatus = curretService?.journeyStarted ?? false;
   bool isButtonTapped = false; // Initially, assume the button is not tapped
-  bool journeyStarted =
-      Provider.of<LocationProvider>(context, listen: false).journeyStarted;
+  // bool journeyStarted =
+  //     Provider.of<LocationProvider>(context, listen: false).journeyStarted;
   final isLoading =
       Provider.of<LocationProvider>(context, listen: false).loaderStarted;
   print(journeyStarted);
-  if (journeyStarted) {
+  print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%');
+  if (journeyStarted ==true) {
     // Show a dialog indicating that an ongoing journey is not ended.
     await showDialog(
       context: context,
@@ -88,11 +90,11 @@ Future<void> showStartDialog(BuildContext context) async {
 // ignore: unused_local_variable
                   String? Firebase_Id = prefs.getString('Firebase_Id');
                   value.getLocationAndAddress();
-                  value.updatejourneyStarted(true,context);
+
                   // if (curretService != null) {
                   //   curretService.journeyStarted = true;
                   // }
-                  print(journeyStatus);
+                
                   await PostData().PostStartData(
                       context,
                       Firebase_Id,
@@ -103,10 +105,12 @@ Future<void> showStartDialog(BuildContext context) async {
                       currentTime);
                   // print(startdata);
                   Navigator.of(context).pop();
-                  print(journeyStatus);
+             
                   print(journeyStarted);
-                  // isButtonTapped = true;
-                  // await prefs.setBool('isButtonTapped', isButtonTapped);
+                  Provider.of<LocationProvider>(context, listen: false)
+                      .updatejourneyStarted(true);
+                  // final prefs = await SharedPreferences.getInstance();
+                  // await prefs.setBool('isButtonTapped', true);
                   value.updateLoader(false);
                 },
                 child: Consumer<LocationProvider>(

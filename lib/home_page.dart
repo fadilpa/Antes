@@ -8,8 +8,10 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
+   final bool initialButtonStatus;
   const HomePage({
-    Key? key,
+    
+    Key? key, required this.initialButtonStatus,
   }) : super(key: key);
 
   @override
@@ -49,6 +51,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    
     // var userProvider = Provider.of<UserNameAndNumber>(context);
     // userProvider.get_user_name_and_number();
     final screenHeight = MediaQuery.of(context).size.height;

@@ -9,6 +9,8 @@ final TextEditingController emailController = TextEditingController();
 final TextEditingController passwordController = TextEditingController();
 
 Future<void> login(BuildContext context) async {
+  bool isStartButtonTapped = false; // Initially, assume the button is not tapped
+
   final String apiUrl = 'https://antes.meduco.in/api/applogin';
   final String email = emailController.text;
   final String password = passwordController.text;
@@ -54,7 +56,7 @@ Future<void> login(BuildContext context) async {
             prefs.setString('Name', userName);
             prefs.setString('Mobile', mobileNumber);
             Navigator.of(context)
-                .pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
+                .pushReplacement(MaterialPageRoute(builder: (context) => HomePage(initialButtonStatus: isStartButtonTapped,)));
             emailController.clear();
             passwordController.clear();
             return;

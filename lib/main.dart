@@ -15,6 +15,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+  final journeyStarted = prefs.getBool('journeyStarted') ?? false;
   runApp(
     MultiProvider(
       providers: [
@@ -30,7 +31,9 @@ void main() async {
       child: MaterialApp(
         title: 'Antes',
         home: isLoggedIn
-            ? HomePage()
+            ? HomePage(
+                initialButtonStatus: journeyStarted,
+              )
             : LoginPage(),
       ),
     ),

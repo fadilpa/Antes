@@ -98,6 +98,7 @@ class PendingServicePage extends StatelessWidget {
                         ];
                       },
                       body: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -116,14 +117,6 @@ class PendingServicePage extends StatelessWidget {
                                             fontWeight: FontWeight.w600,
                                             decoration:
                                                 TextDecoration.underline)
-                                        // servicename ??
-                                        //     "No Service Name",
-                                        // style: GoogleFonts.montserrat(
-                                        //   fontSize: 20,
-                                        //   fontWeight: FontWeight.w600,
-                                        //   color: Colors.black,
-                                        //   decoration: TextDecoration.underline,
-                                        // ),
                                         ),
                                   ),
                                   SizedBox(
@@ -246,7 +239,7 @@ class PendingServicePage extends StatelessWidget {
                                       ),
                                       Padding(
                                         padding: EdgeInsets.only(
-                                            right: screenWidth / 8.5),
+                                            right: screenWidth / 11),
                                         child: ExpandChild(
                                           child: Column(
                                             children: [
@@ -342,9 +335,11 @@ class PendingServicePage extends StatelessWidget {
                                 children: [
                                   CustmButton(
                                       buttontext: 'Start Journey',
-                                      buttonaction: () {
+                                      buttonaction: () async{
                                         value.getLocationAndAddress();
-                                        showStartDialog(context);
+                                         final prefs = await SharedPreferences.getInstance();
+                           bool journeyStatus= prefs.getBool('journeyStarted')!;
+                                        showStartDialog(context,journeyStatus);
                                       }),
                                   SizedBox(
                                     width: screenWidth / 50,

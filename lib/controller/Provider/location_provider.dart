@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:geocode/geocode.dart';
 import 'package:location/location.dart';
 import 'package:mentegoz_technologies/controller/Provider/pending_and_complete_provider.dart';
+import 'package:mentegoz_technologies/model/completed_model.dart';
 import 'package:mentegoz_technologies/model/pending_model.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // class JourneyStartedData {
 //   int? id;
@@ -16,6 +18,7 @@ import 'package:provider/provider.dart';
 
 class LocationProvider extends ChangeNotifier {
   PendingDataModel? currentService;
+  CompleteDataModel? completeCurrentService;
   bool journeyStarted = false;
   bool loaderStarted = false;
 //  final Map<bool, JourneyStartedData> _journeyStartedData = {};
@@ -30,10 +33,15 @@ class LocationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  updatejourneyStarted(bool value,context) {
-    Provider.of<ServiceProvider>(context,listen: false).pendingData!;
+  updatejourneyStarted(bool value) async {
+    // Provider.of<ServiceProvider>(context,listen: false).pendingData!;
+    print(value);
+    print('????????????????????????///');
     journeyStarted = value;
     notifyListeners();
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('journeyStarted', journeyStarted);
   }
 
   LocationData? currentLocation;
@@ -51,6 +59,10 @@ class LocationProvider extends ChangeNotifier {
 
   setCurrentService(PendingDataModel? currentServices) {
     currentService = currentServices;
+  }
+
+  setCompleteCurrentService(CompleteDataModel? completeCurrentServices){
+    completeCurrentService= completeCurrentServices;
   }
 
   String? category;

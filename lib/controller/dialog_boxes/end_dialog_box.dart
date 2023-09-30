@@ -24,10 +24,10 @@ Future<void> endDialogBox(BuildContext context) async {
   bool isButtonTapped = false; // Initially, assume the button is not tapped
   bool journeyStarted =
       Provider.of<LocationProvider>(context, listen: false).journeyStarted;
-      bool isLoading =
+  bool isLoading =
       Provider.of<LocationProvider>(context, listen: false).loaderStarted;
 
-  if (journeyStarted) {
+  if (journeyStarted == false) {
     await showDialog(
       context: context,
       builder: (context) {
@@ -79,7 +79,6 @@ Future<void> endDialogBox(BuildContext context) async {
                   // }
                   print(journeyStatus);
 
-                  value.updatejourneyStarted(false,context);
                   await PostData().PostEndData(
                       context,
                       Firebase_Id,
@@ -92,10 +91,15 @@ Future<void> endDialogBox(BuildContext context) async {
                   // print(enddata);
                   Navigator.of(context).pop();
 
-                  // isButtonTapped = true;
+                  // isButtonTapped = false;
                   // await prefs.setBool('isButtonTapped', isButtonTapped);
-                  print(journeyStatus);
+                  print(isButtonTapped);
+                  // print(journeyStatus);
                   print(journeyStarted);
+                  Provider.of<LocationProvider>(context, listen: false)
+      .updatejourneyStarted(false);
+                  // final prefs = await SharedPreferences.getInstance();
+                  // await prefs.setBool('isButtonTapped', false);
                   value.updateLoader(false);
                 },
                 child: Consumer<LocationProvider>(

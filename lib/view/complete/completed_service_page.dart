@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 class CompletedServicePage extends StatelessWidget {
   const CompletedServicePage(
       {super.key,
+      this.id,
       required this.index,
       required this.servicename,
       this.refNo,
@@ -32,6 +33,7 @@ class CompletedServicePage extends StatelessWidget {
       this.category});
 
   final int index;
+  final int? id;
   final clientName;
   final refNo;
   final category;
@@ -163,6 +165,7 @@ class CompletedServicePage extends StatelessWidget {
                               children: [
                                 const Icon(
                                   CupertinoIcons.clock_fill,
+                                  color: Color.fromARGB(255, 60, 180, 200),
                                 ),
                                 SizedBox(
                                   width: screenWidth / 50,
@@ -222,14 +225,15 @@ class CompletedServicePage extends StatelessWidget {
                               height: screenHeight / 25,
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(right: 40),
+                              padding:  EdgeInsets.only(right: screenWidth/11),
                               child: ExpandChild(
                                 child: Column(children: [
                                   Row(
                                     children: [
                                       const Icon(
                                         Icons.phone,
-                                        color: Color.fromARGB(255, 60, 180, 200),
+                                        color:
+                                            Color.fromARGB(255, 60, 180, 200),
                                       ),
                                       SizedBox(
                                         width: screenWidth / 50,
@@ -250,7 +254,8 @@ class CompletedServicePage extends StatelessWidget {
                                     children: [
                                       const Icon(
                                         CupertinoIcons.mail,
-                                        color: Color.fromARGB(255, 60, 180, 200),
+                                        color:
+                                            Color.fromARGB(255, 60, 180, 200),
                                       ),
                                       SizedBox(
                                         width: screenWidth / 50,
@@ -269,7 +274,8 @@ class CompletedServicePage extends StatelessWidget {
                                     children: [
                                       const Icon(
                                         CupertinoIcons.tag_fill,
-                                        color: Color.fromARGB(255, 60, 180, 200),
+                                        color:
+                                            Color.fromARGB(255, 60, 180, 200),
                                       ),
                                       SizedBox(
                                         width: screenWidth / 50,
