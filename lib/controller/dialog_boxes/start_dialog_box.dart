@@ -4,7 +4,7 @@ import 'package:mentegoz_technologies/controller/Provider/location_provider.dart
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<void> showStartDialog(BuildContext context,bool journeyStarted) async {
+Future<void> showStartDialog(BuildContext context,bool? journeyStarted,StartedId) async {
   // int count = 1;
   String? currentTime = DateTime.now().toString();
   // final selectedTarvelMode =
@@ -87,6 +87,8 @@ Future<void> showStartDialog(BuildContext context,bool journeyStarted) async {
                 onPressed: () async {
                   value.updateLoader(true);
                   final prefs = await SharedPreferences.getInstance();
+                  prefs.setBool('isStarted', true);
+                  prefs.setInt('SavedId',StartedId );
 // ignore: unused_local_variable
                   String? Firebase_Id = prefs.getString('Firebase_Id');
                   value.getLocationAndAddress();

@@ -338,17 +338,20 @@ class PendingServicePage extends StatelessWidget {
                                       buttonaction: () async{
                                         value.getLocationAndAddress();
                                          final prefs = await SharedPreferences.getInstance();
-                           bool journeyStatus= prefs.getBool('journeyStarted')!;
-                                        showStartDialog(context,journeyStatus);
+                           bool ?journeyStatus= prefs.getBool('isStarted');
+                                        showStartDialog(context,journeyStatus,Provider.of<LocationProvider>(context, listen: false).currentService!.id);
                                       }),
                                   SizedBox(
                                     width: screenWidth / 50,
                                   ),
                                   CustmButton(
                                       buttontext: 'End Journey',
-                                      buttonaction: () {
+                                      buttonaction: ()async {
+                                           final prefs = await SharedPreferences.getInstance();
+                          int? Saved_ID= prefs.getInt('SavedId');
                                         value.getLocationAndAddress();
-                                        endDialogBox(context);
+                                        
+                                        endDialogBox(context,Saved_ID,Provider.of<LocationProvider>(context, listen: false).currentService!.id);
                                       })
                                 ],
                               ),
