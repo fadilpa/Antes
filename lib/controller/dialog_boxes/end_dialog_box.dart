@@ -6,7 +6,7 @@ import 'package:mentegoz_technologies/controller/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<void> endDialogBox(BuildContext context) async {
+Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
   File? filepath;
   // String? selectedTravelMode;
 
@@ -27,7 +27,7 @@ Future<void> endDialogBox(BuildContext context) async {
   bool isLoading =
       Provider.of<LocationProvider>(context, listen: false).loaderStarted;
 
-  if (journeyStarted == false) {
+  if (Current_Id == Saved_Id) {
     await showDialog(
       context: context,
       builder: (context) {
@@ -70,8 +70,11 @@ Future<void> endDialogBox(BuildContext context) async {
               ),
               TextButton(
                 onPressed: () async {
+                      final prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('isStarted', false);
+                    prefs.remove('SavedId');
                   value.updateLoader(true);
-                  final prefs = await SharedPreferences.getInstance();
+                 
 // ignore: unused_local_variable
                   String? Firebase_Id = prefs.getString('Firebase_Id');
                   // if (curretnService != null) {
@@ -97,7 +100,8 @@ Future<void> endDialogBox(BuildContext context) async {
                   // print(journeyStatus);
                   print(journeyStarted);
                   Provider.of<LocationProvider>(context, listen: false)
-      .updatejourneyStarted(false);
+                      .updatejourneyStarted(false);
+
                   // final prefs = await SharedPreferences.getInstance();
                   // await prefs.setBool('isButtonTapped', false);
                   value.updateLoader(false);
