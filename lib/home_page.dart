@@ -120,7 +120,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   delegate: SliverChildListDelegate(
                     [
                       Container(
-                        height: screenHeight / 14,
+                        height: 63,
                         decoration: BoxDecoration(
                           color: Color.fromARGB(255, 233, 233, 233),
                           borderRadius: BorderRadius.circular(30),

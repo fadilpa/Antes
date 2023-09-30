@@ -125,7 +125,7 @@ class CompletedPage extends StatelessWidget {
                                           style: mainTextStyleBlack.copyWith(
                                               color: Colors.white,
                                               )),
-                                      Text(email,
+                                      Text(category,
                                           style: mainTextStyleBlack.copyWith(
                                               color: Colors.white,
                                               )),

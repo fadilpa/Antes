@@ -3,9 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mentegoz_technologies/controller/styles.dart';
 
 class CustmButton extends StatelessWidget {
-  const CustmButton(
-      {super.key, required this.buttontext, required this.buttonaction});
+   CustmButton(
+      {super.key, required this.buttontext, required this.buttonaction,this.isRadius=true});
   final String buttontext;
+   bool isRadius;
 
   final Function() buttonaction;
 
@@ -19,15 +20,16 @@ class CustmButton extends StatelessWidget {
       child: ElevatedButton(
     
           style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32.0)),
+              shape:isRadius? RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(32.0)):RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(2.0)),
               
               backgroundColor: (mainThemeColor)),
           onPressed: buttonaction,
           child: Text(
             buttontext,
            style: mainTextStyleBlack.copyWith(color: Colors.white,
-                        fontSize: 12)
+                        fontSize: 15)
           )),
     );
   }

@@ -398,7 +398,7 @@ class PendingServicePage extends StatelessWidget {
                                       child: Text(
                                         'End Service',
                                         style: mainTextStyleBlack.copyWith(
-                                            color: Colors.white, fontSize: 12),
+                                            color: Colors.white, fontSize: 15),
                                       ),
                                       onPressed: () async {
                                         final prefs = await SharedPreferences

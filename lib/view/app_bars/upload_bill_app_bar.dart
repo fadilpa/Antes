@@ -22,13 +22,13 @@ class UploadBillAppBar extends StatelessWidget {
       expandedHeight: screenHeight * 0.13,
       forceElevated: true,
       elevation: 3,
-      backgroundColor: Colors.white70,
+      backgroundColor: Colors.white,
       flexibleSpace: FlexibleSpaceBar(
         centerTitle: true,
         title: Text(
           "Upload Bill",
          style: mainTextStyleBlack.copyWith(
-                        fontSize: 12, fontWeight: FontWeight.bold)
+                        fontSize: 16, fontWeight: FontWeight.bold)
         ),
       ),
       leading: IconButton(

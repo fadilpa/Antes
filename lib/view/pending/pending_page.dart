@@ -73,7 +73,7 @@ class PendingPage extends StatelessWidget {
                         var landmark = dataList[index].landmark!;
                         return Column(
                           children: [
-                          Text('Service : $id'.toUpperCase()),
+                          Text('Service : $id',style: mainTextStyleBlack,),
                                 SizedBox(height: screenHeight / 80),
                                 GestureDetector(
                                   onTap:(){
