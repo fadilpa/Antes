@@ -193,7 +193,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                 title: Text(
                   "Raise a Ticket",
                    style: mainTextStyleBlack.copyWith(
-                fontWeight: FontWeight.bold, fontSize: 12)
+                fontWeight: FontWeight.bold, fontSize: 20)
                 ),
               ),
               leading: IconButton(
@@ -373,7 +373,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                 title: Text(
                   "Raise a Ticket",
                    style: mainTextStyleBlack.copyWith(
-                fontWeight: FontWeight.bold, fontSize: 12)
+                fontWeight: FontWeight.bold, fontSize: 15)
                 ),
               ),
               leading: IconButton(
@@ -480,7 +480,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                                 },
                                 decoration:
                                     InputDecoration(hintText: '  Subject',hintStyle: mainTextStyleBlack.copyWith(
-                        fontSize: 12)),
+                        fontSize: 16)),
                               ),
                               TextField(
                                 controller: DescriptionController,
@@ -490,7 +490,9 @@ class _RaisedTicketState extends State<RaisedTicket> {
                                       .setTicketDescription(value);
                                 },
                                 decoration:
-                                    InputDecoration(hintText: '  Description',hintStyle: mainTextStyleBlack.copyWith(
+                                    InputDecoration(hintText: '  Description',
+                                  border: OutlineInputBorder(),
+                                    hintStyle: mainTextStyleBlack.copyWith(
                         fontSize: 12)),
                               ),
                               InkWell(
