@@ -228,7 +228,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                     Padding(
                       padding: EdgeInsets.only(right: screenWidth / 30),
                       child:  CircleAvatar(
-                          backgroundColor: Color.fromARGB(255, 60, 180, 200),
+                          backgroundColor: mainThemeColor,
                         ),
                     ),
                   ],
@@ -258,8 +258,8 @@ class _RaisedTicketState extends State<RaisedTicket> {
                         Container(
                           height: screenHeight / 6.7,
                           width: screenWidth / 1.2,
-                          decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 60, 180, 200),
+                          decoration:  BoxDecoration(
+                            color: mainThemeColor,
                             borderRadius: BorderRadius.only(
                               topRight: Radius.circular(15),
                               topLeft: Radius.circular(15),
@@ -270,8 +270,8 @@ class _RaisedTicketState extends State<RaisedTicket> {
                               Container(
                                 height: screenHeight / 6.7,
                                 width: screenWidth / 1.2,
-                                decoration: const BoxDecoration(
-                                  color: Color.fromARGB(255, 60, 180, 200),
+                                decoration:  BoxDecoration(
+                                  color: mainThemeColor,
                                   borderRadius: BorderRadius.only(
                                     topRight: Radius.circular(15),
                                     topLeft: Radius.circular(15),
@@ -408,7 +408,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                     Padding(
                       padding: EdgeInsets.only(right: screenWidth / 30),
                       child:  CircleAvatar(
-                          backgroundColor: Color.fromARGB(255, 60, 180, 200),
+                          backgroundColor: mainThemeColor,
                         ),
                     ),
                   ],
@@ -439,8 +439,8 @@ class _RaisedTicketState extends State<RaisedTicket> {
                         Container(
                           height: screenHeight / 8, // Adjusted height
                           width: screenWidth / 1.2,
-                          decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 60, 180, 200),
+                          decoration:  BoxDecoration(
+                            color: mainThemeColor,
                             borderRadius: BorderRadius.only(
                               topRight: Radius.circular(15),
                               topLeft: Radius.circular(15),
@@ -559,7 +559,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor:
-                                        Color.fromARGB(255, 60, 180, 200),
+                                        mainThemeColor,
                                     elevation: 10,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(30.0),

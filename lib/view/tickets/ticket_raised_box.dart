@@ -34,8 +34,8 @@ class TicketRaiseSuccesfull extends StatelessWidget {
                   Container(
                     height: screenHeight / 8, // Adjusted height
                     width: screenWidth / 1.2,
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 60, 180, 200),
+                    decoration:  BoxDecoration(
+                      color: mainThemeColor,
                       borderRadius: BorderRadius.only(
                         topRight: Radius.circular(15),
                         topLeft: Radius.circular(15),
@@ -135,7 +135,7 @@ class TicketRaiseSuccesfull extends StatelessWidget {
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
-                                  Color.fromARGB(255, 60, 180, 200),
+                                  mainThemeColor,
                               elevation: 10,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30.0),

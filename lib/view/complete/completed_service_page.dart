@@ -108,9 +108,9 @@ class CompletedServicePage extends StatelessWidget {
                           child: Column(children: [
                             Row(
                               children: [
-                                const Icon(
+                                 Icon(
                                   CupertinoIcons.person_solid,
-                                  color: Color.fromARGB(255, 60, 180, 200),
+                                  color: mainThemeColor,
                                 ),
                                 SizedBox(
                                   width: screenWidth / 50,
@@ -127,9 +127,9 @@ class CompletedServicePage extends StatelessWidget {
                             ),
                             Row(
                               children: [
-                                const Icon(
+                                 Icon(
                                   CupertinoIcons.location_solid,
-                                  color: Color.fromARGB(255, 60, 180, 200),
+                                  color: mainThemeColor,
                                 ),
                                 SizedBox(
                                   width: screenWidth / 50,
@@ -146,9 +146,9 @@ class CompletedServicePage extends StatelessWidget {
                             ),
                             Row(
                               children: [
-                                const Icon(
+                                 Icon(
                                   Icons.landscape,
-                                  color: Color.fromARGB(255, 60, 180, 200),
+                                  color: mainThemeColor,
                                 ),
                                 SizedBox(
                                   width: screenWidth / 50,
@@ -163,9 +163,9 @@ class CompletedServicePage extends StatelessWidget {
                             ),
                             Row(
                               children: [
-                                const Icon(
+                                 Icon(
                                   CupertinoIcons.clock_fill,
-                                  color: Color.fromARGB(255, 60, 180, 200),
+                                  color: mainThemeColor,
                                 ),
                                 SizedBox(
                                   width: screenWidth / 50,
@@ -186,9 +186,9 @@ class CompletedServicePage extends StatelessWidget {
                             ),
                             Row(
                               children: [
-                                const Icon(
+                                 Icon(
                                   CupertinoIcons.clock_fill,
-                                  color: Color.fromARGB(255, 60, 180, 200),
+                                  color: mainThemeColor,
                                 ),
                                 SizedBox(
                                   width: screenWidth / 50,
@@ -209,9 +209,9 @@ class CompletedServicePage extends StatelessWidget {
                             ),
                             Row(
                               children: [
-                                const Icon(
+                                 Icon(
                                   CupertinoIcons.arrow_up_circle_fill,
-                                  color: Color.fromARGB(255, 60, 180, 200),
+                                  color: mainThemeColor,
                                 ),
                                 SizedBox(
                                   width: screenWidth / 50,
@@ -230,10 +230,10 @@ class CompletedServicePage extends StatelessWidget {
                                 child: Column(children: [
                                   Row(
                                     children: [
-                                      const Icon(
+                                       Icon(
                                         Icons.phone,
                                         color:
-                                            Color.fromARGB(255, 60, 180, 200),
+                                            mainThemeColor,
                                       ),
                                       SizedBox(
                                         width: screenWidth / 50,
@@ -252,10 +252,10 @@ class CompletedServicePage extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      const Icon(
+                                       Icon(
                                         CupertinoIcons.mail,
                                         color:
-                                            Color.fromARGB(255, 60, 180, 200),
+                                            mainThemeColor,
                                       ),
                                       SizedBox(
                                         width: screenWidth / 50,
@@ -272,10 +272,10 @@ class CompletedServicePage extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      const Icon(
+                                       Icon(
                                         CupertinoIcons.tag_fill,
                                         color:
-                                            Color.fromARGB(255, 60, 180, 200),
+                                            mainThemeColor,
                                       ),
                                       SizedBox(
                                         width: screenWidth / 50,

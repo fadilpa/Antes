@@ -59,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                     radius: headerHeight / 8.5,
                     backgroundColor: Colors.white,
                     child: CircleAvatar(
-                      backgroundColor: Color.fromARGB(255, 60, 180, 200),
+                      backgroundColor: mainThemeColor,
                       radius: containerHeight / 8.5,
                       child: Icon(
                         Icons.emoji_people_rounded,

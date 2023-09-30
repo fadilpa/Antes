@@ -107,7 +107,7 @@ class PendingPage extends StatelessWidget {
                                     height: screenHeight/3.5,
                                     width: screenWidth / 2.5,
                                     decoration: BoxDecoration(
-                                      color: Color.fromARGB(255, 60, 180, 200),
+                                      color: mainThemeColor,
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                     child: Padding(

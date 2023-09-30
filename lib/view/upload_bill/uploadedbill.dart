@@ -383,7 +383,7 @@ class UpLoadBillState extends State<UpLoadBill> {
                             width: screenWidth / 5.5,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Color.fromARGB(255, 60, 180, 200),
+                              color: mainThemeColor,
                             ),
                             child: const Icon(
                               Icons.camera_alt,
@@ -404,7 +404,7 @@ class UpLoadBillState extends State<UpLoadBill> {
                             width: screenWidth / 5.5,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: Color.fromARGB(255, 60, 180, 200),
+                              color: mainThemeColor,
                             ),
                             child: const Icon(
                               Icons.photo,
