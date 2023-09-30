@@ -122,15 +122,15 @@ class PendingPage extends StatelessWidget {
                                           Text(clientName,
                                               style: mainTextStyleBlack.copyWith(
                                                   color: Colors.white,
-                                                  fontSize: 12)),
+                                                  )),
                                           Text(startDate,
                                               style: mainTextStyleBlack.copyWith(
                                                   color: Colors.white,
-                                                  fontSize: 12)),
+                                                )),
                                           Text(priority,
                                               style: mainTextStyleBlack.copyWith(
                                                   fontWeight: FontWeight.bold,
-                                                  fontSize: 12)),
+                                                 )),
                                         ],
                                       ),
                                     ),

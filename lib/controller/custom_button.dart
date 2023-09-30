@@ -22,7 +22,7 @@ class CustmButton extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32.0)),
               
-              backgroundColor: (const Color.fromARGB(255, 60, 180, 200))),
+              backgroundColor: (mainThemeColor)),
           onPressed: buttonaction,
           child: Text(
             buttontext,

@@ -124,14 +124,14 @@ class CompletedPage extends StatelessWidget {
                                       Text(clientName,
                                           style: mainTextStyleBlack.copyWith(
                                               color: Colors.white,
-                                              fontSize: 12)),
+                                              )),
                                       Text(email,
                                           style: mainTextStyleBlack.copyWith(
                                               color: Colors.white,
-                                              fontSize: 12)),
+                                              )),
                                       Text(phone,
                                           style: mainTextStyleBlack.copyWith(
-                                              fontSize: 12)),
+                                             )),
                                     ],
                                   ),
                                 ),

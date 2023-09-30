@@ -394,8 +394,7 @@ class PendingServicePage extends StatelessWidget {
                                               borderRadius:
                                                   BorderRadius.circular(32.0)),
                                           backgroundColor:
-                                              (const Color.fromARGB(
-                                                  255, 60, 180, 200))),
+                                              mainThemeColor),
                                       child: Text(
                                         'End Service',
                                         style: mainTextStyleBlack.copyWith(

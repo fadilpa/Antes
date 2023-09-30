@@ -42,12 +42,12 @@ class _LoginPageState extends State<LoginPage> {
             left: containerHeight * 0.001,
             child: Container(
               height: headerHeight * 1.1,
-              decoration: const BoxDecoration(
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
                 ),
-                color: Color.fromARGB(255, 60, 180, 200),
+                color: mainThemeColor,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -185,7 +185,7 @@ class _LoginPageState extends State<LoginPage> {
                               style: ElevatedButton.styleFrom(
                                 elevation: 10,
                                 backgroundColor:
-                                    Color.fromARGB(255, 60, 180, 200),
+                                    mainThemeColor,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),
