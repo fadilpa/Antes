@@ -58,7 +58,7 @@ class PendingServicePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // int count = 1;
-   final addresSResult = context.read<LocationProvider>().address;
+    final addresSResult = context.read<LocationProvider>().address;
     Provider.of<LocationProvider>(context, listen: false).address;
     String? currentTime = DateTime.now().toString();
     final addressresult = context.read<LocationProvider>().address;
@@ -116,8 +116,7 @@ class PendingServicePage extends StatelessWidget {
                                         style: mainTextStyleBlack.copyWith(
                                             fontWeight: FontWeight.w600,
                                             decoration:
-                                                TextDecoration.underline)
-                                        ),
+                                                TextDecoration.underline)),
                                   ),
                                   SizedBox(
                                     height: screenHeight / 25,
@@ -140,7 +139,7 @@ class PendingServicePage extends StatelessWidget {
                                                 captilaize(clientName) ??
                                                     "No Service Name",
                                                 style: mainTextStyleBlack
-                                                    .copyWith(fontSize: 16)),
+                                                    .copyWith(fontSize: 14)),
                                           )
                                         ],
                                       ),
@@ -161,7 +160,7 @@ class PendingServicePage extends StatelessWidget {
                                             child: Text(
                                                 Address ?? "No Address added",
                                                 style: mainTextStyleBlack
-                                                    .copyWith(fontSize: 16)),
+                                                    .copyWith(fontSize: 14)),
                                           )
                                         ],
                                       ),
@@ -182,7 +181,7 @@ class PendingServicePage extends StatelessWidget {
                                             child: Text(
                                                 Phone ?? "No Mobile Number",
                                                 style: mainTextStyleBlack
-                                                    .copyWith(fontSize: 16)),
+                                                    .copyWith(fontSize: 14)),
                                           )
                                         ],
                                       ),
@@ -207,7 +206,7 @@ class PendingServicePage extends StatelessWidget {
                                                       ? " ($starttime)"
                                                       : "Time Not Defined"),
                                               style: mainTextStyleBlack
-                                                  .copyWith(fontSize: 16))
+                                                  .copyWith(fontSize: 14))
                                         ],
                                       ),
                                       SizedBox(
@@ -231,7 +230,7 @@ class PendingServicePage extends StatelessWidget {
                                                       ? " ($endtime)"
                                                       : "Time Not Defined"),
                                               style: mainTextStyleBlack
-                                                  .copyWith(fontSize: 16)),
+                                                  .copyWith(fontSize: 14)),
                                         ],
                                       ),
                                       SizedBox(
@@ -256,7 +255,7 @@ class PendingServicePage extends StatelessWidget {
                                                   Text(Catgory ?? "No Category",
                                                       style: mainTextStyleBlack
                                                           .copyWith(
-                                                              fontSize: 16))
+                                                             fontSize: 14))
                                                 ],
                                               ),
                                               SizedBox(
@@ -276,7 +275,7 @@ class PendingServicePage extends StatelessWidget {
                                                       Landmark ?? "No Landmark",
                                                       style: mainTextStyleBlack
                                                           .copyWith(
-                                                              fontSize: 16))
+                                                             fontSize: 14))
                                                 ],
                                               ),
                                               SizedBox(
@@ -299,7 +298,7 @@ class PendingServicePage extends StatelessWidget {
                                                             mainTextStyleBlack
                                                                 .copyWith(
                                                                     fontSize:
-                                                                        16)),
+                                                                        14)),
                                                   )
                                                 ],
                                               ),
@@ -319,7 +318,7 @@ class PendingServicePage extends StatelessWidget {
                                                   Text(refNo ?? "No refno",
                                                       style: mainTextStyleBlack
                                                           .copyWith(
-                                                              fontSize: 16))
+                                                             fontSize: 14))
                                                 ],
                                               ),
                                             ],
@@ -335,23 +334,40 @@ class PendingServicePage extends StatelessWidget {
                                 children: [
                                   CustmButton(
                                       buttontext: 'Start Journey',
-                                      buttonaction: () async{
+                                      buttonaction: () async {
                                         value.getLocationAndAddress();
-                                         final prefs = await SharedPreferences.getInstance();
-                           bool ?journeyStatus= prefs.getBool('isStarted');
-                                        showStartDialog(context,journeyStatus,Provider.of<LocationProvider>(context, listen: false).currentService!.id);
+                                        final prefs = await SharedPreferences
+                                            .getInstance();
+                                        bool? journeyStatus =
+                                            prefs.getBool('isStarted');
+                                        showStartDialog(
+                                            context,
+                                            journeyStatus,
+                                            Provider.of<LocationProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .currentService!
+                                                .id);
                                       }),
                                   SizedBox(
                                     width: screenWidth / 50,
                                   ),
                                   CustmButton(
                                       buttontext: 'End Journey',
-                                      buttonaction: ()async {
-                                           final prefs = await SharedPreferences.getInstance();
-                          int? Saved_ID= prefs.getInt('SavedId');
+                                      buttonaction: () async {
+                                        final prefs = await SharedPreferences
+                                            .getInstance();
+                                        int? Saved_ID = prefs.getInt('SavedId');
                                         value.getLocationAndAddress();
-                                        
-                                        endDialogBox(context,Saved_ID,Provider.of<LocationProvider>(context, listen: false).currentService!.id);
+
+                                        endDialogBox(
+                                            context,
+                                            Saved_ID,
+                                            Provider.of<LocationProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .currentService!
+                                                .id);
                                       })
                                 ],
                               ),
@@ -396,12 +412,11 @@ class PendingServicePage extends StatelessWidget {
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(32.0)),
-                                          backgroundColor:
-                                              mainThemeColor),
+                                          backgroundColor: mainThemeColor),
                                       child: Text(
                                         'End Service',
                                         style: mainTextStyleBlack.copyWith(
-                                            color: Colors.white, fontSize: 15),
+                                            color: Colors.white, fontSize: 12),
                                       ),
                                       onPressed: () async {
                                         final prefs = await SharedPreferences

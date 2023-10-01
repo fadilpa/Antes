@@ -70,14 +70,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 expandedHeight: screenHeight * 0.13,
                 forceElevated: true,
                 elevation: 3,
-                backgroundColor: Colors.white70,
+                backgroundColor: Colors.white,
                 flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
                   title: Text("Services",
                       style: mainTextStyle.copyWith(
                           fontWeight: FontWeight.w700,
                           color: Colors.black,
-                          fontSize: 14)),
+                          fontSize: 12)),
                 ),
                 leading: IconButton(
                   icon: Icon(
@@ -136,7 +136,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               ),
                               labelColor: Colors.white,
                               labelStyle:
-                                  mainTextStyleBlack.copyWith(fontWeight: FontWeight.bold),
+                                  mainTextStyleBlack.copyWith(fontWeight: FontWeight.bold,fontSize: 14),
                               unselectedLabelColor:
                                   mainThemeColor,
                               tabs: const [

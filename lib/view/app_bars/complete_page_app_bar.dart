@@ -22,7 +22,7 @@ class CompleteAppBar extends StatelessWidget {
       expandedHeight: screenHeight * 0.13,
       forceElevated: true,
       elevation: 3,
-      backgroundColor: Colors.white70,
+      backgroundColor: Colors.white,
       flexibleSpace: FlexibleSpaceBar(
         centerTitle: true,
         title: Text("Completed Services",

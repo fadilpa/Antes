@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
@@ -190,11 +191,9 @@ class _RaisedTicketState extends State<RaisedTicket> {
               backgroundColor: Colors.white70,
               flexibleSpace: FlexibleSpaceBar(
                 centerTitle: true,
-                title: Text(
-                  "Raise a Ticket",
-                   style: mainTextStyleBlack.copyWith(
-                fontWeight: FontWeight.bold, fontSize: 20)
-                ),
+                title: Text("Raise a Ticket",
+                    style: mainTextStyleBlack.copyWith(
+                        fontWeight: FontWeight.bold, fontSize: 20)),
               ),
               leading: IconButton(
                 icon: const Icon(
@@ -212,24 +211,19 @@ class _RaisedTicketState extends State<RaisedTicket> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          name!.split(' ').first ?? "User Name",
-                         style: mainTextStyleBlack.copyWith(
-                        fontSize: 12, fontWeight: FontWeight.bold)
-                        ),
-                        Text(
-                          number ?? "Emp_no",
-                          style: mainTextStyleBlack.copyWith(
-                        fontSize: 12)
-                        ),
+                        Text(name!.split(' ').first ?? "User Name",
+                            style: mainTextStyleBlack.copyWith(
+                                fontSize: 12, fontWeight: FontWeight.bold)),
+                        Text(number ?? "Emp_no",
+                            style: mainTextStyleBlack.copyWith(fontSize: 12)),
                       ],
                     ),
                     SizedBox(width: screenWidth / screenWidth / 30),
                     Padding(
                       padding: EdgeInsets.only(right: screenWidth / 30),
-                      child:  CircleAvatar(
-                          backgroundColor: mainThemeColor,
-                        ),
+                      child: CircleAvatar(
+                        backgroundColor: mainThemeColor,
+                      ),
                     ),
                   ],
                 )
@@ -258,7 +252,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                         Container(
                           height: screenHeight / 6.7,
                           width: screenWidth / 1.2,
-                          decoration:  BoxDecoration(
+                          decoration: BoxDecoration(
                             color: mainThemeColor,
                             borderRadius: BorderRadius.only(
                               topRight: Radius.circular(15),
@@ -270,7 +264,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                               Container(
                                 height: screenHeight / 6.7,
                                 width: screenWidth / 1.2,
-                                decoration:  BoxDecoration(
+                                decoration: BoxDecoration(
                                   color: mainThemeColor,
                                   borderRadius: BorderRadius.only(
                                     topRight: Radius.circular(15),
@@ -367,14 +361,12 @@ class _RaisedTicketState extends State<RaisedTicket> {
               expandedHeight: 100,
               forceElevated: true,
               elevation: 3,
-              backgroundColor: Colors.white70,
+              backgroundColor: Colors.white,
               flexibleSpace: FlexibleSpaceBar(
                 centerTitle: true,
-                title: Text(
-                  "Raise a Ticket",
-                   style: mainTextStyleBlack.copyWith(
-                fontWeight: FontWeight.bold, fontSize: 15)
-                ),
+                title: Text("Raise a Ticket",
+                    style: mainTextStyleBlack.copyWith(
+                        fontWeight: FontWeight.bold, fontSize: 15)),
               ),
               leading: IconButton(
                 icon: const Icon(
@@ -395,21 +387,20 @@ class _RaisedTicketState extends State<RaisedTicket> {
                         Text(
                           name!.split(' ').first ?? "User Name",
                           style: mainTextStyleBlack.copyWith(
-                        fontSize: 12, fontWeight: FontWeight.bold),
+                              fontSize: 12, fontWeight: FontWeight.bold),
                         ),
                         Text(
                           number ?? "Emp_no",
-                          style: mainTextStyleBlack.copyWith(
-                        fontSize: 12),
+                          style: mainTextStyleBlack.copyWith(fontSize: 12),
                         ),
                       ],
                     ),
                     SizedBox(width: screenWidth / screenWidth / 30),
                     Padding(
                       padding: EdgeInsets.only(right: screenWidth / 30),
-                      child:  CircleAvatar(
-                          backgroundColor: mainThemeColor,
-                        ),
+                      child: CircleAvatar(
+                        backgroundColor: mainThemeColor,
+                      ),
                     ),
                   ],
                 )
@@ -428,7 +419,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.2),
-                          blurRadius: 10,
+                          blurRadius: 20,
                           spreadRadius: 5,
                         ),
                       ],
@@ -439,7 +430,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                         Container(
                           height: screenHeight / 8, // Adjusted height
                           width: screenWidth / 1.2,
-                          decoration:  BoxDecoration(
+                          decoration: BoxDecoration(
                             color: mainThemeColor,
                             borderRadius: BorderRadius.only(
                               topRight: Radius.circular(15),
@@ -459,11 +450,10 @@ class _RaisedTicketState extends State<RaisedTicket> {
                                   ),
                                 ],
                               ),
-                              Text(
-                                'Raise a Ticket',
-                                 style: mainTextStyle.copyWith(
-                fontWeight: FontWeight.bold, fontSize: 20)
-                              ),
+                              Text('Raise a Ticket',
+                                  style: mainTextStyle.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20)),
                             ],
                           ),
                         ),
@@ -478,9 +468,15 @@ class _RaisedTicketState extends State<RaisedTicket> {
                                           listen: false)
                                       .setTicketSubject(value);
                                 },
-                                decoration:
-                                    InputDecoration(hintText: '  Subject',hintStyle: mainTextStyleBlack.copyWith(
-                        fontSize: 16)),
+                                decoration: InputDecoration(
+                                    hintText: 'Subject',
+                                    enabledBorder:const UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Color.fromARGB(
+                                              255, 218, 216, 216)),
+                                    ),
+                                    hintStyle: mainTextStyleBlack.copyWith(
+                                        fontSize: 16)),
                               ),
                               TextField(
                                 controller: DescriptionController,
@@ -489,11 +485,15 @@ class _RaisedTicketState extends State<RaisedTicket> {
                                           listen: false)
                                       .setTicketDescription(value);
                                 },
-                                decoration:
-                                    InputDecoration(hintText: '  Description',
-                                  border: OutlineInputBorder(),
+                                decoration: InputDecoration(
+                                    hintText: 'Description',
+                                    enabledBorder:const UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Color.fromARGB(
+                                              255, 218, 216, 216)),
+                                    ),
                                     hintStyle: mainTextStyleBlack.copyWith(
-                        fontSize: 12)),
+                                        fontSize: 16)),
                               ),
                               InkWell(
                                 onTap: () {
@@ -505,27 +505,27 @@ class _RaisedTicketState extends State<RaisedTicket> {
                                       screenHeight / 12.5, // Adjusted height
                                   width: screenWidth / 1.3,
                                   decoration: BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(
-                                        color: Colors.grey.shade600,
-                                      ),
-                                    ),
+                                    
+                                    // border: Border(
+                                    //   bottom: BorderSide(
+                                    //     color: Colors.grey.shade600,
+                                    //   ),
+                                    // ),
                                   ),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
+                                  // padding: const EdgeInsets.symmetric(
+                                  //     horizontal: ),
                                   child: Row(
                                     children: [
-                                      Text(
-                                        'Upload Image',
-                                        style: mainTextStyleBlack.copyWith(
-                        fontSize: 12)
-                                      ),
+                                      Text('Upload Image',
+                                          style: mainTextStyleBlack.copyWith(
+                                              fontSize: 16)),
                                       const Spacer(),
                                       IconButton(
                                         onPressed: () {
                                           _showImageSourceDialog(context);
                                         },
-                                        icon: Icon(Icons.camera),
+                                        icon: Icon(Icons.camera_alt,
+                                        color: Colors.grey,),
 
                                         // size: 30,
                                         color: Colors.grey.shade600,
@@ -533,6 +533,11 @@ class _RaisedTicketState extends State<RaisedTicket> {
                                     ],
                                   ),
                                 ),
+                              ),
+                              Divider(
+                                thickness: 1,
+                                  color: Color.fromARGB(
+                                              255, 218, 216, 216)
                               ),
                               SizedBox(
                                 height: screenHeight / 20, // Adjusted height
@@ -560,16 +565,16 @@ class _RaisedTicketState extends State<RaisedTicket> {
                                     });
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        mainThemeColor,
+                                    backgroundColor: mainThemeColor,
                                     elevation: 10,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(30.0),
                                     ),
                                   ),
-                                  child:  Text(
-                                    'Submit',style: mainTextStyleBlack.copyWith(color: Colors.white,
-                        fontSize: 12),
+                                  child: Text(
+                                    'Submit',
+                                    style: mainTextStyleBlack.copyWith(
+                                        color: Colors.white, fontSize: 16),
                                   ),
                                 ),
                               ),

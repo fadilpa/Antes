@@ -29,7 +29,7 @@ class CustmButton extends StatelessWidget {
           child: Text(
             buttontext,
            style: mainTextStyleBlack.copyWith(color: Colors.white,
-                        fontSize: 15)
+                        fontSize: 12)
           )),
     );
   }

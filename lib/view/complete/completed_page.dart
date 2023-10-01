@@ -55,7 +55,7 @@ class CompletedPage extends StatelessWidget {
                       shrinkWrap: true,
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                           mainAxisExtent: screenHeight,
-                          maxCrossAxisExtent: screenHeight / 2,
+                          maxCrossAxisExtent: screenWidth/2,
                           crossAxisSpacing: 2),
                       itemCount: dataList.length,
                       itemBuilder: (context, index) {
@@ -75,7 +75,7 @@ class CompletedPage extends StatelessWidget {
                         var landmark = dataList[index].landmark!;
                         return Column(
                           children: [
-                            Text('Service : $id'.toUpperCase()),
+                            Text('Service : $id',style: mainTextStyleBlack,),
                             SizedBox(height: screenHeight / 80),
                             GestureDetector(
                               onTap: () {

@@ -196,274 +196,271 @@ class UpLoadBillState extends State<UpLoadBill> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: CustomScrollView(
-          slivers: <Widget>[
-            UploadBillAppBar(
-                screenHeight: screenHeight,
-                userProvider: userProvider,
-                screenWidth: screenWidth),
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  SizedBox(
-                    height: screenHeight / 13,
+      body: CustomScrollView(
+        slivers: <Widget>[
+          UploadBillAppBar(
+              screenHeight: screenHeight,
+              userProvider: userProvider,
+              screenWidth: screenWidth),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                SizedBox(
+                  height: screenHeight / 13,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left:10.0,right: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Category",style: mainTextStyleBlack.copyWith(
+                          fontSize: 16),),
+                      Container(
+                        width: screenWidth / 2,
+                        height: screenHeight / 15,
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          // border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.grey[200],
+                        ),
+                        child: Center(
+                          child: DropdownButtonHideUnderline(
+                            
+                            child: DropdownButton<String>(
+                              value: dropdownValue,style: mainTextStyleBlack.copyWith(
+                          fontSize: 16),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  dropdownValue = newValue!;
+                                  optionList = categoryToOptions[dropdownValue]!;
+                                  space();
+                                });
+                                Provider.of<LocationProvider>(context,
+                                        listen: false)
+                                    .setCategory(newValue);
+                              },
+                              items: categoryToOptions.keys
+                                  .map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  Padding(
+                ),
+                optionList.isNotEmpty
+                    ? Padding(
+                        padding: EdgeInsets.only(top: screenHeight / 35,left: 10,right: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Options",style: mainTextStyleBlack.copyWith(
+                        fontSize: 16),),
+                            Center(
+                              child: Container(
+                                width: screenWidth / 2,
+                                height: screenHeight / 18,
+                                decoration: BoxDecoration(
+                                  // border: Border.all(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.grey[200],
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    // Text("Select"),
+                                    DropdownButtonHideUnderline(
+                                      child: DropdownButton<String>(
+                                        value: selectedOption,style: mainTextStyleBlack.copyWith(
+                        fontSize: 16),
+                                        onChanged: (newValue) {
+                                          setState(() {
+                                            // print(dropdownValue);
+                                            selectedOption = newValue!;
+                                          });
+                                          Provider.of<LocationProvider>(context,
+                                                  listen: false)
+                                              .setOptions(newValue);
+                                        },
+                                        items: optionList
+                                            .map<DropdownMenuItem<String>>(
+                                                (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : const SizedBox(),
+                SizedBox(
+                  height: screenHeight / 35,
+                ),
+                Center(
+                  child: Padding(
                     padding: const EdgeInsets.only(left:10.0,right: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Category",style: mainTextStyleBlack.copyWith(
-                            fontSize: 16),),
-                        Container(
+                        Text("Amount",style: mainTextStyleBlack.copyWith(
+                          fontSize: 16),),
+                        SizedBox(
+                          height: 50,
                           width: screenWidth / 2,
-                          height: screenHeight / 15,
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            // border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(5),
+                          child: Container(
                             color: Colors.grey[200],
-                          ),
-                          child: Center(
-                            child: DropdownButtonHideUnderline(
-                              
-                              child: DropdownButton<String>(
-                                value: dropdownValue,style: mainTextStyleBlack.copyWith(
-                            fontSize: 16),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    dropdownValue = newValue!;
-                                    optionList = categoryToOptions[dropdownValue]!;
-                                    space();
-                                  });
+                            child: TextField(
+                                controller: Amount_Controller,
+                                onChanged: (value) {
                                   Provider.of<LocationProvider>(context,
                                           listen: false)
-                                      .setCategory(newValue);
+                                      .setUploadAmount(value);
                                 },
-                                items: categoryToOptions.keys
-                                    .map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "Enter Amount",
+                                   contentPadding: EdgeInsets.all(20.0),
+                                  hintStyle: mainTextStyleBlack.copyWith(
+                          fontSize: 16)
+                                )),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  optionList.isNotEmpty
-                      ? Padding(
-                          padding: EdgeInsets.only(top: screenHeight / 35,left: 10,right: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Options",style: mainTextStyleBlack.copyWith(
+                ),
+                SizedBox(
+                  height: screenHeight / 35,
+                ),
+                Center(
+                  child: Padding(
+                     padding: const EdgeInsets.only(left:10.0,right: 10),
+                    child: Row(
+                      mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Description",style: mainTextStyleBlack.copyWith(
                           fontSize: 16),),
-                              Center(
-                                child: Container(
-                                  width: screenWidth / 2,
-                                  height: screenHeight / 18,
-                                  decoration: BoxDecoration(
-                                    // border: Border.all(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.grey[200],
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      // Text("Select"),
-                                      DropdownButtonHideUnderline(
-                                        child: DropdownButton<String>(
-                                          value: selectedOption,style: mainTextStyleBlack.copyWith(
-                          fontSize: 16),
-                                          onChanged: (newValue) {
-                                            setState(() {
-                                              // print(dropdownValue);
-                                              selectedOption = newValue!;
-                                            });
-                                            Provider.of<LocationProvider>(context,
-                                                    listen: false)
-                                                .setOptions(newValue);
-                                          },
-                                          items: optionList
-                                              .map<DropdownMenuItem<String>>(
-                                                  (String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(value),
-                                            );
-                                          }).toList(),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
+                        SizedBox(
+                          // height: screenHeight/6,
+                          width: screenWidth / 2,
+                          child: Container(
+                            color: Colors.grey[200],
+                            child: TextField(
+                                maxLines: 4,
+                                controller: Description_Controller,
+                                onChanged: (value) {
+                                  Provider.of<LocationProvider>(context,
+                                          listen: false)
+                                      .setUploadDescription(value);
+                                },
+                                decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.only(left:20.0,top: 5),
+                                  border: InputBorder.none,
+                                  hintText: "Enter Description",hintStyle: mainTextStyleBlack.copyWith(
+                          fontSize: 16)
+                                )),
                           ),
-                        )
-                      : const SizedBox(),
-                  SizedBox(
-                    height: screenHeight / 35,
-                  ),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left:10.0,right: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Amount",style: mainTextStyleBlack.copyWith(
-                            fontSize: 16),),
-                          SizedBox(
-                            height: 50,
-                            width: screenWidth / 2,
-                            child: Container(
-                              color: Colors.grey[200],
-                              child: TextField(
-                                  controller: Amount_Controller,
-                                  onChanged: (value) {
-                                    Provider.of<LocationProvider>(context,
-                                            listen: false)
-                                        .setUploadAmount(value);
-                                  },
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "Enter Amount",
-                                     contentPadding: EdgeInsets.all(20.0),
-                                    hintStyle: mainTextStyleBlack.copyWith(
-                            fontSize: 16)
-                                  )),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(
-                    height: screenHeight / 35,
-                  ),
-                  Center(
-                    child: Padding(
-                       padding: const EdgeInsets.only(left:10.0,right: 10),
-                      child: Row(
-                        mainAxisAlignment:MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Description",style: mainTextStyleBlack.copyWith(
-                            fontSize: 16),),
-                          SizedBox(
-                            // height: screenHeight/6,
-                            width: screenWidth / 2,
-                            child: Container(
-                              color: Colors.grey[200],
-                              child: TextField(
-                                  maxLines: 4,
-                                  controller: Description_Controller,
-                                  onChanged: (value) {
-                                    Provider.of<LocationProvider>(context,
-                                            listen: false)
-                                        .setUploadDescription(value);
-                                  },
-                                  decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.only(left:20.0,top: 5),
-                                    border: InputBorder.none,
-                                    hintText: "Enter Description",hintStyle: mainTextStyleBlack.copyWith(
-                            fontSize: 16)
-                                  )),
-                            ),
-                          ),
-                        ],
-                      ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: screenHeight / 15,
                     ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: screenHeight / 15,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              pickImage(ImageSource.camera, context);
-                            },
-                            child: Container(
-                              height: screenHeight / 12,
-                              width: screenWidth / 5.5,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(2),
-                                color: mainThemeColor,
-                              ),
-                              child: const Icon(
-                                Icons.camera_alt_rounded,
-                                size: 50,
-                                color: Colors.white,
-                              ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            pickImage(ImageSource.camera, context);
+                          },
+                          child: Container(
+                            height: screenHeight / 12,
+                            width: screenWidth / 5.5,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(2),
+                              color: mainThemeColor,
+                            ),
+                            child: const Icon(
+                              Icons.camera_alt_rounded,
+                              size: 50,
+                              color: Colors.white,
                             ),
                           ),
-                          SizedBox(
-                            width: screenWidth / 15,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              pickImage(ImageSource.gallery, context);
-                            },
-                            child: Container(
-                              height: screenHeight / 12,
-                              width: screenWidth / 5.5,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(2),
-                                color: mainThemeColor,
-                              ),
-                              child: const Icon(
-                                CupertinoIcons.photo_fill,
-                                size: 45,
-                                color: Colors.white,
-                              ),
+                        ),
+                        SizedBox(
+                          width: screenWidth / 15,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            pickImage(ImageSource.gallery, context);
+                          },
+                          child: Container(
+                            height: screenHeight / 12,
+                            width: screenWidth / 5.5,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(2),
+                              color: mainThemeColor,
+                            ),
+                            child: const Icon(
+                              CupertinoIcons.photo_fill,
+                              size: 45,
+                              color: Colors.white,
                             ),
                           ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: screenHeight / 35,
-                      ),
-                      CustmButton(
-                          buttontext: 'Upload',
-                          isRadius: false,
-                          buttonaction: () async {
-                            Provider.of<LocationProvider>(context, listen: false)
-                                .getLocationAndAddress();
-                            final prefs = await SharedPreferences.getInstance();
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: screenHeight / 35,
+                    ),
+                    CustmButton(
+                        buttontext: 'Upload',
+                        isRadius: false,
+                        buttonaction: () async {
+                          Provider.of<LocationProvider>(context, listen: false)
+                              .getLocationAndAddress();
+                          final prefs = await SharedPreferences.getInstance();
       // ignore: unused_local_variable
-                            String? Firebase_Id = prefs.getString('Firebase_Id');
-                            Upload(
-                                context,
-                                Firebase_Id,
-                                curretService!.id,
-                                addresSResult,
-                                categoryvalue,
-                                optionValue,
-                                descriptioncontroller,
-                                currentTime,
-                                amountcontroller,
-                                filepath);
-                            //function not assigned need function
-                            Amount_Controller.clear();
-                            Description_Controller.clear();
-                          }),
-                    ],
-                  ),
-                ],
-              ),
+                          String? Firebase_Id = prefs.getString('Firebase_Id');
+                          Upload(
+                              context,
+                              Firebase_Id,
+                              curretService!.id,
+                              addresSResult,
+                              categoryvalue,
+                              optionValue,
+                              descriptioncontroller,
+                              currentTime,
+                              amountcontroller,
+                              filepath);
+                          //function not assigned need function
+                          Amount_Controller.clear();
+                          Description_Controller.clear();
+                        }),
+                  ],
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

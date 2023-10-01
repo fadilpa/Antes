@@ -28,7 +28,7 @@ class UploadBillAppBar extends StatelessWidget {
         title: Text(
           "Upload Bill",
          style: mainTextStyleBlack.copyWith(
-                        fontSize: 16, fontWeight: FontWeight.bold)
+                       fontWeight: FontWeight.bold)
         ),
       ),
       leading: IconButton(

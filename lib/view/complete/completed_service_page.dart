@@ -118,7 +118,7 @@ class CompletedServicePage extends StatelessWidget {
                                 Flexible(
                                   child: Text(clientName ?? "No Client Name",
                                       style: mainTextStyleBlack.copyWith(
-                                          fontSize: 16)),
+                                          fontSize: 14)),
                                 )
                               ],
                             ),
@@ -137,7 +137,7 @@ class CompletedServicePage extends StatelessWidget {
                                 Flexible(
                                   child: Text(address ?? "Not Address Added",
                                       style: mainTextStyleBlack.copyWith(
-                                          fontSize: 16)),
+                                          fontSize: 14)),
                                 )
                               ],
                             ),
@@ -155,7 +155,7 @@ class CompletedServicePage extends StatelessWidget {
                                 ),
                                 Text(landmark ?? "No Categorised",
                                     style: mainTextStyleBlack.copyWith(
-                                        fontSize: 16))
+                                        fontSize: 14))
                               ],
                             ),
                             SizedBox(
@@ -178,7 +178,7 @@ class CompletedServicePage extends StatelessWidget {
                                             ? " ($starttime)"
                                             : "Time Not Defined"),
                                     style: mainTextStyleBlack.copyWith(
-                                        fontSize: 16))
+                                        fontSize: 14))
                               ],
                             ),
                             SizedBox(
@@ -201,7 +201,7 @@ class CompletedServicePage extends StatelessWidget {
                                             ? " ($endtime)"
                                             : "Time Not Defined"),
                                     style: mainTextStyleBlack.copyWith(
-                                        fontSize: 16))
+                                        fontSize: 14))
                               ],
                             ),
                             SizedBox(
@@ -218,7 +218,7 @@ class CompletedServicePage extends StatelessWidget {
                                 ),
                                 Text(priority ?? "No Priority",
                                     style: mainTextStyleBlack.copyWith(
-                                        fontSize: 16))
+                                        fontSize: 14))
                               ],
                             ),
                             SizedBox(
@@ -241,7 +241,7 @@ class CompletedServicePage extends StatelessWidget {
                                       Text(
                                         phone ?? "No Phone",
                                         style: GoogleFonts.montserrat(
-                                            fontSize: 16,
+                                            fontSize: 14,
                                             fontWeight: FontWeight.w400,
                                             color: Colors.black),
                                       )
@@ -263,7 +263,7 @@ class CompletedServicePage extends StatelessWidget {
                                       Flexible(
                                         child: Text(email ?? "No Email",
                                             style: mainTextStyleBlack.copyWith(
-                                                fontSize: 16)),
+                                                fontSize: 14)),
                                       )
                                     ],
                                   ),
@@ -282,7 +282,7 @@ class CompletedServicePage extends StatelessWidget {
                                       ),
                                       Text(refNo ?? "No refno",
                                           style: mainTextStyleBlack.copyWith(
-                                              fontSize: 16))
+                                              fontSize: 14))
                                     ],
                                   ),
                                 ]),

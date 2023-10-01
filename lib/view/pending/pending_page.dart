@@ -47,12 +47,12 @@ class PendingPage extends StatelessWidget {
                // SizedBox();
                 return SizedBox(
                   height: screenHeight,
-                  width: screenWidth,
+                  // width: screenWidth,
                   child: GridView.builder(
                     shrinkWrap: true,
                     gridDelegate :  SliverGridDelegateWithMaxCrossAxisExtent(
                   mainAxisExtent: screenHeight,
-                  maxCrossAxisExtent: screenHeight/2,
+                  maxCrossAxisExtent: screenWidth/2,
                    crossAxisSpacing: 2
                   ),
                   itemCount:dataList.length ,
@@ -72,6 +72,7 @@ class PendingPage extends StatelessWidget {
                         var phone = dataList[index].phone!;
                         var landmark = dataList[index].landmark!;
                         return Column(
+                          //  crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                           Text('Service : $id',style: mainTextStyleBlack,),
                                 SizedBox(height: screenHeight / 80),
