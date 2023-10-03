@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mentegoz_technologies/api/login_api.dart';
+import 'package:mentegoz_technologies/controller/media_permission.dart';
 import 'package:mentegoz_technologies/controller/request_location_permissions.dart';
 import 'dart:math' as math;
 
@@ -15,13 +16,15 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  ReqMedia reqmedia = const ReqMedia();
   ReqLocation reqlocation = ReqLocation();
   LocationPermission? permission;
 
   @override
   void initState() {
     super.initState();
-    reqlocation.requestLocationPermission();
+    // reqmedia.requestMediaPermissions();
+    // reqlocation.requestLocationPermission();
   }
 
   @override
@@ -42,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
             left: containerHeight * 0.001,
             child: Container(
               height: headerHeight * 1.1,
-              decoration:  BoxDecoration(
+              decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
@@ -184,8 +187,7 @@ class _LoginPageState extends State<LoginPage> {
                               },
                               style: ElevatedButton.styleFrom(
                                 elevation: 10,
-                                backgroundColor:
-                                    mainThemeColor,
+                                backgroundColor: mainThemeColor,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),

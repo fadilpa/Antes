@@ -49,18 +49,32 @@ Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
                 ),
                 TextField(
                   decoration: InputDecoration(
-                    labelText: "Upload Bill",
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.camera_alt),
-                      onPressed: () async {
-                        Provider.of<OpenCameraProvider>(context, listen: false)
-                            .openImagePicker();
-                      },
-                    ),
-                  ),
+                      labelText: "Upload Bill",
+                      suffixIcon: SizedBox(
+                        width: 100,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                           Provider.of<OpenCameraProvider>(context).image!=null? Image.file(
+                              Provider.of<OpenCameraProvider>(context).image!,
+                              height: 45,
+                            ):SizedBox(),
+                           IconButton(
+                              icon: Icon(Icons.camera_alt),
+                              onPressed: () async {
+                                Provider.of<OpenCameraProvider>(context,
+                                        listen: false)
+                                    .openImagePicker();
+                              },
+                            ),
+                          ],
+                        ),
+                      )),
                 ),
               ],
             ),
+            // Image.file( Provider.of<OpenCameraProvider>(context).image!,width: 50,
+            //             ),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
@@ -70,12 +84,12 @@ Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
               ),
               TextButton(
                 onPressed: () async {
-                      final prefs = await SharedPreferences.getInstance();
-                      prefs.setBool('isStarted', false);
-                    prefs.remove('SavedId');
+                  final prefs = await SharedPreferences.getInstance();
+                  prefs.setBool('isStarted', false);
+                  prefs.remove('SavedId');
                   value.updateLoader(true);
-                 
-// ignore: unused_local_variable
+
+                  // ignore: unused_local_variable
                   String? Firebase_Id = prefs.getString('Firebase_Id');
                   // if (curretnService != null) {
                   //   curretnService.journeyStarted = false;

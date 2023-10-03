@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
 import 'package:mentegoz_technologies/controller/Provider/name_and_num_provider.dart';
+import 'package:mentegoz_technologies/controller/styles.dart';
 import 'package:mentegoz_technologies/view/app_bars/tickets_app_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TicketsPage extends StatefulWidget {
   const TicketsPage({super.key});
@@ -11,6 +14,23 @@ class TicketsPage extends StatefulWidget {
 }
 
 class _TicketsPageState extends State<TicketsPage> {
+
+ getusername_and_number() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      name = prefs.getString('Name');
+      number = prefs.getString('Mobile');
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<LocationProvider>(context, listen: false)
+        .getLocationAndAddress();
+    getusername_and_number();
+  }
+
 String? name;
 String? number;
 
@@ -23,7 +43,58 @@ String? number;
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
-          TicketAppBar(name: name, number: number, screenWidth: screenWidth),
+         SliverAppBar(
+      pinned: true,
+      expandedHeight: 100,
+      forceElevated: true,
+      elevation: 3,
+      backgroundColor: Colors.white70,
+      flexibleSpace: const FlexibleSpaceBar(
+        centerTitle: true,
+        title: Text(
+          "Tickets",
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 15.0,
+          ),
+        ),
+      ),
+      leading: IconButton(
+        icon: const Icon(
+          Icons.arrow_back_ios_outlined,
+          color: Colors.black,
+        ),
+        tooltip: 'Back',
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
+      actions: <Widget>[
+        Row(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(userProvider.name?.split(' ').first ?? "User Name",
+                    style: mainTextStyleBlack.copyWith(
+                        fontSize: 12, fontWeight: FontWeight.bold)),
+                Text(userProvider.number ?? "Emp_no",
+                    style: mainTextStyleBlack.copyWith(fontSize: 12)),
+              ],
+            ),
+            SizedBox(
+              width: screenWidth / 30,
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: screenWidth / 30),
+              child:  CircleAvatar(
+                          backgroundColor: mainThemeColor,
+                        ),
+            ),
+          ],
+        ),
+      ],
+         ),
           SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.only(
