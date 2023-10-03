@@ -39,7 +39,7 @@ Future<void> login(BuildContext context) async {
           if (status == 'pending') {
             final firebaseId = data[0]["data"][0]["firebase_id"].toString();
             final userName = data[0]["data"][0]["name"].toString();
-            final mobileNumber = data[0]["data"][0]["emp_no"]??"emp_no".toString();
+            final mobileNumber = data[0]["data"][0]["emp_no"]??"".toString();
             print(firebaseId);
             final firebaseIdProvider =
                 Provider.of<FirebaseIdProvider>(context, listen: false);

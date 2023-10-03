@@ -53,7 +53,9 @@ class PendingPage extends StatelessWidget {
                     gridDelegate :  SliverGridDelegateWithMaxCrossAxisExtent(
                   mainAxisExtent: screenHeight,
                   maxCrossAxisExtent: screenWidth/2,
-                   crossAxisSpacing: 2
+                   crossAxisSpacing: 2,
+                   mainAxisSpacing: 1
+
                   ),
                   itemCount:dataList.length ,
                    itemBuilder: (context, index) {
@@ -105,7 +107,7 @@ class PendingPage extends StatelessWidget {
                               );
                                   } ,
                                   child: Container(
-                                    height: screenHeight/3.5,
+                                    height: screenHeight/4.5,
                                     width: screenWidth / 2.5,
                                     decoration: BoxDecoration(
                                       color: mainThemeColor,
@@ -114,20 +116,22 @@ class PendingPage extends StatelessWidget {
                                     child: Padding(
                                       padding: const EdgeInsets.only(left: 10),
                                       child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
+                                        // mainAxisAlignment:
+                                        //     MainAxisAlignment.spaceEvenly,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          // SizedBox(),
+                                          SizedBox(height: screenHeight/40,),
                                           Text(clientName,
                                               style: mainTextStyleBlack.copyWith(
                                                   color: Colors.white,
                                                   )),
+                                                   SizedBox(height: screenHeight/40,),
                                           Text(startDate,
                                               style: mainTextStyleBlack.copyWith(
                                                   color: Colors.white,
                                                 )),
+                                                 SizedBox(height: screenHeight/40,),
                                           Text(priority,
                                               style: mainTextStyleBlack.copyWith(
                                                   fontWeight: FontWeight.bold,

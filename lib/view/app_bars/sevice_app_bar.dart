@@ -62,7 +62,7 @@
 //                   ),
 //                 ),
 //                 Text(
-//                   userProvider.number ?? "Emp_no",
+//                   userProvider.number ?? "",
 //                   style: TextStyle(
 //                     color: Colors.black54,
 //                     fontSize: 13,

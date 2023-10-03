@@ -16,4 +16,8 @@ class OpenCameraProvider extends ChangeNotifier {
         notifyListeners();
     }
   }
+  emptyImage(){
+    image=null;
+    notifyListeners();
+  }
 }

@@ -211,7 +211,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                         Text(name!.split(' ').first ?? "User Name",
                             style: mainTextStyleBlack.copyWith(
                                 fontSize: 12, fontWeight: FontWeight.bold)),
-                        Text(number ?? "Emp_no",
+                        Text(number ?? "",
                             style: mainTextStyleBlack.copyWith(fontSize: 12)),
                       ],
                     ),
@@ -387,7 +387,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                               fontSize: 12, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          number ?? "Emp_no",
+                          number ?? "",
                           style: mainTextStyleBlack.copyWith(fontSize: 12),
                         ),
                       ],

@@ -106,7 +106,7 @@ class CompletedPage extends StatelessWidget {
                                 );
                               },
                               child: Container(
-                                height: screenHeight / 3.5,
+                                height: screenHeight / 4.5,
                                 width: screenWidth / 2.5,
                                 decoration: BoxDecoration(
                                   color: mainThemeColor,
@@ -115,20 +115,22 @@ class CompletedPage extends StatelessWidget {
                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 10),
                                   child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                    // mainAxisAlignment:
+                                    //     MainAxisAlignment.spaceEvenly,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      // SizedBox(),
+                                       SizedBox(height: screenHeight/40,),
                                       Text(clientName,
                                           style: mainTextStyleBlack.copyWith(
                                               color: Colors.white,
                                               )),
+                                               SizedBox(height: screenHeight/40,),
                                       Text(category,
                                           style: mainTextStyleBlack.copyWith(
                                               color: Colors.white,
                                               )),
+                                               SizedBox(height: screenHeight/40,),
                                       Text(phone,
                                           style: mainTextStyleBlack.copyWith(
                                              )),

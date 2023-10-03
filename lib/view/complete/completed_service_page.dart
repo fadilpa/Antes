@@ -207,23 +207,23 @@ class CompletedServicePage extends StatelessWidget {
                             SizedBox(
                               height: screenHeight / 25,
                             ),
-                            Row(
-                              children: [
-                                 Icon(
-                                  CupertinoIcons.arrow_up_circle_fill,
-                                  color: mainThemeColor,
-                                ),
-                                SizedBox(
-                                  width: screenWidth / 50,
-                                ),
-                                Text(priority ?? "No Priority",
-                                    style: mainTextStyleBlack.copyWith(
-                                        fontSize: 14))
-                              ],
-                            ),
-                            SizedBox(
-                              height: screenHeight / 25,
-                            ),
+                            // Row(
+                            //   children: [
+                            //      Icon(
+                            //       CupertinoIcons.arrow_up_circle_fill,
+                            //       color: mainThemeColor,
+                            //     ),
+                            //     // SizedBox(
+                            //     //   width: screenWidth / 50,
+                            //     // ),
+                            //     // Text(priority ?? "No Priority",
+                            //     //     style: mainTextStyleBlack.copyWith(
+                            //     //         fontSize: 14))
+                            //   ],
+                            // ),
+                            // SizedBox(
+                            //   height: screenHeight / 25,
+                            // ),
                             Padding(
                               padding:  EdgeInsets.only(right: screenWidth/11),
                               child: ExpandChild(

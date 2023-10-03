@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:mentegoz_technologies/api/journey_api.dart';
+import 'package:mentegoz_technologies/controller/Provider/image_picker_provider.dart';
 import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
 import 'package:mentegoz_technologies/controller/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -84,6 +85,7 @@ Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
               ),
               TextButton(
                 onPressed: () async {
+
                   final prefs = await SharedPreferences.getInstance();
                   prefs.setBool('isStarted', false);
                   prefs.remove('SavedId');
@@ -115,7 +117,7 @@ Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
                   print(journeyStarted);
                   Provider.of<LocationProvider>(context, listen: false)
                       .updatejourneyStarted(false);
-
+Provider.of<OpenCameraProvider>(context,listen:false).emptyImage();
                   // final prefs = await SharedPreferences.getInstance();
                   // await prefs.setBool('isButtonTapped', false);
                   value.updateLoader(false);

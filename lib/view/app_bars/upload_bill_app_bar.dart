@@ -50,7 +50,7 @@ class UploadBillAppBar extends StatelessWidget {
                 Text(userProvider.name!.split(' ').first ?? "User Name",
                     style: mainTextStyleBlack.copyWith(
                         fontSize: 12, fontWeight: FontWeight.bold)),
-                Text(userProvider.number ?? "Emp_no",
+                Text(userProvider.number ?? "",
                     style: mainTextStyleBlack.copyWith(fontSize: 12)),
               ],
             ),

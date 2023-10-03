@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class OpenCameraProvider extends ChangeNotifier {
+class OpenCameraProviders extends ChangeNotifier {
   final ImagePicker picker = ImagePicker();
   File? image;
   Future<void> openImagePicker() async {

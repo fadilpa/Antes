@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mentegoz_technologies/controller/Provider/image_picker_provider.dart';
 import 'package:mentegoz_technologies/controller/Provider/shared_pref_provider.dart';
 import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
 import 'package:mentegoz_technologies/controller/Provider/name_and_num_provider.dart';
@@ -31,6 +32,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => ServiceProvider()),
         ChangeNotifierProvider(create: (context) => TabProvider()),
         ChangeNotifierProvider(create: (context) => OpenCameraProvider()),
+        ChangeNotifierProvider(create: (context)=>OpenCameraProviders()),
       ],
       child: MaterialApp(
         title: 'Antes',

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mentegoz_technologies/api/journey_api.dart';
+import 'package:mentegoz_technologies/controller/Provider/image_picker_provider.dart';
 import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
 import 'package:mentegoz_technologies/controller/Provider/name_and_num_provider.dart';
 import 'package:mentegoz_technologies/controller/Provider/pending_and_complete_provider.dart';
@@ -57,6 +58,7 @@ class PendingServicePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<OpenCameraProvider>(context,listen:false).emptyImage();
     // int count = 1;
     final addresSResult = context.read<LocationProvider>().address;
     Provider.of<LocationProvider>(context, listen: false).address;
