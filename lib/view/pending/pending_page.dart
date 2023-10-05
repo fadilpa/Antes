@@ -24,6 +24,7 @@ class PendingPage extends StatelessWidget {
    Provider.of<ServiceProvider>(context,listen: false).setdata();
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+  
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -73,10 +74,11 @@ class PendingPage extends StatelessWidget {
                         var email = dataList[index].email!;
                         var phone = dataList[index].phone!;
                         var landmark = dataList[index].landmark!;
+                        int serviceNumber =index+1;
                         return Column(
                           //  crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                          Text('Service : $id',style: mainTextStyleBlack,),
+                          Text( 'Service : $serviceNumber',style: mainTextStyleBlack,),
                                 SizedBox(height: screenHeight / 80),
                                 GestureDetector(
                                   onTap:(){
@@ -116,22 +118,22 @@ class PendingPage extends StatelessWidget {
                                     child: Padding(
                                       padding: const EdgeInsets.only(left: 10),
                                       child: Column(
-                                        // mainAxisAlignment:
-                                        //     MainAxisAlignment.spaceEvenly,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          SizedBox(height: screenHeight/40,),
+                                          // SizedBox(height: screenHeight/40,),
                                           Text(clientName,
                                               style: mainTextStyleBlack.copyWith(
                                                   color: Colors.white,
                                                   )),
-                                                   SizedBox(height: screenHeight/40,),
+                                                  //  SizedBox(height: screenHeight/40,),
                                           Text(startDate,
                                               style: mainTextStyleBlack.copyWith(
                                                   color: Colors.white,
                                                 )),
-                                                 SizedBox(height: screenHeight/40,),
+                                                //  SizedBox(height: screenHeight/40,),
                                           Text(priority,
                                               style: mainTextStyleBlack.copyWith(
                                                   fontWeight: FontWeight.bold,
@@ -146,7 +148,7 @@ class PendingPage extends StatelessWidget {
                    }),
                 );
               } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
+                return Text('No Internet');
               } else {
                 return Text('No Data');
               }

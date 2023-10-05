@@ -1,12 +1,8 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:geocode/geocode.dart';
 import 'package:location/location.dart';
-import 'package:mentegoz_technologies/controller/Provider/pending_and_complete_provider.dart';
 import 'package:mentegoz_technologies/model/completed_model.dart';
 import 'package:mentegoz_technologies/model/pending_model.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // class JourneyStartedData {

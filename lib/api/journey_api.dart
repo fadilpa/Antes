@@ -1,9 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
 import 'package:provider/provider.dart';
-
+import 'package:http/http.dart' as http;
 class PostData {
   Future<void> PostStartData(BuildContext context, firebase_id, currentService,
       addressresult, selectedTravelMode, currentTime) async {
@@ -65,28 +66,28 @@ class PostData {
   }
 
   Future<void> PostEndData(BuildContext context, firebase_id, currentService,
-      addressresult, selectedravelMode, currentTime, amount, filepath) async {
+      addressresult, selectedravelMode, currentTime, amount, image) async {
     final addresSResult =
         Provider.of<LocationProvider>(context, listen: false).address;
     final selectedTarvelMode =
-        Provider.of<LocationProvider>(context, listen: false).selectedTravelMode;
-    final amountcontroller = Provider.of<LocationProvider>(context, listen: false).amountController;
+        Provider.of<LocationProvider>(context, listen: false)
+            .selectedTravelMode;
+    final amountcontroller =
+        Provider.of<LocationProvider>(context, listen: false).amountController;
     final curretService =
         Provider.of<LocationProvider>(context, listen: false).currentService;
 
     final dio = Dio();
-
+  // var images= await dio.MultipartFile.from
     final formData = FormData.fromMap({
       "firebase_id": firebase_id,
-      "service_id": curretService!.id??"id not found",
+      "service_id": curretService!.id ?? "id not found",
       "geolocation": addresSResult ?? "Address Not Accesible",
-      "travel_mode": selectedTarvelMode ?? "error",
+      "travel_mode": selectedTarvelMode ?? "No Options",
       "date_time": currentTime,
       "amount": amountcontroller ?? "not added",
-      "image": filepath != null
-          ? await MultipartFile.fromFile(filepath, //change this'filepath'
-              filename: 'image')
-          : null,
+      "image": await MultipartFile.fromFile(image.toString(),filename: 'image.png' //change this'filepath'
+          ),
     });
     print(firebase_id);
     print(currentService.id);
@@ -94,18 +95,16 @@ class PostData {
     print(selectedTarvelMode);
     print(currentTime);
     print(amountcontroller);
-    print(filepath ?? "image not loaded");
-    // Post the form data to the API.
+    print(image ?? "image not loaded");
 
-    // final response = await dio.post(
-    //   'https://antes.meduco.in/api/end_service_journey',
-    //   data: formData,
-    // );
-    // print(response.statusCode);
     try {
       final response = await dio.post(
         'https://antes.meduco.in/api/end_service_journey',
         data: formData,
+        // options: Options(
+        //   receiveTimeout: Duration(seconds: 5), // 30 seconds
+        //   sendTimeout: Duration(seconds: 5), // 30 seconds
+        // ),
       );
       print(response.statusCode);
       print(jsonEncode(response.data));
@@ -129,15 +128,6 @@ class PostData {
       );
       print(error);
     }
-
-    // // Check the response status code.
-    // if (response.statusCode == 200) {
-    //   // Print the response body.
-    //    print(jsonEncode(response.data));
-    // } else {
-    //   // Print an error message.
-    //   print('Failed to post data: ${response.statusCode}');
-    // }
   }
 
   Future<void> PostEndService(BuildContext context, firebase_id, count,

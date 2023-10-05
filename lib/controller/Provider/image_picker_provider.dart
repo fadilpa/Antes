@@ -1,23 +1,41 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mentegoz_technologies/controller/varibles.dart';
 
 class OpenCameraProvider extends ChangeNotifier {
   final ImagePicker picker = ImagePicker();
   File? image;
-  Future<void> openImagePicker() async {
+  var imageBytes;
+  var path;
+  var gallpick;
+
+  openImagePicker() async {
     final XFile? pickedImage =
-        await picker.pickImage(source: ImageSource.camera);
+        await picker.pickImage(source: ImageSource.camera,imageQuality: 10);
     if (pickedImage != null) {
       // ignore: unused_local_variable
-      final imageBytes = await pickedImage.readAsBytes();
+      imageBytes = await pickedImage.readAsBytes();
+      path = pickedImage.path;
       image = File(pickedImage.path);
-        notifyListeners();
+      notifyListeners();
     }
   }
-  emptyImage(){
+
+  OpenGalleryPicker() async {
+    final XFile? pickedImage =
+        await picker.pickImage(source: ImageSource.gallery,imageQuality: 10);
+    if (pickedImage != null) {
+      // ignore: unused_local_variable
+      imageBytes = await pickedImage.readAsBytes();
+      gallpick = pickedImage.path;
+      image = File(pickedImage.path);
+      notifyListeners();
+    }
+  }
+
+ emptyImage(){
     image=null;
     notifyListeners();
   }
+
 }

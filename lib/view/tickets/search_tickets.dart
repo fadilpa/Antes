@@ -78,7 +78,7 @@ String? number;
                 Text(userProvider.name?.split(' ').first ?? "User Name",
                     style: mainTextStyleBlack.copyWith(
                         fontSize: 12, fontWeight: FontWeight.bold)),
-                Text(userProvider.number ?? "Emp_no",
+                Text(userProvider.number ?? "",
                     style: mainTextStyleBlack.copyWith(fontSize: 12)),
               ],
             ),
@@ -134,77 +134,77 @@ String? number;
                       SizedBox(
                         height: screenHeight / 60,
                       ),
-                      Expanded(
-                        child: ListView.separated(
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return SizedBox(
-                              height: screenHeight / 7,
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                color: Colors.white70,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'Services ${index + 1}',
-                                            style:
-                                                const TextStyle(fontSize: 16),
-                                          ),
-                                          const Text(
-                                            '9 minutes ago',
-                                            style: TextStyle(
-                                                fontSize: 13,
-                                                color: Colors.grey),
-                                          ),
-                                        ],
-                                      ),
-                                      const Text(
-                                        'Lorem ipsum dolor sit amet consecteur',
-                                        style: TextStyle(
-                                            fontSize: 13, color: Colors.black),
-                                      ),
-                                      Row(
-                                        children: const [
-                                          Text(
-                                            'Accepted ',
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.green),
-                                          ),
-                                          CircleAvatar(
-                                            radius: 6,
-                                            backgroundColor: Colors.green,
-                                            child: Icon(
-                                              Icons.done,
-                                              size: 7,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                          separatorBuilder: (context, index) => SizedBox(
-                            height: screenHeight / 50,
-                          ),
-                          itemCount: 10,
-                        ),
-                      ),
+                      // Expanded(
+                      //   child: ListView.separated(
+                      //     shrinkWrap: true,
+                      //     itemBuilder: (context, index) {
+                      //       return SizedBox(
+                      //         height: screenHeight / 7,
+                      //         child: Card(
+                      //           shape: RoundedRectangleBorder(
+                      //             borderRadius: BorderRadius.circular(10),
+                      //           ),
+                      //           color: Colors.white70,
+                      //           child: Padding(
+                      //             padding: const EdgeInsets.all(8.0),
+                      //             child: Column(
+                      //               mainAxisAlignment:
+                      //                   MainAxisAlignment.spaceEvenly,
+                      //               crossAxisAlignment:
+                      //                   CrossAxisAlignment.start,
+                      //               children: [
+                      //                 Row(
+                      //                   mainAxisAlignment:
+                      //                       MainAxisAlignment.spaceBetween,
+                      //                   children: [
+                      //                     Text(
+                      //                       'Services ${index + 1}',
+                      //                       style:
+                      //                           const TextStyle(fontSize: 16),
+                      //                     ),
+                      //                     const Text(
+                      //                       '9 minutes ago',
+                      //                       style: TextStyle(
+                      //                           fontSize: 13,
+                      //                           color: Colors.grey),
+                      //                     ),
+                      //                   ],
+                      //                 ),
+                      //                 const Text(
+                      //                   'Lorem ipsum dolor sit amet consecteur',
+                      //                   style: TextStyle(
+                      //                       fontSize: 13, color: Colors.black),
+                      //                 ),
+                      //                 Row(
+                      //                   children: const [
+                      //                     Text(
+                      //                       'Accepted ',
+                      //                       style: TextStyle(
+                      //                           fontSize: 12,
+                      //                           color: Colors.green),
+                      //                     ),
+                      //                     CircleAvatar(
+                      //                       radius: 6,
+                      //                       backgroundColor: Colors.green,
+                      //                       child: Icon(
+                      //                         Icons.done,
+                      //                         size: 7,
+                      //                       ),
+                      //                     )
+                      //                   ],
+                      //                 ),
+                      //               ],
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       );
+                      //     },
+                      //     separatorBuilder: (context, index) => SizedBox(
+                      //       height: screenHeight / 50,
+                      //     ),
+                      //     itemCount: 10,
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

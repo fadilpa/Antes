@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mentegoz_technologies/controller/Provider/name_and_num_provider.dart';
 import 'package:mentegoz_technologies/controller/styles.dart';
+import 'package:provider/provider.dart';
 
 class PendingAppBar extends StatelessWidget {
   const PendingAppBar({
@@ -48,7 +49,7 @@ class PendingAppBar extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(userProvider.name!.split(' ').first ?? "User Name",
+                Text(Provider.of<UserNameAndNumber>(context,listen: false).name,
                     style: mainTextStyleBlack.copyWith(
                         fontSize: 12, fontWeight: FontWeight.bold)),
                 Text(userProvider.number ?? "",

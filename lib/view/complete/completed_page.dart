@@ -73,9 +73,10 @@ class CompletedPage extends StatelessWidget {
                         var email = dataList[index].email!;
                         var phone = dataList[index].phone!;
                         var landmark = dataList[index].landmark!;
+                        int serviceNumber =index+1;
                         return Column(
                           children: [
-                            Text('Service : $id',style: mainTextStyleBlack,),
+                            Text('Service : $serviceNumber',style: mainTextStyleBlack,),
                             SizedBox(height: screenHeight / 80),
                             GestureDetector(
                               onTap: () {
@@ -115,22 +116,22 @@ class CompletedPage extends StatelessWidget {
                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 10),
                                   child: Column(
-                                    // mainAxisAlignment:
-                                    //     MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                       SizedBox(height: screenHeight/40,),
+                                      //  SizedBox(height: screenHeight/40,),
                                       Text(clientName,
                                           style: mainTextStyleBlack.copyWith(
                                               color: Colors.white,
                                               )),
-                                               SizedBox(height: screenHeight/40,),
+                                              //  SizedBox(height: screenHeight/40,),
                                       Text(category,
                                           style: mainTextStyleBlack.copyWith(
                                               color: Colors.white,
                                               )),
-                                               SizedBox(height: screenHeight/40,),
+                                              //  SizedBox(height: screenHeight/40,),
                                       Text(phone,
                                           style: mainTextStyleBlack.copyWith(
                                              )),
@@ -144,7 +145,7 @@ class CompletedPage extends StatelessWidget {
                       }),
                 );
               } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
+                return Text('No network');
               } else {
                 return Text('No Data');
               }

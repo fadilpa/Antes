@@ -50,7 +50,7 @@ String? number;
                         "User Name",
                     style: mainTextStyleBlack.copyWith(
                         fontSize: 12, fontWeight: FontWeight.bold)),
-                Text(number ?? "Emp_no",
+                Text(number ?? "",
                     style: mainTextStyleBlack.copyWith(
                         fontSize: 12)),
               ],

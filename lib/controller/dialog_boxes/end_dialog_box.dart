@@ -8,9 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
-  File? filepath;
-  // String? selectedTravelMode;
-
   String? currentTime = DateTime.now().toString();
   File? image;
   final curretnService =
@@ -56,11 +53,18 @@ Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                           Provider.of<OpenCameraProvider>(context).image!=null? Image.file(
-                              Provider.of<OpenCameraProvider>(context).image!,
-                              height: 45,
-                            ):SizedBox(),
-                           IconButton(
+                            Provider.of<OpenCameraProvider>(context,
+                                            listen: false)
+                                        .image !=
+                                    null
+                                ? Image.file(
+                                    Provider.of<OpenCameraProvider>(context,
+                                            listen: false)
+                                        .image!,
+                                    height: 45,
+                                  )
+                                : SizedBox(),
+                            IconButton(
                               icon: Icon(Icons.camera_alt),
                               onPressed: () async {
                                 Provider.of<OpenCameraProvider>(context,
@@ -85,10 +89,10 @@ Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
               ),
               TextButton(
                 onPressed: () async {
-
                   final prefs = await SharedPreferences.getInstance();
                   prefs.setBool('isStarted', false);
                   prefs.remove('SavedId');
+
                   value.updateLoader(true);
 
                   // ignore: unused_local_variable
@@ -99,14 +103,16 @@ Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
                   print(journeyStatus);
 
                   await PostData().PostEndData(
-                      context,
-                      Firebase_Id,
-                      curretnService,
-                      addressresult,
-                      selectedTarvelMode,
-                      currentTime,
-                      amountcontroller,
-                      filepath);
+                    context,
+                    Firebase_Id,
+                    curretnService,
+                    addressresult,
+                    selectedTarvelMode,
+                    currentTime,
+                    amountcontroller,
+                    Provider.of<OpenCameraProvider>(context, listen: false)
+                        .path,
+                  );
                   // print(enddata);
                   Navigator.of(context).pop();
 
@@ -117,7 +123,8 @@ Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
                   print(journeyStarted);
                   Provider.of<LocationProvider>(context, listen: false)
                       .updatejourneyStarted(false);
-Provider.of<OpenCameraProvider>(context,listen:false).emptyImage();
+                  // Provider.of<OpenCameraProvider>(context, listen: false)
+                  //     .emptyImage();
                   // final prefs = await SharedPreferences.getInstance();
                   // await prefs.setBool('isButtonTapped', false);
                   value.updateLoader(false);

@@ -58,10 +58,12 @@ Future<void> showStartDialog(BuildContext context,bool? journeyStarted,StartedId
                   // decoration:
 
                   items: <String>[
-                    "Train",
-                    "Bus",
                     "Bike",
-                    "Car",
+                    "Taxi Autorickshoaw",
+                    "Taxi Car",
+                    "Bus",
+                    "Train",
+                    "Other"
                   ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,

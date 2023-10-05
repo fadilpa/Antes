@@ -50,7 +50,7 @@ class TicketAppBar extends StatelessWidget {
                 Text(name!.split(' ').first ?? "User Name",
                     style: mainTextStyleBlack.copyWith(
                         fontSize: 12, fontWeight: FontWeight.bold)),
-                Text(number ?? "Emp_no",
+                Text(number ?? "",
                     style: mainTextStyleBlack.copyWith(fontSize: 12)),
               ],
             ),

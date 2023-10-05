@@ -1,21 +1,20 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
-import 'package:mentegoz_technologies/view/upload_bill/uploadedbill.dart';
-import 'package:mentegoz_technologies/controller/varibles.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future Upload(context, firebase_id, count, addressresult, dropdownvalue,
+Future Upload(BuildContext context, firebase_id, count, addressresult, dropdownvalue,
     optionlist, description, currentTime, amount, filepath) async {
   String? currentTime = DateTime.now().toString();
   final addressresult =
       Provider.of<LocationProvider>(context, listen: false).address;
-  final amountcontroller = Provider.of<LocationProvider>(context, listen: false).uploadAmountController;
+  final amountcontroller = Provider.of<LocationProvider>(context, listen: false)
+      .uploadAmountController;
   final descrptioncontroller =
-      Provider.of<LocationProvider>(context, listen: false).uploadDescriptionController;
+      Provider.of<LocationProvider>(context, listen: false)
+          .uploadDescriptionController;
   final categoryValue =
       Provider.of<LocationProvider>(context, listen: false).category;
   final optionsValue =
@@ -28,16 +27,14 @@ Future Upload(context, firebase_id, count, addressresult, dropdownvalue,
   final formData = FormData.fromMap({
     "firebase_id": firebase_id,
     "service_id": curretService!.id,
-    "geolocation": addressresult ?? "adresf noy fifd",
-    "category": categoryValue, 
+    "geolocation": addressresult ?? "adress noy found",
+    "category": categoryValue,
     "option": optionsValue,
     "description": descrptioncontroller,
     "date_time": currentTime,
     "amount": amountcontroller,
-    'image': filepath != null
-        ? await MultipartFile.fromFile(filepath, //change this'filepath'
-            filename: 'image')
-        : null,
+    'image':await MultipartFile.fromFile(filepath.toString(),filename: 'image.png' //change this'filepath'
+          ),
   });
 
   print(firebase_id);
@@ -47,7 +44,7 @@ Future Upload(context, firebase_id, count, addressresult, dropdownvalue,
   print(optionsValue);
   print(descrptioncontroller);
   print(amountcontroller);
-
+  print(filepath);
   final response = await dio.post(
     'https://antes.meduco.in/api/upload_bill',
     data: formData,
