@@ -49,7 +49,7 @@ class PendingAppBar extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(Provider.of<UserNameAndNumber>(context,listen: false).name,
+                Text(Provider.of<UserNameAndNumber>(context,listen: false).name.split(' ').first,
                     style: mainTextStyleBlack.copyWith(
                         fontSize: 12, fontWeight: FontWeight.bold)),
                 Text(userProvider.number ?? "",

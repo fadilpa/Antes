@@ -17,9 +17,9 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Map<String, List<String>> categoryToOptions = {
-  '        Food': ['Breakfast', 'Lunch', 'Dinner'],
+  'Food': ['Breakfast', 'Lunch', 'Dinner'],
   'Accomodation': [],
-  "   Purchases": []
+  "Purchases": []
 };
 
 String dropdownValue = categoryToOptions.keys.first;
@@ -34,6 +34,10 @@ class UpLoadBill extends StatefulWidget {
 }
 
 class UpLoadBillState extends State<UpLoadBill> {
+  final _formKey = GlobalKey<FormState>();
+  final _formKey1 = GlobalKey<FormState>();
+  final _formKeyimage = GlobalKey<FormState>();
+
   String? currentTime = DateTime.now().toString();
   TextEditingController Description_Controller = TextEditingController();
   TextEditingController Amount_Controller = TextEditingController();
@@ -48,8 +52,9 @@ class UpLoadBillState extends State<UpLoadBill> {
     final pickedImage = await ImagePicker().pickImage(source: source);
     final addresSResult =
         Provider.of<LocationProvider>(context, listen: false).address;
-    final selectedTarvelMode =
-        context.read<LocationProvider>(context,listen:false).selectedTravelMode;
+    final selectedTarvelMode = context
+        .read<LocationProvider>(context, listen: false)
+        .selectedTravelMode;
     final amountcontroller =
         Provider.of<LocationProvider>(context, listen: false).amountController;
     final descriptioncontroller =
@@ -77,12 +82,11 @@ class UpLoadBillState extends State<UpLoadBill> {
     if (imageSizeInBytes > 100) {
       final compressedImage = await FlutterImageCompress.compressWithFile(
         filepath,
-        quality: 70, 
+        quality: 70,
       );
       try {
         final response = await http.post(
-          Uri.parse(
-              'https://antes.meduco.in/api/upload_bill'),
+          Uri.parse('https://antes.meduco.in/api/upload_bill'),
           body: {
             "firebase_id": firebase_id,
             "service_id": curretService!.id,
@@ -92,9 +96,9 @@ class UpLoadBillState extends State<UpLoadBill> {
             "description": descriptioncontroller,
             "date_time": currentTime,
             "amount": amountcontroller,
-            "image":
-               await MultipartFile.fromFile(filepath.toString(),filename: 'image.png' //change this'filepath'
-          ),
+            "image": await MultipartFile.fromFile(filepath.toString(),
+                filename: 'image.png' //change this'filepath'
+                ),
           },
         );
 
@@ -119,8 +123,9 @@ class UpLoadBillState extends State<UpLoadBill> {
             "geolocation": addresSResult ?? "No data",
             "travel_mode": selectedTarvelMode,
             "date_time": currentTime,
-            'image': await MultipartFile.fromFile(filepath.toString(),filename: 'image.png' //change this'filepath'
-          ),
+            'image': await MultipartFile.fromFile(filepath.toString(),
+                filename: 'image.png' //change this'filepath'
+                ),
           },
         );
 
@@ -148,6 +153,12 @@ class UpLoadBillState extends State<UpLoadBill> {
   @override
   void initState() {
     super.initState();
+    // Provider.of<OpenGalleyProvider>(context,
+    //                               listen: false)
+    //                           .emptyImage();
+    //                           Provider.of<OpenCameraProvider>(context,
+    //                               listen: false)
+    //                           .emptyImage();
     Provider.of<LocationProvider>(context, listen: false)
         .getLocationAndAddress();
     getusername_and_number();
@@ -155,6 +166,22 @@ class UpLoadBillState extends State<UpLoadBill> {
 
   @override
   Widget build(BuildContext context) {
+    bool validateForms() {
+      bool isValid = true;
+
+      // Validate form 1
+      if (!_formKey.currentState!.validate()) {
+        isValid = false;
+      }
+
+      // Validate form 2
+      if (!_formKey1.currentState!.validate()) {
+        isValid = false;
+      }
+
+      return isValid;
+    }
+
     final addresSResult =
         Provider.of<LocationProvider>(context, listen: false).address;
     final selectedTarvelMode =
@@ -174,6 +201,7 @@ class UpLoadBillState extends State<UpLoadBill> {
     final optionValue =
         Provider.of<LocationProvider>(context, listen: false).options;
     var userProvider = Provider.of<UserNameAndNumber>(context);
+
     userProvider.get_user_name_and_number();
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
@@ -211,6 +239,7 @@ class UpLoadBillState extends State<UpLoadBill> {
                         child: Center(
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
+                              alignment: Alignment.center,
                               value: dropdownValue,
                               style: mainTextStyleBlack.copyWith(fontSize: 16),
                               onChanged: (String? newValue) {
@@ -313,7 +342,13 @@ class UpLoadBillState extends State<UpLoadBill> {
                           width: screenWidth / 2,
                           child: Container(
                             color: Colors.grey[200],
-                            child: TextField(
+                            ////////////////////////////////
+                            child: Form(
+                              key: _formKey,
+                              child: TextFormField(
+                                validator: (value) =>
+                                    value!.isEmpty ? 'Enter the Amount' : null,
+                                keyboardType: TextInputType.number,
                                 controller: Amount_Controller,
                                 onChanged: (value) {
                                   Provider.of<LocationProvider>(context,
@@ -321,13 +356,17 @@ class UpLoadBillState extends State<UpLoadBill> {
                                       .setUploadAmount(value);
                                 },
                                 decoration: InputDecoration(
+                                    contentPadding:
+                                        EdgeInsets.only(left: 20.0, top: 5),
                                     border: InputBorder.none,
                                     hintText: "Enter Amount",
-                                    contentPadding: EdgeInsets.all(20.0),
                                     hintStyle: mainTextStyleBlack.copyWith(
-                                        fontSize: 16))),
+                                        fontSize: 16)),
+                              ),
+                              ///////////////
+                            ),
                           ),
-                        ),
+                        )
                       ],
                     ),
                   ),
@@ -350,120 +389,175 @@ class UpLoadBillState extends State<UpLoadBill> {
                           width: screenWidth / 2,
                           child: Container(
                             color: Colors.grey[200],
-                            child: TextField(
-                                maxLines: 4,
-                                controller: Description_Controller,
-                                onChanged: (value) {
-                                  Provider.of<LocationProvider>(context,
-                                          listen: false)
-                                      .setUploadDescription(value);
-                                },
-                                decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.only(left: 20.0, top: 5),
-                                    border: InputBorder.none,
-                                    hintText: "Enter Description",
-                                    hintStyle: mainTextStyleBlack.copyWith(
-                                        fontSize: 16))),
+                            ///////////////////////
+                            child: Form(
+                              key: _formKey1,
+                              child: TextFormField(
+                                  validator: (value) => value!.isEmpty
+                                      ? 'Enter the Description'
+                                      : null,
+                                  maxLines: 4,
+                                  controller: Description_Controller,
+                                  onChanged: (value) {
+                                    Provider.of<LocationProvider>(context,
+                                            listen: false)
+                                        .setUploadDescription(value);
+                                  },
+                                  decoration: InputDecoration(
+                                      contentPadding:
+                                          EdgeInsets.only(left: 20.0, top: 5),
+                                      border: InputBorder.none,
+                                      hintText: "Enter Description",
+                                      hintStyle: mainTextStyleBlack.copyWith(
+                                          fontSize: 16))),
+                            ),
+                            ///////////////////////
                           ),
                         ),
                       ],
                     ),
                   ),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: screenHeight / 15,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            pickImage(
-                              ImageSource.camera,
-                              context,
+                Form(
+                  key: _formKeyimage,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: screenHeight / 15,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
                               Provider.of<OpenCameraProvider>(context,
                                       listen: false)
-                                  .path,
-                            );
-                          },
-                          child: Container(
-                            height: screenHeight / 12,
-                            width: screenWidth / 5.5,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(2),
-                              color: mainThemeColor,
-                            ),
-                            child: const Icon(
-                              Icons.camera_alt_rounded,
-                              size: 50,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: screenWidth / 15,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            pickImage(
-                              ImageSource.gallery,
-                              context,
+                                  .openImagePicker();
                               Provider.of<OpenCameraProvider>(context,
                                       listen: false)
-                                  .gallpick,
-                            );
-                          },
-                          child: Container(
-                            height: screenHeight / 12,
-                            width: screenWidth / 5.5,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(2),
-                              color: mainThemeColor,
-                            ),
-                            child: const Icon(
-                              CupertinoIcons.photo_fill,
-                              size: 45,
-                              color: Colors.white,
+                                  .path;
+                            },
+                            child: Container(
+                              height: screenHeight / 12,
+                              width: screenWidth / 5.5,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(2),
+                                color: mainThemeColor,
+                              ),
+                              child: const Icon(
+                                Icons.camera_alt_rounded,
+                                size: 50,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: screenHeight / 35,
-                    ),
-                    CustmButton(
-                        buttontext: 'Upload',
-                        isRadius: false,
-                        buttonaction: () async {
-                          Provider.of<LocationProvider>(context, listen: false)
-                              .getLocationAndAddress();
-                          final prefs = await SharedPreferences.getInstance();
-                          // ignore: unused_local_variable
-                          String? Firebase_Id = prefs.getString('Firebase_Id');
-                          Upload(
-                            context,
-                            Firebase_Id,
-                            curretService!.id,
-                            addresSResult,
-                            categoryvalue,
-                            optionValue,
-                            descriptioncontroller,
-                            currentTime,
-                            amountcontroller,
-                            Provider.of<OpenCameraProvider>(context,
-                                    listen: false)
-                                .path,
-                          );
-                          //function not assigned need function
-                          Amount_Controller.clear();
-                          Description_Controller.clear();
-                        }),
-                  ],
+                          SizedBox(
+                            width: screenWidth / 15,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Provider.of<OpenGalleyProvider>(context,
+                                      listen: false)
+                                  .OpenGalleryPicker();
+
+                              Provider.of<OpenGalleyProvider>(context,
+                                      listen: false)
+                                  .gallpick;
+                            },
+                            child: Container(
+                              height: screenHeight / 12,
+                              width: screenWidth / 5.5,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(2),
+                                color: mainThemeColor,
+                              ),
+                              child: const Icon(
+                                CupertinoIcons.photo_fill,
+                                size: 45,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Provider.of<LocationProvider>(context)
+                              .uploadBillCameraError
+                          ? Text(
+                              'Image is required!!',
+                              style: TextStyle(color: Colors.red),
+                            )
+                          : SizedBox(height: 0),
+                      SizedBox(
+                        height: screenHeight / 35,
+                      ),
+                      CustmButton(
+                          buttontext: 'Upload',
+                          isRadius: false,
+                          buttonaction: () async {
+                            if (validateForms()) {
+                              if (Provider.of<OpenCameraProvider>(context,
+                                              listen: false)
+                                          .path ==
+                                      null &&
+                                  Provider.of<OpenGalleyProvider>(context,
+                                              listen: false)
+                                          .gallpick ==
+                                      null) {
+                                // print("kmk");
+                                Provider.of<LocationProvider>(context,
+                                        listen: false)
+                                    .updateUploadBillCameraError(true);
+                              } else {
+                                Provider.of<LocationProvider>(context,
+                                        listen: false)
+                                    .updateUploadBillCameraError(false);
+                                Provider.of<LocationProvider>(context,
+                                        listen: false)
+                                    .getLocationAndAddress();
+                                final prefs =
+                                    await SharedPreferences.getInstance();
+                                // ignore: unused_local_variable
+                                String? Firebase_Id =
+                                    prefs.getString('Firebase_Id');
+                                await Upload(
+                                    context,
+                                    Firebase_Id,
+                                    curretService!.id,
+                                    addresSResult,
+                                    categoryvalue,
+                                    optionValue,
+                                    descriptioncontroller,
+                                    currentTime,
+                                    amountcontroller,
+                                    Provider.of<OpenCameraProvider>(context,
+                                                    listen: false)
+                                                .path ==
+                                            null
+                                        ? Provider.of<OpenGalleyProvider>(
+                                                context,
+                                                listen: false)
+                                            .gallpick
+                                        : Provider.of<OpenCameraProvider>(
+                                                context,
+                                                listen: false)
+                                            .path);
+                                //function not assigned need function
+                                Amount_Controller.clear();
+                                Description_Controller.clear();
+                                Provider.of<OpenGalleyProvider>(context,
+                                        listen: false)
+                                    .emptyImage();
+                                Provider.of<OpenCameraProvider>(context,
+                                        listen: false)
+                                    .emptyImage();
+                                // _formKey.currentState!.reset();
+                                // _formKey1.currentState!.reset();
+                              }
+                            }
+                          }),
+                    ],
+                  ),
                 ),
               ],
             ),

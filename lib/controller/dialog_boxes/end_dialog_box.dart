@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
+  final _formKey = GlobalKey<FormState>();
   String? currentTime = DateTime.now().toString();
   File? image;
   final curretnService =
@@ -35,14 +36,20 @@ Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                TextField(
-                  controller: AmountController,
-                  onChanged: (value) {
-                    Provider.of<LocationProvider>(context, listen: false)
-                        .setAmount(value);
-                  },
-                  decoration: InputDecoration(
-                    labelText: "Enter Amount",
+                Form(
+                  key: _formKey,
+                  child: TextFormField(
+                    validator: (value) =>
+                        value!.isEmpty ? 'field required' : null,
+                    keyboardType: TextInputType.number,
+                    controller: AmountController,
+                    onChanged: (value) {
+                      Provider.of<LocationProvider>(context, listen: false)
+                          .setAmount(value);
+                    },
+                    decoration: InputDecoration(
+                      labelText: "Enter Amount",
+                    ),
                   ),
                 ),
                 TextField(
@@ -53,14 +60,14 @@ Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Provider.of<OpenCameraProvider>(context,
-                                            listen: false)
-                                        .image !=
+                            Provider.of<OpenCameraProvider>(
+                                      context,
+                                    ).image !=
                                     null
                                 ? Image.file(
-                                    Provider.of<OpenCameraProvider>(context,
-                                            listen: false)
-                                        .image!,
+                                    Provider.of<OpenCameraProvider>(
+                                      context,
+                                    ).image!,
                                     height: 45,
                                   )
                                 : SizedBox(),
@@ -89,45 +96,52 @@ Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
               ),
               TextButton(
                 onPressed: () async {
-                  final prefs = await SharedPreferences.getInstance();
-                  prefs.setBool('isStarted', false);
-                  prefs.remove('SavedId');
+                  if (_formKey.currentState!.validate()) {
+                    final prefs = await SharedPreferences.getInstance();
+                    prefs.setBool('isStarted', false);
+                    prefs.remove('SavedId');
 
-                  value.updateLoader(true);
+                    value.updateLoader(true,context);
 
-                  // ignore: unused_local_variable
-                  String? Firebase_Id = prefs.getString('Firebase_Id');
-                  // if (curretnService != null) {
-                  //   curretnService.journeyStarted = false;
-                  // }
-                  print(journeyStatus);
+                    // ignore: unused_local_variable
+                    String? Firebase_Id = prefs.getString('Firebase_Id');
+                    // if (curretnService != null) {
+                    //   curretnService.journeyStarted = false;
+                    // }
+                    print(journeyStatus);
 
-                  await PostData().PostEndData(
-                    context,
-                    Firebase_Id,
-                    curretnService,
-                    addressresult,
-                    selectedTarvelMode,
-                    currentTime,
-                    amountcontroller,
+                    print(curretnService!.id);
+                    print('wwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
+                    var selectedTarvelMode1 = await prefs
+                        .getString('travel_mode-${curretnService!.id}');
+                    print(selectedTarvelMode1);
+                    await PostData().PostEndData(
+                      context,
+                      Firebase_Id,
+                      curretnService,
+                      addressresult,
+                      selectedTarvelMode1,
+                      currentTime,
+                      amountcontroller,
+                      Provider.of<OpenCameraProvider>(context, listen: false)
+                          .path,
+                    );
+                    // print(enddata);
+                    Navigator.of(context).pop();
+
+                    // isButtonTapped = false;
+                    // await prefs.setBool('isButtonTapped', isButtonTapped);
+                    print(isButtonTapped);
+                    // print(journeyStatus);
+                    print(journeyStarted);
+                    Provider.of<LocationProvider>(context, listen: false)
+                        .updatejourneyStarted(false);
                     Provider.of<OpenCameraProvider>(context, listen: false)
-                        .path,
-                  );
-                  // print(enddata);
-                  Navigator.of(context).pop();
-
-                  // isButtonTapped = false;
-                  // await prefs.setBool('isButtonTapped', isButtonTapped);
-                  print(isButtonTapped);
-                  // print(journeyStatus);
-                  print(journeyStarted);
-                  Provider.of<LocationProvider>(context, listen: false)
-                      .updatejourneyStarted(false);
-                  // Provider.of<OpenCameraProvider>(context, listen: false)
-                  //     .emptyImage();
-                  // final prefs = await SharedPreferences.getInstance();
-                  // await prefs.setBool('isButtonTapped', false);
-                  value.updateLoader(false);
+                        .emptyImage();
+                    // final prefs = await SharedPreferences.getInstance();
+                    // await prefs.setBool('isButtonTapped', false);
+                    value.updateLoader(false,context);
+                  }
                 },
                 child: Consumer<LocationProvider>(
                   builder: (context, state, child) {

@@ -22,6 +22,7 @@ class PendingPage extends StatelessWidget {
     final firebaseIdProvider =
         Provider.of<FirebaseIdProvider>(context, listen: false);
    Provider.of<ServiceProvider>(context,listen: false).setdata();
+    Provider.of<LocationProvider>(context,listen: false).getLocationAndAddress();
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
   
@@ -50,6 +51,7 @@ class PendingPage extends StatelessWidget {
                   height: screenHeight,
                   // width: screenWidth,
                   child: GridView.builder(
+                    physics: ScrollPhysics(),
                     shrinkWrap: true,
                     gridDelegate :  SliverGridDelegateWithMaxCrossAxisExtent(
                   mainAxisExtent: screenHeight,

@@ -33,6 +33,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => TabProvider()),
         ChangeNotifierProvider(create: (context) => OpenCameraProvider()),
         ChangeNotifierProvider(create: (context)=>OpenCameraProviders()),
+        ChangeNotifierProvider(create: (context)=>OpenGalleyProvider()),
       ],
       child: MaterialApp(
         title: 'Antes',

@@ -52,6 +52,7 @@ class CompletedPage extends StatelessWidget {
                   height: screenHeight,
                   width: screenWidth,
                   child: GridView.builder(
+                    physics: ScrollPhysics(),
                       shrinkWrap: true,
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                           mainAxisExtent: screenHeight,

@@ -7,7 +7,7 @@ class OpenCameraProvider extends ChangeNotifier {
   File? image;
   var imageBytes;
   var path;
-  var gallpick;
+  // var gallpick;
 
   openImagePicker() async {
     final XFile? pickedImage =
@@ -17,11 +17,26 @@ class OpenCameraProvider extends ChangeNotifier {
       imageBytes = await pickedImage.readAsBytes();
       path = pickedImage.path;
       image = File(pickedImage.path);
-      notifyListeners();
+   
     }
+      notifyListeners();
   }
 
-  OpenGalleryPicker() async {
+ emptyImage(){
+    image=null;
+    path=null;
+    notifyListeners();
+  }
+
+}
+
+class OpenGalleyProvider extends ChangeNotifier{
+ final ImagePicker picker = ImagePicker();
+  File? image;
+  var imageBytes;
+  var gallpick;
+
+ OpenGalleryPicker() async {
     final XFile? pickedImage =
         await picker.pickImage(source: ImageSource.gallery,imageQuality: 10);
     if (pickedImage != null) {
@@ -32,10 +47,9 @@ class OpenCameraProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-
- emptyImage(){
+   emptyImage(){
     image=null;
+    gallpick=null;
     notifyListeners();
   }
-
 }

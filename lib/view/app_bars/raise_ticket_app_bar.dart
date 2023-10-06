@@ -55,11 +55,13 @@ String? number;
                         fontSize: 12)),
               ],
             ),
-            SizedBox(width: screenWidth / screenWidth / 30),
+             SizedBox(
+              width: MediaQuery.of(context).size.width / 30,
+            ),
             Padding(
               padding: EdgeInsets.only(right: screenWidth / 30),
               child:  CircleAvatar(
-                          backgroundColor: mainThemeColor,
+                          backgroundColor:mainThemeColor,
                         ),
             ),
           ],

@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+
 class PostData {
   Future<void> PostStartData(BuildContext context, firebase_id, currentService,
       addressresult, selectedTravelMode, currentTime) async {
@@ -34,6 +36,8 @@ class PostData {
         'https://antes.meduco.in/api/start_service_journey',
         data: formData,
       );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Upload Succesful')));
       print(response.statusCode);
       print(jsonEncode(response.data));
     } catch (error) {
@@ -69,43 +73,54 @@ class PostData {
       addressresult, selectedravelMode, currentTime, amount, image) async {
     final addresSResult =
         Provider.of<LocationProvider>(context, listen: false).address;
-    final selectedTarvelMode =
-        Provider.of<LocationProvider>(context, listen: false)
-            .selectedTravelMode;
+    // final selectedTarvelMode =
+    //     Provider.of<LocationProvider>(context, listen: false)
+    //         .selectedTravelMode;
     final amountcontroller =
         Provider.of<LocationProvider>(context, listen: false).amountController;
     final curretService =
         Provider.of<LocationProvider>(context, listen: false).currentService;
 
     final dio = Dio();
-  // var images= await dio.MultipartFile.from
+    // var images= await dio.MultipartFile.from
+    var bytes =
+        (await rootBundle.load('assets/null.jpeg')).buffer.asUint8List();
+    var mpFile = MultipartFile.fromBytes(bytes, filename: 'image.jpeg');
+
     final formData = FormData.fromMap({
       "firebase_id": firebase_id,
       "service_id": curretService!.id ?? "id not found",
       "geolocation": addresSResult ?? "Address Not Accesible",
-      "travel_mode": selectedTarvelMode ?? "No Options",
+      "travel_mode": selectedravelMode ?? "No Options",
       "date_time": currentTime,
       "amount": amountcontroller ?? "not added",
-      "image": await MultipartFile.fromFile(image.toString(),filename: 'image.png' //change this'filepath'
-          ),
+      "image": image != null
+          ? await MultipartFile.fromFile(image.toString(),
+              filename: 'image.png' //change this'filepath'
+              )
+          : mpFile,
     });
     print(firebase_id);
     print(currentService.id);
     print(addresSResult ?? "address not found");
-    print(selectedTarvelMode);
+    print(selectedravelMode);
     print(currentTime);
     print(amountcontroller);
-    print(image ?? "image not loaded");
+    print(image);
 
     try {
       final response = await dio.post(
         'https://antes.meduco.in/api/end_service_journey',
         data: formData,
+
         // options: Options(
         //   receiveTimeout: Duration(seconds: 5), // 30 seconds
         //   sendTimeout: Duration(seconds: 5), // 30 seconds
         // ),
       );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Upload Succesful')));
+
       print(response.statusCode);
       print(jsonEncode(response.data));
     } catch (error) {
@@ -126,7 +141,7 @@ class PostData {
           );
         },
       );
-      print(error);
+      // print(error);
     }
   }
 
@@ -165,10 +180,12 @@ class PostData {
     print(jsonEncode(response.data));
     // Check the response status code.
     if (response.statusCode == 200) {
-      // Print the response body.
-      //  print(response.body);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Upload Succesful')));
     } else {
-      // Print an error message.
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Check Your Internet')));
+      throw Exception();
       print('Failed to post data: ${response.statusCode}');
     }
   }

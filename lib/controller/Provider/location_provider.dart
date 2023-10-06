@@ -17,15 +17,56 @@ class LocationProvider extends ChangeNotifier {
   CompleteDataModel? completeCurrentService;
   bool journeyStarted = false;
   bool loaderStarted = false;
+  bool isTicketSubmitted = false;
+  bool uploadBillCameraError = false;
+
 //  final Map<bool, JourneyStartedData> _journeyStartedData = {};
 
   // updateJourneyStarted(int? id, bool journeyStarted) {
   //   _journeyStartedData[id]?.journeyStarted = journeyStarted;
   //   notifyListeners();
   // }
+  updateUploadBillCameraError(bool value) {
+    uploadBillCameraError = value;
+    notifyListeners();
+  }
 
-  updateLoader(bool value) {
+  updateLoader(bool value, context) async {
     loaderStarted = value;
+
+    notifyListeners();
+
+    if (value) {
+      await Future.delayed(Duration(seconds: 15));
+
+      if (loaderStarted) {
+        print('poor internet connection');
+        loaderStarted = false;
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Poor Internet Connection'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("OK"),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        print('ok');
+      }
+    }
+    notifyListeners();
+  }
+
+  updateIsTicketSubmitted(bool value) {
+    isTicketSubmitted = value;
     notifyListeners();
   }
 
@@ -44,8 +85,11 @@ class LocationProvider extends ChangeNotifier {
   String? address;
 
   String? selectedTravelMode;
-  setTravelMode(String? travel_mode) {
+  setTravelMode(String? travel_mode, service_id) async {
     selectedTravelMode = travel_mode;
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('travel_mode-$service_id', travel_mode!);
   }
 
   String? amountController;
@@ -53,12 +97,14 @@ class LocationProvider extends ChangeNotifier {
     amountController = amount_data;
   }
 
-  setCurrentService(PendingDataModel? currentServices) {
+  setCurrentService(PendingDataModel? currentServices) async {
     currentService = currentServices;
+    //    final prefs = await SharedPreferences.getInstance();
+    // await prefs.setInt('current_services-$service_id', currentService!.id!);
   }
 
-  setCompleteCurrentService(CompleteDataModel? completeCurrentServices){
-    completeCurrentService= completeCurrentServices;
+  setCompleteCurrentService(CompleteDataModel? completeCurrentServices) {
+    completeCurrentService = completeCurrentServices;
   }
 
   String? category;

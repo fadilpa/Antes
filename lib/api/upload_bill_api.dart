@@ -16,18 +16,22 @@ Future Upload(BuildContext context, firebase_id, count, addressresult, dropdownv
       Provider.of<LocationProvider>(context, listen: false)
           .uploadDescriptionController;
   final categoryValue =
-      Provider.of<LocationProvider>(context, listen: false).category;
-  final optionsValue =
-      Provider.of<LocationProvider>(context, listen: false).options;
+      Provider.of<LocationProvider>(context, listen: false).category ?? "Food";
+  var optionsValue =
+      Provider.of<LocationProvider>(context, listen: false).options??"BreakFast";
   final curretService =
       Provider.of<LocationProvider>(context, listen: false).currentService;
   final dio = Dio();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   final firebase_id = prefs.getString('Firebase_Id');
+  
+  if(categoryValue!="Food"){
+   optionsValue="";
+  }
   final formData = FormData.fromMap({
     "firebase_id": firebase_id,
     "service_id": curretService!.id,
-    "geolocation": addressresult ?? "adress noy found",
+    "geolocation": addressresult ?? "Address Not Found",
     "category": categoryValue,
     "option": optionsValue,
     "description": descrptioncontroller,
@@ -53,10 +57,10 @@ Future Upload(BuildContext context, firebase_id, count, addressresult, dropdownv
   print(jsonEncode(response.data));
   if (response.statusCode == 200) {
     // Navigator.pop(context);
-    ScaffoldMessenger.of(amount)
+    ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text('Upload Succesful')));
   } else {
-    ScaffoldMessenger.of(description)
+    ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text('Check Your Internet')));
     throw Exception();
     // ignore: prefer_const_constructors
