@@ -103,7 +103,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
       // Navigator.pop(context);
 
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Upload Succesful')));
+          .showSnackBar(const SnackBar(content: Text('Ticket Raised!')));
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Check Your Internet')));
@@ -479,22 +479,28 @@ class _RaisedTicketState extends State<RaisedTicket> {
                               ),
                             ),
                             child: Column(
+                              
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  // mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    IconButton(
-                                      onPressed: () {
+                                    GestureDetector(
+                                      onTap: () {
                                         Navigator.of(context).pop();
                                       },
-                                      icon: const Icon(Icons.close),
+                                      child:  Padding(
+                                        padding:  EdgeInsets.only(top: screenHeight/75,left: screenWidth/1.38),
+                                        child: Icon(Icons.close),
+                                      ),
                                     ),
                                   ],
                                 ),
-                                Text('Raise a Ticket',
-                                    style: mainTextStyle.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20)),
+                                Center(
+                                  child: Text('Raise a Ticket',
+                                      style: mainTextStyle.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20)),
+                                ),
                               ],
                             ),
                           ),
@@ -507,47 +513,55 @@ class _RaisedTicketState extends State<RaisedTicket> {
                                   Form(
                                     key: _formKey,
                                     child: Column(children: [
-                                      TextFormField(
-                                        validator: (value) => value!.isEmpty
-                                            ? 'field required'
-                                            : null,
-                                        controller: SubjectController,
-                                        onChanged: (value) {
-                                          Provider.of<LocationProvider>(context,
-                                                  listen: false)
-                                              .setTicketSubject(value);
-                                        },
-                                        decoration: InputDecoration(
-                                            hintText: 'Subject',
-                                            enabledBorder:
-                                                const UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Color.fromARGB(
-                                                      255, 218, 216, 216)),
-                                            ),
-                                            hintStyle: mainTextStyleBlack
-                                                .copyWith(fontSize: 16)),
+                                      SizedBox(
+                                        height: screenHeight/13,
+                                        width: screenWidth/1.2,
+                                        child: TextFormField(
+                                          validator: (value) => value!.isEmpty
+                                              ? '*Required'
+                                              : null,
+                                          controller: SubjectController,
+                                          onChanged: (value) {
+                                            Provider.of<LocationProvider>(context,
+                                                    listen: false)
+                                                .setTicketSubject(value);
+                                          },
+                                          decoration: InputDecoration(
+                                              hintText: 'Subject',
+                                              enabledBorder:
+                                                  const UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Color.fromARGB(
+                                                        255, 218, 216, 216)),
+                                              ),
+                                              hintStyle: mainTextStyleBlack
+                                                  .copyWith(fontSize: 16)),
+                                        ),
                                       ),
-                                      TextFormField(
-                                        validator: (value) => value!.isEmpty
-                                            ? 'field required'
-                                            : null,
-                                        controller: DescriptionController,
-                                        onChanged: (value) {
-                                          Provider.of<LocationProvider>(context,
-                                                  listen: false)
-                                              .setTicketDescription(value);
-                                        },
-                                        decoration: InputDecoration(
-                                            hintText: 'Description',
-                                            enabledBorder:
-                                                const UnderlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Color.fromARGB(
-                                                      255, 218, 216, 216)),
-                                            ),
-                                            hintStyle: mainTextStyleBlack
-                                                .copyWith(fontSize: 16)),
+                                      SizedBox(
+                                        height: screenHeight/13,
+                                        width: screenWidth/1.2,
+                                        child: TextFormField(
+                                          validator: (value) => value!.isEmpty
+                                              ? '*Required'
+                                              : null,
+                                          controller: DescriptionController,
+                                          onChanged: (value) {
+                                            Provider.of<LocationProvider>(context,
+                                                    listen: false)
+                                                .setTicketDescription(value);
+                                          },
+                                          decoration: InputDecoration(
+                                              hintText: 'Description',
+                                              enabledBorder:
+                                                  const UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Color.fromARGB(
+                                                        255, 218, 216, 216)),
+                                              ),
+                                              hintStyle: mainTextStyleBlack
+                                                  .copyWith(fontSize: 16)),
+                                        ),
                                       ),
                                     ]),
                                   ),
@@ -624,7 +638,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                                               prefs.getString('Firebase_Id');
                                           var status = await UploadTicket(
                                               firebase_Id,
-                                              curretService!.id,
+                                              curretService?.id,
                                               addresSResult,
                                               SubjectController.text,
                                               DescriptionController.text,
@@ -681,7 +695,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
                                             style: TextStyle(fontSize: 15),
                                           ),
                                           Text(
-                                            'Your Ticket accepted!',
+                                            'Your Ticket has been accepted!',
                                             style: TextStyle(fontSize: 15),
                                           ),
                                         ],

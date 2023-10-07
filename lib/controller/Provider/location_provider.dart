@@ -37,10 +37,10 @@ class LocationProvider extends ChangeNotifier {
     notifyListeners();
 
     if (value) {
-      await Future.delayed(Duration(seconds: 15));
+      await Future.delayed(Duration(seconds: 20));
 
       if (loaderStarted) {
-        print('poor internet connection');
+        // print('poor internet connection');
         loaderStarted = false;
         showDialog(
           context: context,

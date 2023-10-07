@@ -1,48 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:mentegoz_technologies/api/journey_api.dart';
+import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
 import 'package:mentegoz_technologies/controller/styles.dart';
-import 'package:mentegoz_technologies/view/login_page.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<void> logout(BuildContext context) async {
-  try {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.clear();
-    Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (context) => LoginPage(),
-    ));
-  } catch (error) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Error'),
-          content: Text('An error occurred. Please try again later.'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-}
+class EndDialogFunction extends StatelessWidget {
+  // final Function onConfirm;
 
-class LogoutConfirmationDialog extends StatelessWidget {
-  final Function onConfirm;
-
-  LogoutConfirmationDialog({required this.onConfirm, this.isRadius = true});
+  EndDialogFunction({this.isRadius = true});
 
   bool isRadius;
-  
+
   @override
   Widget build(BuildContext context) {
+    String? currentTime = DateTime.now().toString();
+    final addressresult = context.read<LocationProvider>().address;
     return AlertDialog(
-      title: Text('Confirm Logout'),
-      content: Text('Are you sure you want to\nLog out?'),
+      title: Text('Confirm End Service'),
+      content: Text('Are you sure you want to end the service?'),
       actions: <Widget>[
         // No button
         ElevatedButton(
@@ -56,7 +32,7 @@ class LogoutConfirmationDialog extends StatelessWidget {
                     borderRadius: BorderRadius.circular(2.0)),
           ),
           onPressed: () {
-            Navigator.of(context).pop(); // Close the dialog
+            Navigator.of(context).pop();
           },
         ),
         // Yes button
@@ -70,9 +46,19 @@ class LogoutConfirmationDialog extends StatelessWidget {
                     borderRadius: BorderRadius.circular(2.0)),
           ),
           child: Text('Yes'),
-          onPressed: () {
-            onConfirm();
-            Navigator.of(context).pop(); // Close the dialog
+          onPressed: () async {
+            final prefs = await SharedPreferences.getInstance();
+            // ignore: unused_local_variable
+            String? Firebase_Id = prefs.getString('Firebase_Id');
+            await PostData().PostEndService(
+                context,
+                Firebase_Id,
+                Provider.of<LocationProvider>(context, listen: false)
+                    .currentService!
+                    .id,
+                addressresult,
+                currentTime);
+            Navigator.of(context).pop();
           },
         ),
       ],

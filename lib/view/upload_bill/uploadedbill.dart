@@ -206,364 +206,372 @@ class UpLoadBillState extends State<UpLoadBill> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          UploadBillAppBar(
-              screenHeight: screenHeight,
-              userProvider: userProvider,
-              screenWidth: screenWidth),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                SizedBox(
-                  height: screenHeight / 13,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0, right: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Category",
-                        style: mainTextStyleBlack.copyWith(fontSize: 16),
-                      ),
-                      Container(
-                        width: screenWidth / 2,
-                        height: screenHeight / 15,
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          // border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.grey[200],
-                        ),
-                        child: Center(
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              alignment: Alignment.center,
-                              value: dropdownValue,
-                              style: mainTextStyleBlack.copyWith(fontSize: 16),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  dropdownValue = newValue!;
-                                  optionList =
-                                      categoryToOptions[dropdownValue]!;
-                                  space();
-                                });
-                                Provider.of<LocationProvider>(context,
-                                        listen: false)
-                                    .setCategory(newValue);
-                              },
-                              items: categoryToOptions.keys
-                                  .map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+      body: Consumer<LocationProvider>(
+
+        builder: (context, value, child) {
+          return value.loaderStarted?
+        Center(child: CircularProgressIndicator()):
+         CustomScrollView(
+          slivers: <Widget>[
+            UploadBillAppBar(
+                screenHeight: screenHeight,
+                userProvider: userProvider,
+                screenWidth: screenWidth),
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  SizedBox(
+                    height: screenHeight / 13,
                   ),
-                ),
-                optionList.isNotEmpty
-                    ? Padding(
-                        padding: EdgeInsets.only(
-                            top: screenHeight / 35, left: 10, right: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Options",
-                              style: mainTextStyleBlack.copyWith(fontSize: 16),
-                            ),
-                            Center(
-                              child: Container(
-                                width: screenWidth / 2,
-                                height: screenHeight / 18,
-                                decoration: BoxDecoration(
-                                  // border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.grey[200],
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    // Text("Select"),
-                                    DropdownButtonHideUnderline(
-                                      child: DropdownButton<String>(
-                                        value: selectedOption,
-                                        style: mainTextStyleBlack.copyWith(
-                                            fontSize: 16),
-                                        onChanged: (newValue) {
-                                          setState(() {
-                                            // print(dropdownValue);
-                                            selectedOption = newValue!;
-                                          });
-                                          Provider.of<LocationProvider>(context,
-                                                  listen: false)
-                                              .setOptions(newValue);
-                                        },
-                                        items: optionList
-                                            .map<DropdownMenuItem<String>>(
-                                                (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          );
-                                        }).toList(),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    : const SizedBox(),
-                SizedBox(
-                  height: screenHeight / 35,
-                ),
-                Center(
-                  child: Padding(
+                  Padding(
                     padding: const EdgeInsets.only(left: 10.0, right: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Amount",
+                          "Category",
                           style: mainTextStyleBlack.copyWith(fontSize: 16),
                         ),
-                        SizedBox(
-                          height: 50,
+                        Container(
                           width: screenWidth / 2,
-                          child: Container(
+                          height: screenHeight / 15,
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            // border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(5),
                             color: Colors.grey[200],
-                            ////////////////////////////////
-                            child: Form(
-                              key: _formKey,
-                              child: TextFormField(
-                                validator: (value) =>
-                                    value!.isEmpty ? 'Enter the Amount' : null,
-                                keyboardType: TextInputType.number,
-                                controller: Amount_Controller,
-                                onChanged: (value) {
+                          ),
+                          child: Center(
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                alignment: Alignment.center,
+                                value: dropdownValue,
+                                style: mainTextStyleBlack.copyWith(fontSize: 16),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    dropdownValue = newValue!;
+                                    optionList =
+                                        categoryToOptions[dropdownValue]!;
+                                    space();
+                                  });
                                   Provider.of<LocationProvider>(context,
                                           listen: false)
-                                      .setUploadAmount(value);
+                                      .setCategory(newValue);
                                 },
-                                decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.only(left: 20.0, top: 5),
-                                    border: InputBorder.none,
-                                    hintText: "Enter Amount",
-                                    hintStyle: mainTextStyleBlack.copyWith(
-                                        fontSize: 16)),
+                                items: categoryToOptions.keys
+                                    .map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
                               ),
-                              ///////////////
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: screenHeight / 35,
-                ),
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10.0, right: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Description",
-                          style: mainTextStyleBlack.copyWith(fontSize: 16),
-                        ),
-                        SizedBox(
-                          // height: screenHeight/6,
-                          width: screenWidth / 2,
-                          child: Container(
-                            color: Colors.grey[200],
-                            ///////////////////////
-                            child: Form(
-                              key: _formKey1,
-                              child: TextFormField(
-                                  validator: (value) => value!.isEmpty
-                                      ? 'Enter the Description'
-                                      : null,
-                                  maxLines: 4,
-                                  controller: Description_Controller,
+                  optionList.isNotEmpty
+                      ? Padding(
+                          padding: EdgeInsets.only(
+                              top: screenHeight / 35, left: 10, right: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Options",
+                                style: mainTextStyleBlack.copyWith(fontSize: 16),
+                              ),
+                              Center(
+                                child: Container(
+                                  width: screenWidth / 2,
+                                  height: screenHeight / 18,
+                                  decoration: BoxDecoration(
+                                    // border: Border.all(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.grey[200],
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      // Text("Select"),
+                                      DropdownButtonHideUnderline(
+                                        child: DropdownButton<String>(
+                                          value: selectedOption,
+                                          style: mainTextStyleBlack.copyWith(
+                                              fontSize: 16),
+                                          onChanged: (newValue) {
+                                            setState(() {
+                                              // print(dropdownValue);
+                                              selectedOption = newValue!;
+                                            });
+                                            Provider.of<LocationProvider>(context,
+                                                    listen: false)
+                                                .setOptions(newValue);
+                                          },
+                                          items: optionList
+                                              .map<DropdownMenuItem<String>>(
+                                                  (String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(value),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : const SizedBox(),
+                  SizedBox(
+                    height: screenHeight / 35,
+                  ),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10.0, right: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Amount",
+                            style: mainTextStyleBlack.copyWith(fontSize: 16),
+                          ),
+                          SizedBox(
+                            height: 50,
+                            width: screenWidth / 2,
+                            child: Container(
+                              color: Colors.grey[200],
+                              ////////////////////////////////
+                              child: Form(
+                                key: _formKey,
+                                child: TextFormField(
+                                  validator: (value) =>
+                                      value!.isEmpty ? 'Enter the Amount' : null,
+                                  keyboardType: TextInputType.number,
+                                  controller: Amount_Controller,
                                   onChanged: (value) {
                                     Provider.of<LocationProvider>(context,
                                             listen: false)
-                                        .setUploadDescription(value);
+                                        .setUploadAmount(value);
                                   },
                                   decoration: InputDecoration(
                                       contentPadding:
                                           EdgeInsets.only(left: 20.0, top: 5),
                                       border: InputBorder.none,
-                                      hintText: "Enter Description",
+                                      hintText: "Enter Amount",
                                       hintStyle: mainTextStyleBlack.copyWith(
-                                          fontSize: 16))),
+                                          fontSize: 16)),
+                                ),
+                                ///////////////
+                              ),
                             ),
-                            ///////////////////////
-                          ),
-                        ),
-                      ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Form(
-                  key: _formKeyimage,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: screenHeight / 15,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                  SizedBox(
+                    height: screenHeight / 35,
+                  ),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10.0, right: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              Provider.of<OpenCameraProvider>(context,
-                                      listen: false)
-                                  .openImagePicker();
-                              Provider.of<OpenCameraProvider>(context,
-                                      listen: false)
-                                  .path;
-                            },
-                            child: Container(
-                              height: screenHeight / 12,
-                              width: screenWidth / 5.5,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(2),
-                                color: mainThemeColor,
-                              ),
-                              child: const Icon(
-                                Icons.camera_alt_rounded,
-                                size: 50,
-                                color: Colors.white,
-                              ),
-                            ),
+                          Text(
+                            "Description",
+                            style: mainTextStyleBlack.copyWith(fontSize: 16),
                           ),
                           SizedBox(
-                            width: screenWidth / 15,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Provider.of<OpenGalleyProvider>(context,
-                                      listen: false)
-                                  .OpenGalleryPicker();
-
-                              Provider.of<OpenGalleyProvider>(context,
-                                      listen: false)
-                                  .gallpick;
-                            },
+                            // height: screenHeight/6,
+                            width: screenWidth / 2,
                             child: Container(
-                              height: screenHeight / 12,
-                              width: screenWidth / 5.5,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(2),
-                                color: mainThemeColor,
+                              color: Colors.grey[200],
+                              ///////////////////////
+                              child: Form(
+                                key: _formKey1,
+                                child: TextFormField(
+                                    validator: (value) => value!.isEmpty
+                                        ? 'Enter the Description'
+                                        : null,
+                                    maxLines: 4,
+                                    controller: Description_Controller,
+                                    onChanged: (value) {
+                                      Provider.of<LocationProvider>(context,
+                                              listen: false)
+                                          .setUploadDescription(value);
+                                    },
+                                    decoration: InputDecoration(
+                                        contentPadding:
+                                            EdgeInsets.only(left: 20.0, top: 5),
+                                        border: InputBorder.none,
+                                        hintText: "Enter Description",
+                                        hintStyle: mainTextStyleBlack.copyWith(
+                                            fontSize: 16))),
                               ),
-                              child: const Icon(
-                                CupertinoIcons.photo_fill,
-                                size: 45,
-                                color: Colors.white,
-                              ),
+                              ///////////////////////
                             ),
                           ),
                         ],
                       ),
-                      Provider.of<LocationProvider>(context)
-                              .uploadBillCameraError
-                          ? Text(
-                              'Image is required!!',
-                              style: TextStyle(color: Colors.red),
-                            )
-                          : SizedBox(height: 0),
-                      SizedBox(
-                        height: screenHeight / 35,
-                      ),
-                      CustmButton(
-                          buttontext: 'Upload',
-                          isRadius: false,
-                          buttonaction: () async {
-                            if (validateForms()) {
-                              if (Provider.of<OpenCameraProvider>(context,
-                                              listen: false)
-                                          .path ==
-                                      null &&
-                                  Provider.of<OpenGalleyProvider>(context,
-                                              listen: false)
-                                          .gallpick ==
-                                      null) {
-                                // print("kmk");
-                                Provider.of<LocationProvider>(context,
-                                        listen: false)
-                                    .updateUploadBillCameraError(true);
-                              } else {
-                                Provider.of<LocationProvider>(context,
-                                        listen: false)
-                                    .updateUploadBillCameraError(false);
-                                Provider.of<LocationProvider>(context,
-                                        listen: false)
-                                    .getLocationAndAddress();
-                                final prefs =
-                                    await SharedPreferences.getInstance();
-                                // ignore: unused_local_variable
-                                String? Firebase_Id =
-                                    prefs.getString('Firebase_Id');
-                                await Upload(
-                                    context,
-                                    Firebase_Id,
-                                    curretService!.id,
-                                    addresSResult,
-                                    categoryvalue,
-                                    optionValue,
-                                    descriptioncontroller,
-                                    currentTime,
-                                    amountcontroller,
-                                    Provider.of<OpenCameraProvider>(context,
-                                                    listen: false)
-                                                .path ==
-                                            null
-                                        ? Provider.of<OpenGalleyProvider>(
-                                                context,
-                                                listen: false)
-                                            .gallpick
-                                        : Provider.of<OpenCameraProvider>(
-                                                context,
-                                                listen: false)
-                                            .path);
-                                //function not assigned need function
-                                Amount_Controller.clear();
-                                Description_Controller.clear();
-                                Provider.of<OpenGalleyProvider>(context,
-                                        listen: false)
-                                    .emptyImage();
+                    ),
+                  ),
+                  Form(
+                    key: _formKeyimage,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: screenHeight / 15,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
                                 Provider.of<OpenCameraProvider>(context,
                                         listen: false)
-                                    .emptyImage();
-                                // _formKey.currentState!.reset();
-                                // _formKey1.currentState!.reset();
+                                    .openImagePicker();
+                                Provider.of<OpenCameraProvider>(context,
+                                        listen: false)
+                                    .path;
+                              },
+                              child: Container(
+                                height: screenHeight / 12,
+                                width: screenWidth / 5.5,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(2),
+                                  color: mainThemeColor,
+                                ),
+                                child: const Icon(
+                                  Icons.camera_alt_rounded,
+                                  size: 50,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: screenWidth / 15,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Provider.of<OpenGalleyProvider>(context,
+                                        listen: false)
+                                    .OpenGalleryPicker();
+      
+                                Provider.of<OpenGalleyProvider>(context,
+                                        listen: false)
+                                    .gallpick;
+                              },
+                              child: Container(
+                                height: screenHeight / 12,
+                                width: screenWidth / 5.5,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(2),
+                                  color: mainThemeColor,
+                                ),
+                                child: const Icon(
+                                  CupertinoIcons.photo_fill,
+                                  size: 45,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Provider.of<LocationProvider>(context)
+                                .uploadBillCameraError
+                            ? Text(
+                                'Image is required!!',
+                                style: TextStyle(color: Colors.red),
+                              )
+                            : SizedBox(height: 0),
+                        SizedBox(
+                          height: screenHeight / 35,
+                        ),
+                        CustmButton(
+                            buttontext: 'Upload',
+                            isRadius: false,
+                            buttonaction: () async {
+                              if (validateForms()) {
+                                 value.updateLoader(true,context);
+                                if (Provider.of<OpenCameraProvider>(context,
+                                                listen: false)
+                                            .path ==
+                                        null &&
+                                    Provider.of<OpenGalleyProvider>(context,
+                                                listen: false)
+                                            .gallpick ==
+                                        null) {
+                                  // print("kmk");
+                                  Provider.of<LocationProvider>(context,
+                                          listen: false)
+                                      .updateUploadBillCameraError(true);
+                                } else {
+                                  Provider.of<LocationProvider>(context,
+                                          listen: false)
+                                      .updateUploadBillCameraError(false);
+                                  Provider.of<LocationProvider>(context,
+                                          listen: false)
+                                      .getLocationAndAddress();
+                                  final prefs =
+                                      await SharedPreferences.getInstance();
+                                  // ignore: unused_local_variable
+                                  String? Firebase_Id =
+                                      prefs.getString('Firebase_Id');
+                                  await Upload(
+                                      context,
+                                      Firebase_Id,
+                                      curretService!.id,
+                                      addresSResult,
+                                      categoryvalue,
+                                      optionValue,
+                                      descriptioncontroller,
+                                      currentTime,
+                                      amountcontroller,
+                                      Provider.of<OpenCameraProvider>(context,
+                                                      listen: false)
+                                                  .path ==
+                                              null
+                                          ? Provider.of<OpenGalleyProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .gallpick
+                                          : Provider.of<OpenCameraProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .path);
+                                  //function not assigned need function
+                                  Amount_Controller.clear();
+                                  Description_Controller.clear();
+                                  Provider.of<OpenGalleyProvider>(context,
+                                          listen: false)
+                                      .emptyImage();
+                                  Provider.of<OpenCameraProvider>(context,
+                                          listen: false)
+                                      .emptyImage();
+                                       value.updateLoader(false,context);
+                                  // _formKey.currentState!.reset();
+                                  // _formKey1.currentState!.reset();
+                                }
                               }
-                            }
-                          }),
-                    ],
+                            }),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        );
+  }),
     );
   }
 }

@@ -46,10 +46,9 @@ Future<void> showStartDialog(
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-         final _formKey = GlobalKey<FormState>();
-          
-        return Consumer<LocationProvider>(builder: (context, value, child) {
+        final _formKey = GlobalKey<FormState>();
 
+        return Consumer<LocationProvider>(builder: (context, value, child) {
           return AlertDialog(
             title: Text("Start Service"),
             content: Form(
@@ -61,10 +60,11 @@ Future<void> showStartDialog(
                   Text("Select your travel mode:"),
                   SizedBox(height: 8),
                   DropdownButtonFormField(
+                    
                     // value: Provider.of<LocationProvider>(context, listen: false)
-                          // .selectedTravelMode,
+                    // .selectedTravelMode,
                     // decoration:
-            //  validator: (value) => value == null ? 'field required' : null,
+                    //  validator: (value) => value == null ? 'field required' : null,
                     items: <String>[
                       "Bike",
                       "Taxi Autorickshoaw",
@@ -78,14 +78,19 @@ Future<void> showStartDialog(
                         child: Text(value),
                       );
                     }).toList(),
-              validator: (value) => value == null
-                      ? 'required' : null,
+                    validator: (value) => value == null ? 'required' : null,
                     onChanged: (value) {
                       
                       value;
                       Provider.of<LocationProvider>(context, listen: false)
                           .setTravelMode(value, StartedId);
+                          
                     },
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                      errorBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                    ),
                   ),
                   // Provider.of<LocationProvider>(context, listen: false)
                   //         .travelModeRequiredError
@@ -107,21 +112,20 @@ Future<void> showStartDialog(
               ),
               TextButton(
                 onPressed: () async {
-              if(_formKey.currentState!.validate()){
-                  
-                    value.updateLoader(true,context);
+                  if (_formKey.currentState!.validate()) {
+                    value.updateLoader(true, context);
                     final prefs = await SharedPreferences.getInstance();
-                    prefs.setBool('isStarted', true);
-                    prefs.setInt('SavedId', StartedId);
-// ignore: unused_local_variable
                     String? Firebase_Id = prefs.getString('Firebase_Id');
+                    // prefs.setBool('isStarted', true);
+
+// ignore: unused
                     value.getLocationAndAddress();
 
                     // if (curretService != null) {
                     //   curretService.journeyStarted = true;
                     // }
 
-                    await PostData().PostStartData(
+                    var status = await PostData().PostStartData(
                         context,
                         Firebase_Id,
                         curretService,
@@ -129,22 +133,27 @@ Future<void> showStartDialog(
                         Provider.of<LocationProvider>(context, listen: false)
                             .selectedTravelMode,
                         currentTime);
+                    if (status == 200) {
+                      final prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('isStarted', true);
+                      prefs.setInt('SavedId', StartedId);
+                    }
                     // print(startdata);
                     Navigator.of(context).pop();
 
                     print(journeyStarted);
                     Provider.of<LocationProvider>(context, listen: false)
                         .updatejourneyStarted(true);
-                       await Provider.of<LocationProvider>(context, listen: false)
-                        .setTravelMode(Provider.of<LocationProvider>(context, listen: false)
-                            .selectedTravelMode, StartedId);
+                    await Provider.of<LocationProvider>(context, listen: false)
+                        .setTravelMode(
+                            Provider.of<LocationProvider>(context,
+                                    listen: false)
+                                .selectedTravelMode,
+                            StartedId);
                     // final prefs = await SharedPreferences.getInstance();
                     // await prefs.setBool('isButtonTapped', true);
-                    value.updateLoader(false,context);
-              }
-                
-                  
-                  
+                    value.updateLoader(false, context);
+                  }
                 },
                 child: Consumer<LocationProvider>(
                   builder: (context, state, child) {

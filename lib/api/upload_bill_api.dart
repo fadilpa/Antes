@@ -5,8 +5,17 @@ import 'package:mentegoz_technologies/controller/Provider/location_provider.dart
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future Upload(BuildContext context, firebase_id, count, addressresult, dropdownvalue,
-    optionlist, description, currentTime, amount, filepath) async {
+Future Upload(
+    BuildContext context,
+    firebase_id,
+    count,
+    addressresult,
+    dropdownvalue,
+    optionlist,
+    description,
+    currentTime,
+    amount,
+    filepath) async {
   String? currentTime = DateTime.now().toString();
   final addressresult =
       Provider.of<LocationProvider>(context, listen: false).address;
@@ -18,15 +27,16 @@ Future Upload(BuildContext context, firebase_id, count, addressresult, dropdownv
   final categoryValue =
       Provider.of<LocationProvider>(context, listen: false).category ?? "Food";
   var optionsValue =
-      Provider.of<LocationProvider>(context, listen: false).options??"BreakFast";
+      Provider.of<LocationProvider>(context, listen: false).options ??
+          "BreakFast";
   final curretService =
       Provider.of<LocationProvider>(context, listen: false).currentService;
   final dio = Dio();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   final firebase_id = prefs.getString('Firebase_Id');
-  
-  if(categoryValue!="Food"){
-   optionsValue="";
+
+  if (categoryValue != "Food") {
+    optionsValue = "";
   }
   final formData = FormData.fromMap({
     "firebase_id": firebase_id,
@@ -37,8 +47,9 @@ Future Upload(BuildContext context, firebase_id, count, addressresult, dropdownv
     "description": descrptioncontroller,
     "date_time": currentTime,
     "amount": amountcontroller,
-    'image':await MultipartFile.fromFile(filepath.toString(),filename: 'image.png' //change this'filepath'
-          ),
+    'image': await MultipartFile.fromFile(filepath.toString(),
+        filename: 'image.png' //change this'filepath'
+        ),
   });
 
   print(firebase_id);
@@ -57,8 +68,8 @@ Future Upload(BuildContext context, firebase_id, count, addressresult, dropdownv
   print(jsonEncode(response.data));
   if (response.statusCode == 200) {
     // Navigator.pop(context);
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Upload Succesful')));
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Bill Uploaded Succesfully!')));
   } else {
     ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text('Check Your Internet')));

@@ -62,25 +62,46 @@ Future<void> login(BuildContext context) async {
             return;
           }
         }
-        _showWrongPasswordAlert(context);
+        _showNetworkError(context);
       }
     } else {
-      _showWrongPasswordAlert(context);
+      _showNetworkError(context);
     }
   } catch (e) {
-    print('Error: $e');
+    // print('Error: $e');
     _showWrongPasswordAlert(context);
   }
 }
+
+void _showNetworkError(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Network Error'),
+          content:
+              Text('Poor Network Connection or No Internet!'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
 void _showWrongPasswordAlert(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Wrong Password'),
+          title: Text('Wrong Password or No Network'),
           content:
-              Text('The provided credentials are incorrect. Please try again.'),
+              Text('Check Your Credentials.\nOr No Internet!'),
           actions: <Widget>[
             TextButton(
               onPressed: () {

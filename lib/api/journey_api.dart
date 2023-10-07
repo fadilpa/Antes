@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 class PostData {
-  Future<void> PostStartData(BuildContext context, firebase_id, currentService,
+  Future PostStartData(BuildContext context, firebase_id, currentService,
       addressresult, selectedTravelMode, currentTime) async {
     final curretService =
         Provider.of<LocationProvider>(context, listen: false).currentService;
@@ -37,9 +37,10 @@ class PostData {
         data: formData,
       );
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Upload Succesful')));
+          .showSnackBar(const SnackBar(content: Text('Journey Succesfully Started!')));
       print(response.statusCode);
       print(jsonEncode(response.data));
+       return response.statusCode;
     } catch (error) {
       showDialog(
         context: context,
@@ -59,6 +60,7 @@ class PostData {
         },
       );
       print(error);
+      
     }
     // Check the response status code.
     // if (response.statusCode == 200) {
@@ -69,7 +71,7 @@ class PostData {
     //   print('Failed to post data: ${response.statusCode}');
   }
 
-  Future<void> PostEndData(BuildContext context, firebase_id, currentService,
+  Future PostEndData(BuildContext context, firebase_id, currentService,
       addressresult, selectedravelMode, currentTime, amount, image) async {
     final addresSResult =
         Provider.of<LocationProvider>(context, listen: false).address;
@@ -119,17 +121,18 @@ class PostData {
         // ),
       );
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Upload Succesful')));
+          .showSnackBar(const SnackBar(content: Text('Journey Successfully Ended!')));
 
       print(response.statusCode);
       print(jsonEncode(response.data));
+      return response.statusCode;
     } catch (error) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Error'),
-            content: Text(error.toString()),
+            content: Text('Unknown Error Ocuured!'.toString()),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
@@ -141,8 +144,10 @@ class PostData {
           );
         },
       );
+      
       // print(error);
     }
+    
   }
 
   Future<void> PostEndService(BuildContext context, firebase_id, count,
@@ -181,12 +186,12 @@ class PostData {
     // Check the response status code.
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Upload Succesful')));
+          .showSnackBar(const SnackBar(content: Text('Service Ended Succesfully!')));
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Check Your Internet')));
       throw Exception();
-      print('Failed to post data: ${response.statusCode}');
+      // print('Failed to post data: ${response.statusCode}');
     }
   }
 }

@@ -40,7 +40,7 @@ Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
                   key: _formKey,
                   child: TextFormField(
                     validator: (value) =>
-                        value!.isEmpty ? 'field required' : null,
+                        value!.isEmpty ? '*Required' : null,
                     keyboardType: TextInputType.number,
                     controller: AmountController,
                     onChanged: (value) {
@@ -49,12 +49,18 @@ Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
                     },
                     decoration: InputDecoration(
                       labelText: "Enter Amount",
+                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                      errorBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
                     ),
                   ),
                 ),
+                SizedBox(height: MediaQuery.of(context).size.height/20,),
                 TextField(
                   decoration: InputDecoration(
                       labelText: "Upload Bill",
+                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
                       suffixIcon: SizedBox(
                         width: 100,
                         child: Row(
@@ -96,18 +102,11 @@ Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
               ),
               TextButton(
                 onPressed: () async {
+                   
                   if (_formKey.currentState!.validate()) {
+                    value.updateLoader(true, context);
                     final prefs = await SharedPreferences.getInstance();
-                    prefs.setBool('isStarted', false);
-                    prefs.remove('SavedId');
-
-                    value.updateLoader(true,context);
-
-                    // ignore: unused_local_variable
                     String? Firebase_Id = prefs.getString('Firebase_Id');
-                    // if (curretnService != null) {
-                    //   curretnService.journeyStarted = false;
-                    // }
                     print(journeyStatus);
 
                     print(curretnService!.id);
@@ -115,7 +114,7 @@ Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
                     var selectedTarvelMode1 = await prefs
                         .getString('travel_mode-${curretnService!.id}');
                     print(selectedTarvelMode1);
-                    await PostData().PostEndData(
+                    var status = await PostData().PostEndData(
                       context,
                       Firebase_Id,
                       curretnService,
@@ -127,6 +126,12 @@ Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
                           .path,
                     );
                     // print(enddata);
+                    if (status == 200) {
+                      final prefs = await SharedPreferences.getInstance();
+                      prefs.setBool('isStarted', false);
+                      prefs.remove('SavedId');
+                    }
+
                     Navigator.of(context).pop();
 
                     // isButtonTapped = false;
@@ -136,11 +141,10 @@ Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
                     print(journeyStarted);
                     Provider.of<LocationProvider>(context, listen: false)
                         .updatejourneyStarted(false);
-                    Provider.of<OpenCameraProvider>(context, listen: false)
-                        .emptyImage();
+                   
                     // final prefs = await SharedPreferences.getInstance();
                     // await prefs.setBool('isButtonTapped', false);
-                    value.updateLoader(false,context);
+                    value.updateLoader(false, context);
                   }
                 },
                 child: Consumer<LocationProvider>(
