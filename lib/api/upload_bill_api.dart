@@ -61,7 +61,7 @@ Future Upload(
   print(amountcontroller);
   print(filepath);
   final response = await dio.post(
-    'https://antes.meduco.in/api/upload_bill',
+    'http://antesapp.com/api/upload_bill',
     data: formData,
   );
   print(response.statusCode);

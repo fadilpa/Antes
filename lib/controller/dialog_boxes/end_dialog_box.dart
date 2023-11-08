@@ -49,6 +49,7 @@ Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
                     },
                     decoration: InputDecoration(
                       labelText: "Enter Amount",
+                     border: InputBorder.none,
                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
                       focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
                       errorBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
@@ -61,6 +62,7 @@ Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
                       labelText: "Upload Bill",
                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
                       focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                      errorBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
                       suffixIcon: SizedBox(
                         width: 100,
                         child: Row(

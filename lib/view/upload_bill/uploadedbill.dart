@@ -86,7 +86,7 @@ class UpLoadBillState extends State<UpLoadBill> {
       );
       try {
         final response = await http.post(
-          Uri.parse('https://antes.meduco.in/api/upload_bill'),
+          Uri.parse('http://antesapp.com/api/upload_bill'),
           body: {
             "firebase_id": firebase_id,
             "service_id": curretService!.id,
@@ -116,7 +116,7 @@ class UpLoadBillState extends State<UpLoadBill> {
       try {
         final response = await http.post(
           Uri.parse(
-              'https://antes.meduco.in/api/upload_bill'), // Replace with your API endpoint
+              'http://antesapp.com/api/upload_bill'), // Replace with your API endpoint
           body: {
             "firebase_id": firebase_id,
             "service_id": curretService!.id,
@@ -500,9 +500,7 @@ class UpLoadBillState extends State<UpLoadBill> {
                             buttontext: 'Upload',
                             isRadius: false,
                             buttonaction: () async {
-                              if (validateForms()) {
-                                 value.updateLoader(true,context);
-                                if (Provider.of<OpenCameraProvider>(context,
+                              if (Provider.of<OpenCameraProvider>(context,
                                                 listen: false)
                                             .path ==
                                         null &&
@@ -518,6 +516,9 @@ class UpLoadBillState extends State<UpLoadBill> {
                                   Provider.of<LocationProvider>(context,
                                           listen: false)
                                       .updateUploadBillCameraError(false);
+                              if (validateForms()) {
+                                 value.updateLoader(true,context);
+                                
                                   Provider.of<LocationProvider>(context,
                                           listen: false)
                                       .getLocationAndAddress();

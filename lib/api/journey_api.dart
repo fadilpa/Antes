@@ -33,7 +33,7 @@ class PostData {
     print(currentTime);
     try {
       final response = await dio.post(
-        'https://antes.meduco.in/api/start_service_journey',
+        'http://antesapp.com/api/start_service_journey',
         data: formData,
       );
       ScaffoldMessenger.of(context)
@@ -112,7 +112,7 @@ class PostData {
 
     try {
       final response = await dio.post(
-        'https://antes.meduco.in/api/end_service_journey',
+        'http://antesapp.com/api/end_service_journey',
         data: formData,
 
         // options: Options(
@@ -178,7 +178,7 @@ class PostData {
     // Post the form data to the API.
 
     final response = await dio.post(
-      'https://antes.meduco.in/api/complete_service',
+      'http://antesapp.com/api/complete_service',
       data: formData,
     );
     print(response.statusCode);

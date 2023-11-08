@@ -94,7 +94,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
     print(filepath);
 
     final response = await dio.post(
-      'https://antes.meduco.in/api/ticket_submit',
+      'http://antesapp.com/api/ticket_submit',
       data: formData,
     );
     print(response.statusCode);
