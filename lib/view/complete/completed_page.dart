@@ -55,7 +55,7 @@ class CompletedPage extends StatelessWidget {
                     physics: ScrollPhysics(),
                       shrinkWrap: true,
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                          mainAxisExtent: screenHeight,
+                          mainAxisExtent: screenHeight/3.5,
                           maxCrossAxisExtent: screenWidth/2,
                           crossAxisSpacing: 2),
                       itemCount: dataList.length,

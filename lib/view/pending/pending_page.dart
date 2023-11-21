@@ -54,7 +54,7 @@ class PendingPage extends StatelessWidget {
                     physics: ScrollPhysics(),
                     shrinkWrap: true,
                     gridDelegate :  SliverGridDelegateWithMaxCrossAxisExtent(
-                  mainAxisExtent: screenHeight,
+                  mainAxisExtent: screenHeight/3.5,
                   maxCrossAxisExtent: screenWidth/2,
                    crossAxisSpacing: 2,
                    mainAxisSpacing: 1
