@@ -8,7 +8,7 @@ import 'package:mentegoz_technologies/controller/Provider/location_provider.dart
 import 'package:mentegoz_technologies/controller/Provider/name_and_num_provider.dart';
 import 'package:mentegoz_technologies/controller/Provider/pending_and_complete_provider.dart';
 import 'package:mentegoz_technologies/controller/capitalize.dart';
-import 'package:mentegoz_technologies/controller/dialog_boxes/start_service.dart';
+import 'package:mentegoz_technologies/controller/dialog_boxes/request_confirmation_dialog.dart';
 import 'package:mentegoz_technologies/controller/end_service_function.dart';
 import 'package:mentegoz_technologies/controller/styles.dart';
 import 'package:mentegoz_technologies/view/app_bars/pending_page_app_bar.dart';
@@ -24,8 +24,10 @@ import 'package:mentegoz_technologies/view/tickets/ticket_page.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PendingServicePage extends StatelessWidget {
-  PendingServicePage(
+import '../app_bars/request_service.dart';
+
+class RequestHandlingPage extends StatelessWidget {
+  RequestHandlingPage(
       {super.key,
       required this.index,
       this.id,
@@ -97,7 +99,7 @@ class PendingServicePage extends StatelessWidget {
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
-                PendingAppBar(
+                RequestService(
                     screenHeight: screenHeight,
                     userProvider: userProvider,
                     screenWidth: screenWidth),
@@ -316,142 +318,42 @@ class PendingServicePage extends StatelessWidget {
                           ]),
                         ),
                       ]),
-                     
                   Column(children: [
-                     CustmButton(
-                            buttontext: 'Start Service',
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        CustmButton(
+                            buttontext: 'Reject Request',
                             buttonaction: () async {
-                              value.getLocationAndAddress();
+                              requestRejection(context, id);
+                              // value.getLocationAndAddress();
                               // final prefs =
-                              final prefs = await SharedPreferences.getInstance();
-                              if( prefs.getBool('isServiceStarted')==null||prefs.getBool('isServiceStarted')==false)
-                              {
-
-                              
-                                Provider.of<OpenCameraProvider>(context,
-                                      listen: false)
-                                  .emptyImage();
-                              final prefs =
-                                  await SharedPreferences.getInstance();
-                              int? Saved_ID = prefs.getInt('SavedId');
-                              value.getLocationAndAddress();
-                              showStartServiceDialog(context, false,id);
-
+                              //     await SharedPreferences.getInstance();
+                              // bool? journeyStatus = prefs.getBool('isStarted');
                               // showStartDialog(
-                                  
-                              //     // Saved_ID,
-                              //     // Provider.of<LocationProvider>(context,
-                              //     //         listen: false)
-                              //     //     .currentService!
-                              //     //     .id
-                              //         );
-                              }
-                              
-                                 
+                              //     context,
+                              //     journeyStatus,
+                              //     Provider.of<LocationProvider>(context,
+                              //             listen: false)
+                              //         .currentService!
+                              //         .id);
                             }),
-                       SizedBox(height: 10,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
                         CustmButton(
-                            buttontext: 'Start Journey',
+                            buttontext: 'Accept Request',
                             buttonaction: () async {
-                              value.getLocationAndAddress();
-                              final prefs =
-                                  await SharedPreferences.getInstance();
-                              bool? journeyStatus = prefs.getBool('isStarted');
-                              showStartDialog(
-                                  context,
-                                  journeyStatus,
-                                  Provider.of<LocationProvider>(context,
-                                          listen: false)
-                                      .currentService!
-                                      .id);
+                              requestConfirmation(context, id);
+                              // value.getLocationAndAddress();
+                              // final prefs =
+                              //     await SharedPreferences.getInstance();
+                              // bool? journeyStatus = prefs.getBool('isStarted');
+                              // showStartDialog(
+                              //     context,
+                              //     journeyStatus,
+                              //     Provider.of<LocationProvider>(context,
+                              //             listen: false)
+                              //         .currentService!
+                              //         .id);
                             }),
-                       
-                        SizedBox(
-                          width: screenWidth / 50,
-                        ),
-                        CustmButton(
-                            buttontext: 'End Journey',
-                            buttonaction: () async {
-                              Provider.of<OpenCameraProvider>(context,
-                                      listen: false)
-                                  .emptyImage();
-                              final prefs =
-                                  await SharedPreferences.getInstance();
-                              int? Saved_ID = prefs.getInt('SavedId');
-                              value.getLocationAndAddress();
-
-                              endDialogBox(
-                                  context,
-                                  Saved_ID,
-                                  Provider.of<LocationProvider>(context,
-                                          listen: false)
-                                      .currentService!
-                                      .id);
-                            })
-                     
-                      ],
-                    ),
-                    SizedBox(
-                      height: screenHeight / 50,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CustmButton(
-                            buttontext: 'Upload Bill',
-                            buttonaction: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => UpLoadBill(),
-                              ));
-                            }),
-                        SizedBox(
-                          width: screenWidth / 50,
-                        ),
-                        CustmButton(
-                            buttontext: 'Raise a Ticket',
-                            buttonaction: () {
-                              Provider.of<LocationProvider>(context,
-                                      listen: false)
-                                  .updateIsTicketSubmitted(false);
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => RaisedTicket(),
-                              ));
-                            })
-                      ],
-                    ),
-                    SizedBox(
-                      height: screenHeight / 50,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: screenHeight / 17,
-                          width: screenWidth / 2.7,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(32.0)),
-                                backgroundColor: mainThemeColor),
-                            child: Text(
-                              'End Service',
-                              style: mainTextStyleBlack.copyWith(
-                                  color: Colors.white, fontSize: 12),
-                            ),
-                            onPressed: () async {
-                              value.getLocationAndAddress();
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return EndDialogFunction();
-                                },
-                              );
-                            },
-                          ),
-                        ),
                       ],
                     ),
                   ])

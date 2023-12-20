@@ -7,10 +7,14 @@ class OpenCameraProvider extends ChangeNotifier {
   final ImagePicker picker = ImagePicker();
   File? image;
   var imageBytes;
+  var imageBytesList=[];
   var path;
+  var imageArraypath=[];
+  List<File> imageslist=[];
   // var gallpick;
 
   openImagePicker() async {
+  
     final XFile? pickedImage =
         await picker.pickImage(source: ImageSource.camera,imageQuality: 5);
     if (pickedImage != null) {
@@ -24,6 +28,36 @@ class OpenCameraProvider extends ChangeNotifier {
    
     }
       notifyListeners();
+  }
+  pickArrayyofImage() async {
+  
+    final List<XFile> pickedImage =
+        await picker.pickMultiImage(imageQuality: 5);
+    if (pickedImage.isNotEmpty) {
+      
+      for (var element in pickedImage) { 
+        print("nkjn");
+        imageBytesList.add(element.readAsBytes());
+        imageArraypath.add(element.path);
+        imageslist.add(File(element.path));
+         print("nkjnugh");
+      }
+      // path = pickedImage.path;
+      // image = File(pickedImage.path);
+      // print(pickedImage.length());
+      // print('llllllllllllllllllll');
+      // compressFile(File(pickedImage.path));
+   
+    }
+      notifyListeners();
+  }
+
+
+  removeImage(index){
+imageBytesList.removeAt(index);
+        imageArraypath.removeAt(index);
+        imageslist.removeAt(index);
+        notifyListeners();
   }
 // Future<XFile?> compressFile(File file) async {
 //   final filePath = file.absolute.path;

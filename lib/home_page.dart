@@ -4,6 +4,7 @@ import 'package:mentegoz_technologies/controller/styles.dart';
 import 'package:mentegoz_technologies/view/complete/completed_page.dart';
 import 'package:mentegoz_technologies/view/drawer.dart';
 import 'package:mentegoz_technologies/view/pending/pending_page.dart';
+import 'package:mentegoz_technologies/view/request/requestpage.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -37,7 +38,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void initState() {
     WidgetsFlutterBinding.ensureInitialized();
     context.read<LocationProvider>().address;
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     super.initState();
     getusername_and_number();
     _selectedIndex = _tabController.index;
@@ -60,7 +61,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return Scaffold(
       drawer: MenuDrawer(),
       body: DefaultTabController(
-        length: 2,
+        length: 3,
         child: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return [
@@ -140,6 +141,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                               unselectedLabelColor:
                                   mainThemeColor,
                               tabs: const [
+                                Tab(text: "Request"),
                                 Tab(text: "Pending"),
                                 Tab(text: "Completed"),
                               ],
@@ -156,6 +158,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           body: TabBarView(
             controller: _tabController,
             children: [
+              Requestpage(),
               PendingPage(),
               CompletedPage(),
             ],

@@ -7,7 +7,7 @@ import 'package:mentegoz_technologies/controller/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
+Future<void> startService(BuildContext context, serviceId) async {
   final _formKey = GlobalKey<FormState>();
   String? currentTime = DateTime.now().toString();
   File? image;
@@ -26,40 +26,23 @@ Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
   bool isLoading =
       Provider.of<LocationProvider>(context, listen: false).loaderStarted;
 
-  if (Current_Id == Saved_Id) {
+
     await showDialog(
       context: context,
       builder: (context) {
         return Consumer<LocationProvider>(builder: (context, value, child) {
           return AlertDialog(
-            title: Text("End Service"),
+            title: Text("Start Service"),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Form(
                   key: _formKey,
-                  child: TextFormField(
-                    validator: (value) =>
-                        value!.isEmpty ? '*Required' : null,
-                    keyboardType: TextInputType.number,
-                    controller: AmountController,
-                    onChanged: (value) {
-                      Provider.of<LocationProvider>(context, listen: false)
-                          .setAmount(value);
-                    },
-                    decoration: InputDecoration(
-                      labelText: "Enter Amount",
-                     border: InputBorder.none,
-                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                      errorBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                    ),
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height/20,),
+                  
+                child:
                 TextField(
                   decoration: InputDecoration(
-                      labelText: "Upload Bill",
+                      labelText: "Upload Image",
                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
                       focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
                       errorBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
@@ -90,8 +73,7 @@ Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
                           ],
                         ),
                       )),
-                ),
-              
+                ),)
               
               ],
             ),
@@ -164,24 +146,5 @@ Future<void> endDialogBox(BuildContext context, Saved_Id, Current_Id) async {
         });
       },
     );
-  } else {
-    // Journey hasn't started yet, show a message or take appropriate action.
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Journey not started"),
-          content: Text("Please start the journey before ending it."),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text("OK"),
-            ),
-          ],
-        );
-      },
-    );
-  }
+   
 }

@@ -57,7 +57,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final firebaseId = prefs.getString('Firebase_Id');
     final addresSResult =
-        Provider.of<LocationProvider>(context, listen: false).address;
+        Provider.of<LocationProvider>(context, listen: false).currentLocation;
     final curretService =
         Provider.of<LocationProvider>(context, listen: false).currentService;
     final subjectcontroller =
@@ -76,6 +76,7 @@ class _RaisedTicketState extends State<RaisedTicket> {
       "firebase_id": firebaseId,
       "service_id": id,
       "geolocation": addressresult ?? "Address Not Found",
+      "coordinates": addresSResult!.latitude.toString()+","+addresSResult.longitude.toString() ?? "No Options",
       "subject": subject,
       "description": description,
       "date_time": currentTime,

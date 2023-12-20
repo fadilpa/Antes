@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,8 +18,8 @@ Future Upload(
     amount,
     filepath) async {
   String? currentTime = DateTime.now().toString();
-  final addressresult =
-      Provider.of<LocationProvider>(context, listen: false).address;
+ final LocationData? addressresult =
+      Provider.of<LocationProvider>(context, listen: false).currentLocation;
   final amountcontroller = Provider.of<LocationProvider>(context, listen: false)
       .uploadAmountController;
   final descrptioncontroller =
@@ -42,6 +43,7 @@ Future Upload(
     "firebase_id": firebase_id,
     "service_id": curretService!.id,
     "geolocation": addressresult ?? "Address Not Found",
+    "coordinates": addressresult!.latitude.toString()+","+addressresult.longitude.toString() ?? "No Options",
     "category": categoryValue,
     "option": optionsValue,
     "description": descrptioncontroller,
