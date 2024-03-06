@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mentegoz_technologies/api/journey_api.dart';
+import 'package:mentegoz_technologies/controller/Provider/image_picker_provider.dart';
 import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,7 +51,7 @@ Future<void> showStartDialog(
 
         return Consumer<LocationProvider>(builder: (context, value, child) {
           return AlertDialog(
-            title: Text("Start Service"),
+            title: Text("Start Journey"),
             content: Form(
               key: _formKey,
               child: Column(
@@ -67,8 +68,6 @@ Future<void> showStartDialog(
                     //  validator: (value) => value == null ? 'field required' : null,
                     items: <String>[
                       "Bike",
-                      "Taxi Autorickshoaw",
-                      "Taxi Car",
                       "Bus",
                       "Train",
                       "Other"
@@ -99,6 +98,42 @@ Future<void> showStartDialog(
                   //         style: TextStyle(color: Colors.red, fontSize: 12),
                   //       )
                   //     : SizedBox(),
+                  SizedBox(height: 10,),
+                    TextField(
+                  decoration: InputDecoration(
+                      labelText: "Upload Image",
+                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                      errorBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                      suffixIcon: SizedBox(
+                        width: 100,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Provider.of<OpenCameraProvider>(
+                                      context,
+                                    ).image !=
+                                    null
+                                ? Image.file(
+                                    Provider.of<OpenCameraProvider>(
+                                      context,
+                                    ).image!,
+                                    height: 45,
+                                  )
+                                : SizedBox(),
+                            IconButton(
+                              icon: Icon(Icons.camera_alt),
+                              onPressed: () async {
+                                Provider.of<OpenCameraProvider>(context,
+                                        listen: false)
+                                    .openImagePicker();
+                              },
+                            ),
+                          ],
+                        ),
+                      )),
+                ),
+              
                 ],
                 crossAxisAlignment: CrossAxisAlignment.start,
               ),
@@ -132,7 +167,8 @@ Future<void> showStartDialog(
                         addresSResult,
                         Provider.of<LocationProvider>(context, listen: false)
                             .selectedTravelMode,
-                        currentTime);
+                        currentTime,  Provider.of<OpenCameraProvider>(context, listen: false)
+                          .path);
                     if (status == 200) {
                       final prefs = await SharedPreferences.getInstance();
                       prefs.setBool('isStarted', true);
@@ -150,6 +186,7 @@ Future<void> showStartDialog(
                                     listen: false)
                                 .selectedTravelMode,
                             StartedId);
+                             Provider.of<OpenCameraProvider>(context, listen: false).emptyImage();
                     // final prefs = await SharedPreferences.getInstance();
                     // await prefs.setBool('isButtonTapped', true);
                     value.updateLoader(false, context);

@@ -1,5 +1,11 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:mentegoz_technologies/model/ticket_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart'as http;
+
 
 class UserNameAndNumber extends ChangeNotifier{
 
@@ -13,4 +19,6 @@ class UserNameAndNumber extends ChangeNotifier{
     notifyListeners();
  
   }
+ ///api call for getting the requested services for the user
+
 }

@@ -20,6 +20,8 @@ Future Upload(
   String? currentTime = DateTime.now().toString();
  final LocationData? addressresult =
       Provider.of<LocationProvider>(context, listen: false).currentLocation;
+       final adress =
+      Provider.of<LocationProvider>(context, listen: false).address;
   final amountcontroller = Provider.of<LocationProvider>(context, listen: false)
       .uploadAmountController;
   final descrptioncontroller =
@@ -42,7 +44,7 @@ Future Upload(
   final formData = FormData.fromMap({
     "firebase_id": firebase_id,
     "service_id": curretService!.id,
-    "geolocation": addressresult ?? "Address Not Found",
+    "geolocation": adress ?? "Address Not Found",
     "coordinates": addressresult!.latitude.toString()+","+addressresult.longitude.toString() ?? "No Options",
     "category": categoryValue,
     "option": optionsValue,

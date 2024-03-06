@@ -8,6 +8,7 @@ import 'package:mentegoz_technologies/controller/Provider/location_provider.dart
 import 'package:mentegoz_technologies/controller/Provider/name_and_num_provider.dart';
 import 'package:mentegoz_technologies/controller/Provider/pending_and_complete_provider.dart';
 import 'package:mentegoz_technologies/controller/capitalize.dart';
+import 'package:mentegoz_technologies/controller/dialog_boxes/endtask.dart';
 import 'package:mentegoz_technologies/controller/dialog_boxes/start_service.dart';
 import 'package:mentegoz_technologies/controller/end_service_function.dart';
 import 'package:mentegoz_technologies/controller/styles.dart';
@@ -318,38 +319,8 @@ class PendingServicePage extends StatelessWidget {
                       ]),
                      
                   Column(children: [
-                     CustmButton(
-                            buttontext: 'Start Service',
-                            buttonaction: () async {
-                              value.getLocationAndAddress();
-                              // final prefs =
-                              final prefs = await SharedPreferences.getInstance();
-                              if( prefs.getBool('isServiceStarted')==null||prefs.getBool('isServiceStarted')==false)
-                              {
-
-                              
-                                Provider.of<OpenCameraProvider>(context,
-                                      listen: false)
-                                  .emptyImage();
-                              final prefs =
-                                  await SharedPreferences.getInstance();
-                              int? Saved_ID = prefs.getInt('SavedId');
-                              value.getLocationAndAddress();
-                              showStartServiceDialog(context, false,id);
-
-                              // showStartDialog(
-                                  
-                              //     // Saved_ID,
-                              //     // Provider.of<LocationProvider>(context,
-                              //     //         listen: false)
-                              //     //     .currentService!
-                              //     //     .id
-                              //         );
-                              }
-                              
-                                 
-                            }),
-                       SizedBox(height: 10,),
+                    
+                      //  SizedBox(height: 10,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -395,7 +366,42 @@ class PendingServicePage extends StatelessWidget {
                       ],
                     ),
                     SizedBox(
-                      height: screenHeight / 50,
+                      height: screenHeight / 60,
+                    ),
+                 CustmButton(
+                            buttontext: 'Start Service',
+                            buttonaction: () async {
+                              value.getLocationAndAddress();
+                              // final prefs =
+                              final prefs = await SharedPreferences.getInstance();
+                              if( prefs.getBool('isServiceStarted')==null||prefs.getBool('isServiceStarted')==false)
+                              {
+
+                              
+                                Provider.of<OpenCameraProvider>(context,
+                                      listen: false)
+                                  .emptyImage();
+                              final prefs =
+                                  await SharedPreferences.getInstance();
+                              int? Saved_ID = prefs.getInt('SavedId');
+                              value.getLocationAndAddress();
+                              showStartServiceDialog(context, false,id);
+
+                              // showStartDialog(
+                                  
+                              //     // Saved_ID,
+                              //     // Provider.of<LocationProvider>(context,
+                              //     //         listen: false)
+                              //     //     .currentService!
+                              //     //     .id
+                              //         );
+                              }
+                              
+                                 
+                            }),
+                      
+                   SizedBox(
+                      height: screenHeight / 60,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -428,6 +434,10 @@ class PendingServicePage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        
+                      // SizedBox(
+                      //     width: screenWidth / 50,
+                      //   ),
                         SizedBox(
                           height: screenHeight / 17,
                           width: screenWidth / 2.7,
@@ -454,6 +464,46 @@ class PendingServicePage extends StatelessWidget {
                         ),
                       ],
                     ),
+                  
+                   SizedBox(
+                      height: screenHeight / 50,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        
+                      // SizedBox(
+                      //     width: screenWidth / 50,
+                      //   ),
+                        SizedBox(
+                          height: screenHeight / 17,
+                          width: screenWidth / 2.7,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(32.0)),
+                                backgroundColor: mainThemeColor),
+                            child: Text(
+                              'End Task',
+                              style: mainTextStyleBlack.copyWith(
+                                  color: Colors.white, fontSize: 12),
+                            ),
+                            onPressed: () async {
+                              value.getLocationAndAddress().whenComplete(() {
+showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return EndDialogTask();
+                                },
+                              );
+                              });
+                              
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  
                   ])
                 ],
               ),

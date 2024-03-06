@@ -181,7 +181,7 @@ class LocationProvider extends ChangeNotifier {
     // Update the current location and address.
     currentLocation = locationData;
     address = addressResult ?? "Address not available";
-    print(address);
+    print(address); 
     // Notify all of the Consumer widgets that the location and address have changed.
     notifyListeners();
   }

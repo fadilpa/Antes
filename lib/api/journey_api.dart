@@ -5,29 +5,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
 import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
+import 'package:mentegoz_technologies/model/ticket_model.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 class PostData {
+  //  Tickets tickets= new Tickets();
   Future PostStartData(BuildContext context, firebase_id, currentService,
-      addressresult, selectedTravelMode, currentTime) async {
+      addressresult, selectedTravelMode, currentTime,image) async {
     final curretService =
         Provider.of<LocationProvider>(context, listen: false).currentService;
     // int count =1;
        final LocationData?  locationData =
         Provider.of<LocationProvider>(context, listen: false).currentLocation;
+         final adress =
+        Provider.of<LocationProvider>(context, listen: false).address;
     final addresSResult =
         Provider.of<LocationProvider>(context, listen: false).address;
-
+ var bytes =
+        (await rootBundle.load('assets/null.jpeg')).buffer.asUint8List();
+    var mpFile = MultipartFile.fromBytes(bytes, filename: 'image.jpeg');
+   
+    
     final dio = Dio();
     // Create a FormData object.
     final formData = FormData.fromMap({
       "firebase_id": firebase_id,
       "service_id": curretService!.id != null ? curretService!.id : 1,
-      "geolocation": addresSResult ?? "Address not Accessible",
+      "geolocation": adress ?? "Address not Accessible",
        "coordinates": locationData!.latitude.toString()+","+locationData.longitude.toString() ?? "No Options",
       "travel_mode": selectedTravelMode,
       "date_time": currentTime,
+     "image": image != null
+          ? await MultipartFile.fromFile(image.toString(),
+              filename: 'image.png' //change this'filepath'
+              )
+          : mpFile,
     });
     print(firebase_id);
     print(currentService.id);
@@ -81,6 +94,8 @@ class PostData {
         Provider.of<LocationProvider>(context, listen: false).address;
            final LocationData?  locationdata =
         Provider.of<LocationProvider>(context, listen: false).currentLocation;
+          final adress =
+        Provider.of<LocationProvider>(context, listen: false).address;
     // final selectedTarvelMode =
     //     Provider.of<LocationProvider>(context, listen: false)
     //         .selectedTravelMode;
@@ -94,13 +109,13 @@ class PostData {
     var bytes =
         (await rootBundle.load('assets/null.jpeg')).buffer.asUint8List();
     var mpFile = MultipartFile.fromBytes(bytes, filename: 'image.jpeg');
-    var mutlitpartImages=[];
+    
    
 
     final formData = FormData.fromMap({
       "firebase_id": firebase_id,
       "service_id": curretService!.id ?? "id not found",
-      "geolocation": addresSResult ?? "Address Not Accesible",
+      "geolocation": adress ?? "Address Not Accesible",
        "coordinates": locationdata!.latitude.toString()+","+locationdata.longitude.toString() ?? "No Options",
       "travel_mode": selectedravelMode ?? "No Options",
       "date_time": currentTime,
@@ -165,6 +180,8 @@ class PostData {
     // Get the current address result from the LocationProvider.
     final LocationData?  addresSResult =
         Provider.of<LocationProvider>(context, listen: false).currentLocation;
+        final  adress =
+        Provider.of<LocationProvider>(context, listen: false).address;
     final curretService =
         Provider.of<LocationProvider>(context, listen: false).currentService;
 //     final prefs = await SharedPreferences.getInstance();
@@ -201,7 +218,7 @@ class PostData {
     final formData = FormData.fromMap({
       "firebase_id": firebase_id,
       "service_id": curretService!.id,
-      "geolocation": addresSResult ?? "Address Not Found",
+      "geolocation": adress ?? "Address Not Found",
       "coordinates": addresSResult!.latitude.toString()+","+addresSResult.longitude.toString() ?? "No Options",
       "date_time": currentTime,
       "images":imageList.isNotEmpty?imageMultipart:mpFile
@@ -238,11 +255,68 @@ class PostData {
       // print('Failed to post data: ${response.statusCode}');
     }
   }
+  
+  //end task
+  Future<void> PostEndTask(BuildContext context, firebase_id, count,
+      addressresult, currentTime) async {
+   
+    
+    final LocationData?  addresSResult =
+        Provider.of<LocationProvider>(context, listen: false).currentLocation;
+        final  adress =
+        Provider.of<LocationProvider>(context, listen: false).address;
+    final curretService =
+        Provider.of<LocationProvider>(context, listen: false).currentService;
+
+    final dio = Dio();
+     
+
+   
+           
+    
+    // Create a FormData object.
+    final formData = FormData.fromMap({
+      "firebase_id": firebase_id,
+      "service_id": curretService!.id,
+      "geolocation": adress ?? "Address Not Found",
+      "coordinates": addresSResult!.latitude.toString()+","+addresSResult.longitude.toString() ?? "No Options",
+      "date_time": currentTime,
+    
+    });
+    
+   
+ try{
+    final response = await dio.post(
+      'http://antesapp.com/api/complete_task',
+      data: formData,
+    );
+ 
+    print(response.statusCode);
+    print(jsonEncode(response.data));
+    print("ljhkjhb");
+    
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Task Completed  Succesfully!')));
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Check Your Internet')));
+      throw Exception();
+      
+    }
+ }catch(e){
+  print(e);
+ }
+    
+    // return ;
+  }
+
 // Future startSerivces(BuildContext context,)
 Future startService(BuildContext context, {firebase_id, currentService,
        currentTime, image}) async {
     final LocationData? addresSResult =
         Provider.of<LocationProvider>(context, listen: false).currentLocation;
+        final adress = Provider.of<LocationProvider>(context, listen: false).address;
         print(addresSResult!.longitude.toString());
           print(addresSResult!.latitude.toString());
         print("knkbn");
@@ -263,7 +337,7 @@ Future startService(BuildContext context, {firebase_id, currentService,
     final formData = FormData.fromMap({
       "firebase_id": firebase_id,
       "service_id": curretService!.id ?? "id not found",
-      "geolocation": addresSResult ?? "Address Not Accesible",
+      "geolocation": adress ?? "Address Not Accesible",
       "coordinates": addresSResult.latitude.toString()+","+addresSResult.longitude.toString() ?? "No Options",
       "date_time": currentTime,
     
@@ -324,4 +398,5 @@ Future startService(BuildContext context, {firebase_id, currentService,
     
   }
 
+ 
 }
