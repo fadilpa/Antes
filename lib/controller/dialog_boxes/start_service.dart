@@ -21,17 +21,20 @@ Future<void> showStartServiceDialog(
   //     Provider.of<LocationProvider>(context, listen: false).journeyStarted;
   final isLoading =
       Provider.of<LocationProvider>(context, listen: false).loaderStarted;
+        final prefs = await SharedPreferences.getInstance();
+        String? startedService = prefs.getString( 'startedService');
   print(journeyStarted);
   print('%%%%%%%%%%%%%%%%%%%%%%%%%igigggigkugug%%%%%%%%%%%%%');
   if (journeyStarted == true) {
     // Show a dialog indicating that an ongoing journey is not ended.
+    
     await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text("Ongoing Journey"),
           content:
-              Text("Please end the ongoing journey before starting a new one."),
+              Text("A Journey is ongoing on $startedService. Please complete this journey before starting a new one."),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -135,6 +138,7 @@ Future<void> showStartServiceDialog(
                     //     currentTime,);
                     if (status == 200) {
                       final prefs = await SharedPreferences.getInstance();
+                      prefs.setString('startedService',curretService!.serviceName??"" );
                         Navigator.pop(context);
             showDialog(context: context, builder:  (BuildContext context) {
               return AlertDialog(
@@ -152,7 +156,7 @@ Future<void> showStartServiceDialog(
          
                       
                       // prefs.setBool('isStarted', true);
-                      // prefs.setInt('SavedId', StartedId);
+                      
                     }
                     // print(startdata);
                     // Navigator.of(context).pop();

@@ -490,12 +490,13 @@ class PendingServicePage extends StatelessWidget {
                             ),
                             onPressed: () async {
                               value.getLocationAndAddress().whenComplete(() {
-showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return EndDialogTask();
-                                },
-                              );
+                                endDialogTask(context: context);
+// showDialog(
+//                                 context: context,
+//                                 builder: (BuildContext context) {
+//                                   // return EndDialogTask();
+//                                 },
+//                               );
                               });
                               
                             },
