@@ -2,6 +2,7 @@ import 'package:expand_widget/expand_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mentegoz_technologies/controller/Provider/api_data_providers.dart';
 import 'package:mentegoz_technologies/controller/Provider/location_provider.dart';
 import 'package:mentegoz_technologies/controller/Provider/pending_and_complete_provider.dart';
 import 'package:mentegoz_technologies/controller/capitalize.dart';
@@ -11,9 +12,11 @@ import 'package:mentegoz_technologies/controller/custom_button.dart';
 import 'package:mentegoz_technologies/controller/Provider/name_and_num_provider.dart';
 import 'package:mentegoz_technologies/view/app_bars/complete_page_app_bar.dart';
 import 'package:mentegoz_technologies/view/app_bars/sevice_app_bar.dart';
+import 'package:mentegoz_technologies/view/complete/tracking.dart';
 import 'package:mentegoz_technologies/view/tickets/ticket_page.dart';
 import 'package:mentegoz_technologies/view/tickets/ticket_raised_box.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CompletedServicePage extends StatelessWidget {
   const CompletedServicePage(
@@ -32,10 +35,13 @@ class CompletedServicePage extends StatelessWidget {
       this.email,
       this.address,
       this.landmark,
-      this.category});
+      this.category,
+      this.firebaseid
+      });
 
   final int index;
   final int? id;
+  final firebaseid;
   final clientName;
   final refNo;
   final category;
@@ -53,8 +59,11 @@ class CompletedServicePage extends StatelessWidget {
   // GetUserNameAndNumber nameandnumber = GetUserNameAndNumber();
   @override
   Widget build(BuildContext context) {
+    
+
     var userProvider = Provider.of<UserNameAndNumber>(context);
     userProvider.get_user_name_and_number();
+    // var firebase_id=Provider.of<FirebaseIdProvider>(context, listen: false).firebaseId;
     // ignore: unused_local_variable
     List<CompletedServicesModel> serviceData = [];
 
@@ -299,6 +308,25 @@ class CompletedServicePage extends StatelessWidget {
                             })
                       ],
                     ),
+                    SizedBox(height: 30,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CustmButton(
+                            buttontext: 'Activity Status',
+                            buttonaction: () {
+                              print(firebaseid);
+                              print("gfggdf");
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => JourneyPage(
+                               firebase_id:firebaseid,
+                                  
+                                  serviceId: id,),
+                              ));
+                            })
+                      ],
+                    ),
+                  
                   ]),
               SizedBox(
                 height: screenHeight / 20,

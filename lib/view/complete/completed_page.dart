@@ -102,6 +102,7 @@ class CompletedPage extends StatelessWidget {
                                       email: email,
                                       phone: phone,
                                       landmark: landmark,
+                                      firebaseid: firebaseIdProvider.firebaseId,
                                     ),
                                     // Replace with the actual page you want to navigate to.
                                   ),

@@ -5,6 +5,7 @@ import 'package:mentegoz_technologies/controller/Provider/location_provider.dart
 import 'package:mentegoz_technologies/controller/Provider/name_and_num_provider.dart';
 import 'package:mentegoz_technologies/controller/Provider/pending_and_complete_provider.dart';
 import 'package:mentegoz_technologies/controller/Provider/tab_provider.dart';
+import 'package:mentegoz_technologies/controller/Provider/tracking_provider.dart';
 import 'package:mentegoz_technologies/controller/image_picker.dart';
 import 'package:mentegoz_technologies/controller/media_permission.dart';
 import 'package:mentegoz_technologies/controller/request_location_permissions.dart';
@@ -34,6 +35,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => OpenCameraProvider()),
         ChangeNotifierProvider(create: (context)=>OpenCameraProviders()),
         ChangeNotifierProvider(create: (context)=>OpenGalleyProvider()),
+        ChangeNotifierProvider(create: (context)=>JourneyProvider()),
       ],
       child: MaterialApp(
         title: 'Antes',
