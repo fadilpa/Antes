@@ -3,15 +3,15 @@ import 'package:mentegoz_technologies/controller/Provider/tracking_provider.dart
 import 'package:provider/provider.dart';
 
 
-class JourneyPage extends StatelessWidget {
-  final  serviceId,firebase_id; // This should be passed from another page
+class TicketTracking extends StatelessWidget {
+  final  ticket_id; // This should be passed from another page
 
-  const JourneyPage({Key? key,required this.firebase_id ,required this.serviceId}) : super(key: key);
+  const TicketTracking({Key? key,required this.ticket_id }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => JourneyProvider()..fetchJourneys(firebase_id: firebase_id,serviceId: serviceId),
+      create: (_) => JourneyProvider()..fetchTicketTracking(ticket_id: ticket_id),
       child: Scaffold(
         appBar: AppBar(
           title: Text('Activity Status',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
@@ -22,15 +22,15 @@ class JourneyPage extends StatelessWidget {
               return Center(child: CircularProgressIndicator());
             }
 
-            if (provider.apiResponse==null||provider.apiResponse!.data!.isEmpty) {
+            if (provider.ticketTracking==null||provider.ticketTracking!.data!.isEmpty) {
               return Center(child: Text('No data available'));
             }
 
             return ListView.builder(
-              itemCount: provider.apiResponse!.data!.length,
+              itemCount: provider.ticketTracking!.data!.length,
               itemBuilder: (context, index) {
-                final journey = provider.apiResponse!.data![index];
-                 return JourneyCard(journey: journey);
+                final tickets = provider.ticketTracking!.data![index];
+                 return TicketCard(tickets_status: tickets);
               },
             );
           },
@@ -39,10 +39,10 @@ class JourneyPage extends StatelessWidget {
     );
   }
 }
-class JourneyCard extends StatelessWidget {
-  final  journey;
+class TicketCard extends StatelessWidget {
+  final  tickets_status;
 
-  const JourneyCard({Key? key, required this.journey}) : super(key: key);
+  const TicketCard({Key? key, required this.tickets_status}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +61,7 @@ class JourneyCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                journey.category,
+                tickets_status.category,
                 style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
@@ -70,7 +70,7 @@ class JourneyCard extends StatelessWidget {
               ),
               SizedBox(height: 8.0),
               Text(
-                journey.message,
+                tickets_status.message,
                 style: TextStyle(
                   fontSize: 15.0,
                   color: Colors.black54,
@@ -81,7 +81,7 @@ class JourneyCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    journey.type.toUpperCase(),
+                    tickets_status.type.toUpperCase(),
                     style: TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.bold,

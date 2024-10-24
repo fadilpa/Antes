@@ -6,11 +6,12 @@ import 'package:mentegoz_technologies/controller/Provider/name_and_num_provider.
 import 'package:mentegoz_technologies/controller/Provider/pending_and_complete_provider.dart';
 import 'package:mentegoz_technologies/controller/styles.dart';
 import 'package:mentegoz_technologies/view/app_bars/tickets_app_bar.dart';
+import 'package:mentegoz_technologies/view/tickets/ticket_tracking.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../model/ticket_model.dart';
-import 'package:http/http.dart'as http;
+import 'package:http/http.dart' as http;
 
 class TicketsPage extends StatefulWidget {
   const TicketsPage({super.key});
@@ -20,7 +21,7 @@ class TicketsPage extends StatefulWidget {
 }
 
 class _TicketsPageState extends State<TicketsPage> {
-   late Future<List<Tickets>> ticketsFuture;
+  late Future<List<Tickets>> ticketsFuture;
   getusername_and_number() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -35,7 +36,7 @@ class _TicketsPageState extends State<TicketsPage> {
     // Provider.of<LocationProvider>(context, listen: false)
     //     .getLocationAndAddress();
     getusername_and_number();
-     ticketsFuture = fetchTickets();
+    ticketsFuture = fetchTickets();
   }
 
   String? name;
@@ -108,7 +109,7 @@ class _TicketsPageState extends State<TicketsPage> {
           ),
           SliverToBoxAdapter(
             child: Container(
-              height: screenHeight -100,
+              height: screenHeight - 100,
               color: Color.fromARGB(255, 255, 255, 255),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -122,16 +123,14 @@ class _TicketsPageState extends State<TicketsPage> {
                     // ),
                     Expanded(
                       child: FutureBuilder<List<Tickets>>(
-                        future:ticketsFuture,
+                        future: ticketsFuture,
                         // shrinkWrap: true,
                         // future: p.getTickes(firebase_id:"" ),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return Center(
-                              child: CircularProgressIndicator(
-                                
-                              ),
+                              child: CircularProgressIndicator(),
                             ); // or any other loading indicator
                           } else if (snapshot.hasError) {
                             return Text('Error: ${snapshot.error}');
@@ -141,90 +140,100 @@ class _TicketsPageState extends State<TicketsPage> {
                           } else {
                             // List<Datum> tickets = snapshot.data!.data;
                             var data = snapshot.data![0].data;
+                            // print(data![0].reason);
                             return ListView.builder(
-                              
+
                                 // gridDelegate:
                                 //     SliverGridDelegateWithMaxCrossAxisExtent(
                                 //         maxCrossAxisExtent: screenHeight / 3.5),
                                 itemCount: data!.length,
                                 itemBuilder: (context, index) {
-                                  return SizedBox(
-                                    height: screenHeight / 7,
-                                    child: Card(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      color: Colors.white,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  data[index].serviceName ?? "",
-                                                  style: const TextStyle(
-                                                      fontSize: 16),
-                                                ),
-                                                 Text(
-                                                  data[index].ticketNumber??"",
-                                                  style: TextStyle(
-                                                      fontSize: 13, color: Colors.grey),
-                                                ),
-                                              ],
-                                            ),
-                                            Text(
-                                              data[index].reason ?? "",
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  color: Colors.black),
-                                            ),
-                                            Row(
-                                              children: [
-                                                data[index].status != null
-                                                    ? data[index].status ==
-                                                            'Accepted'
-                                                        ? Text(
-                                                            data[index]
-                                                                    .status ??
-                                                                "",
-                                                            style: TextStyle(
-                                                                fontSize: 12,
-                                                                color: Colors
-                                                                    .green),
-                                                          )
-                                                        : Text(
-                                                            data[index]
-                                                                    .status ??
-                                                                "",
-                                                            style: TextStyle(
-                                                                fontSize: 12,
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        232,
-                                                                        0,
-                                                                        0)),
-                                                          )
-                                                    : Text(""),
-                                                CircleAvatar(
-                                                  radius: 6,
-                                                  backgroundColor: data[index].status =="Accepted"||data[index].status ==null? Colors.green:Colors.red,
-                                                  child: Icon(
-                                                    Icons.done,
-                                                    size: 7,
+                                  return GestureDetector(
+                                    onTap: (){
+                                      
+                                                  Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                TicketTracking(ticket_id: data[index].ticketNumber)));
+                                             
+                                    },
+                                    child: SizedBox(
+                                      height: screenHeight / 7,
+                                      child: Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        color: Colors.white,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    data[index].serviceName ?? "",
+                                                    style: const TextStyle(
+                                                        fontSize: 16),
                                                   ),
-                                                )
-                                              ],
-                                            ),
-                                          ],
+                                                  Text(
+                                                    data[index].ticketNumber ??
+                                                        "",
+                                                    style: TextStyle(
+                                                        fontSize: 13,
+                                                        color: Colors.grey),
+                                                  ),
+                                                ],
+                                              ),
+                                              Text(
+                                                data[index].reason ?? "",
+                                                style: TextStyle(
+                                                    fontSize: 13,
+                                                    color: Colors.black),
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  data[index].status != null
+                                                      ? data[index].status ==
+                                                              'Accepted'
+                                                          ? Text(
+                                                              data[index]
+                                                                      .status ??
+                                                                  "",
+                                                              style: TextStyle(
+                                                                  fontSize: 12,
+                                                                  color: Colors
+                                                                      .green),
+                                                            )
+                                                          : Text(
+                                                              data[index]
+                                                                      .status ??
+                                                                  "",
+                                                              style: TextStyle(
+                                                                  fontSize: 12,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          232,
+                                                                          0,
+                                                                          0)),
+                                                            )
+                                                      : Text(""),
+                                              
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -243,34 +252,33 @@ class _TicketsPageState extends State<TicketsPage> {
       ),
     );
   }
-  Future<List<Tickets>> fetchTickets({firebase_id}) async {
-  final prefs = await SharedPreferences.getInstance();
-// ignore: unused_local_variable
-  String? Firebase_Id = prefs.getString('Firebase_Id');
-  //  print("hgvhbjknk");
-  // final firebaseIdProvider =
-  //     Provider.of<FirebaseIdProvider>(context, listen: false);
-  final response = await http.post(
-    Uri.parse('http://antesapp.com/api/ticket_list'),
-    body: {
-      'firebase.id': Firebase_Id,
-    },
-  );
-  
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    // return Datum.fromJson(jsonDecode(response.body));
-   print("nnb");
-   var data = ticketsFromJson(response.body);
-  //  pendingData= data;
-    return data;
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load album');
-  }
-  
-}
 
+  Future<List<Tickets>> fetchTickets({firebase_id}) async {
+    final prefs = await SharedPreferences.getInstance();
+// ignore: unused_local_variable
+    String? Firebase_Id = prefs.getString('Firebase_Id');
+    //  print("hgvhbjknk");
+    // final firebaseIdProvider =
+    //     Provider.of<FirebaseIdProvider>(context, listen: false);
+    final response = await http.post(
+      Uri.parse('http://antesapp.com/api/ticket_list'),
+      body: {
+        'firebase.id': Firebase_Id,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      // return Datum.fromJson(jsonDecode(response.body));
+      print("nnb");
+      var data = ticketsFromJson(response.body);
+      //  pendingData= data;
+      return data;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
 }
